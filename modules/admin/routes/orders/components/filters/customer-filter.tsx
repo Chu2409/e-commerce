@@ -18,12 +18,12 @@ import { Customer } from '@prisma/client'
 import { CaretSortIcon } from '@radix-ui/react-icons'
 import { CheckIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { useFiltersStore } from '../../store/filters'
+import { useOrdersFilters } from '../../store/filters'
 
 export const CustomerFilter = ({ customers }: { customers: Customer[] }) => {
   const [open, setOpen] = useState(false)
-  const value = useFiltersStore((state) => state.filters.customerId)
-  const setValue = useFiltersStore((state) => state.setFilter)
+  const value = useOrdersFilters((state) => state.filters.customerId)
+  const setValue = useOrdersFilters((state) => state.setFilter)
 
   const [selected, setSelected] = useState<Customer | undefined>()
 

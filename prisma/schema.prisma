@@ -76,9 +76,10 @@ enum PAY_METHOD {
 }
 
 model Color {
-  id    String @id @default(uuid()) @map("id")
-  name  String @map("name")
-  value String @map("value")
+  id     String  @id @default(uuid()) @map("id")
+  name   String  @map("name")
+  value  String  @map("value")
+  active Boolean @default(true) @map("active")
 
   products Product[]
 
@@ -89,9 +90,10 @@ model Color {
 }
 
 model Size {
-  id    String @id @default(uuid()) @map("id")
-  name  String @map("name")
-  value String @map("value")
+  id     String  @id @default(uuid()) @map("id")
+  name   String  @map("name")
+  value  String  @map("value")
+  active Boolean @default(true) @map("active")
 
   sizes SizeByCategory[]
 
@@ -102,8 +104,9 @@ model Size {
 }
 
 model Category {
-  id   String @id @default(uuid()) @map("id")
-  name String @map("name")
+  id     String  @id @default(uuid()) @map("id")
+  name   String  @map("name")
+  active Boolean @default(true) @map("active")
 
   products ProductMaster[]
   sizes    SizeByCategory[]
@@ -115,8 +118,9 @@ model Category {
 }
 
 model Brand {
-  id   String @id @default(uuid()) @map("id")
-  name String @map("name")
+  id     String  @id @default(uuid()) @map("id")
+  name   String  @map("name")
+  active Boolean @default(true) @map("active")
 
   products ProductMaster[]
 

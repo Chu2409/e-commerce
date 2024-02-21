@@ -1,7 +1,11 @@
+import { BrandsClient } from '@/modules/admin/routes/brands/components/client'
+
 const BrandsPage = () => {
   return (
-    <div>
-      <h1>Brands</h1>
+    <div className='flex flex-col'>
+      <div className='p-8 pt-6 flex flex-col flex-1'>
+        <BrandsClient />
+      </div>
     </div>
   )
 }

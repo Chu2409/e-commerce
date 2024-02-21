@@ -18,14 +18,14 @@ import { PAY_METHOD } from '@prisma/client'
 import { CaretSortIcon } from '@radix-ui/react-icons'
 import { CheckIcon } from 'lucide-react'
 import { useState } from 'react'
-import { useFiltersStore } from '../../store/filters'
+import { useOrdersFilters } from '../../store/filters'
 
 const payMethods = Object.values(PAY_METHOD)
 
 export const PayMethodFilter = () => {
   const [open, setOpen] = useState(false)
-  const value = useFiltersStore((state) => state.filters.payMethod)
-  const setValue = useFiltersStore((state) => state.setFilter)
+  const value = useOrdersFilters((state) => state.filters.payMethod)
+  const setValue = useOrdersFilters((state) => state.setFilter)
 
   return (
     <Popover open={open} onOpenChange={setOpen}>

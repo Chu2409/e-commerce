@@ -6,14 +6,17 @@ import { Edit, Trash } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { usePathname, useRouter } from 'next/navigation'
 import { AlertModal } from '@/components/alert-modal'
-import { Order } from '@prisma/client'
 
-interface OrdersCellActionsProps {
-  order: Order
+interface CellActionsProps {
+  id: string
+  message: string
+  onDelete: (id: string) => Promise<void>
 }
 
-export const OrdersCellActions: React.FC<OrdersCellActionsProps> = ({
-  order,
+export const CellActions: React.FC<CellActionsProps> = ({
+  id,
+  message,
+  onDelete,
 }) => {
   const router = useRouter()
   const pathName = usePathname()
@@ -21,14 +24,14 @@ export const OrdersCellActions: React.FC<OrdersCellActionsProps> = ({
   const [isLoading, setIsLoading] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
 
-  const onDelete = async () => {
+  const onDeleteClick = async () => {
     try {
       setIsLoading(true)
-      // await axios.delete(`/api/${params.storeId}/products/${data.id}`)
+      await onDelete(id)
       router.refresh()
-      toast.success('Product deleted')
+      toast.success(message)
     } catch (error) {
-      toast.error('Something went wrong')
+      toast.error('Algo salió mal')
     } finally {
       setIsLoading(false)
       setIsOpen(false)
@@ -41,12 +44,12 @@ export const OrdersCellActions: React.FC<OrdersCellActionsProps> = ({
         isOpen={isOpen}
         isLoading={isLoading}
         onClose={() => setIsOpen(false)}
-        onConfirm={onDelete}
+        onConfirm={onDeleteClick}
       />
 
       <Button
         variant='ghost'
-        onClick={() => router.push(`${pathName}/${order.id}`)}
+        onClick={() => router.push(`${pathName}/${id}`)}
         className='p-0'
       >
         <Edit className='h-4 w-4' />

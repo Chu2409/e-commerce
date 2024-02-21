@@ -11,9 +11,11 @@ interface FiltersState {
     key: keyof IOrdersFilters
     value: IOrdersFilters[keyof IOrdersFilters]
   }) => void
+
+  clearFilters: () => void
 }
 
-export const useFiltersStore = create<FiltersState>((set) => ({
+export const useOrdersFilters = create<FiltersState>((set) => ({
   filters: {
     dateFrom: undefined,
     dateTo: undefined,
@@ -21,11 +23,24 @@ export const useFiltersStore = create<FiltersState>((set) => ({
     payMethod: undefined,
     customerId: undefined,
   },
+
   setFilter: ({ key, value }) => {
     set((state) => ({
       filters: {
         ...state.filters,
         [key]: value,
+      },
+    }))
+  },
+
+  clearFilters: () => {
+    set(() => ({
+      filters: {
+        dateFrom: undefined,
+        dateTo: undefined,
+        state: undefined,
+        payMethod: undefined,
+        customerId: undefined,
       },
     }))
   },

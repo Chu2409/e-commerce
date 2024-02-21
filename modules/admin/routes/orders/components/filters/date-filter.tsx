@@ -11,14 +11,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { useFiltersStore } from '../../store/filters'
+import { useOrdersFilters } from '../../store/filters'
 
 export const DateFilter = ({
   className,
 }: React.HTMLAttributes<HTMLDivElement>) => {
-  const dateFrom = useFiltersStore((state) => state.filters.dateFrom)
-  const dateTo = useFiltersStore((state) => state.filters.dateTo)
-  const setFilter = useFiltersStore((state) => state.setFilter)
+  const dateFrom = useOrdersFilters((state) => state.filters.dateFrom)
+  const dateTo = useOrdersFilters((state) => state.filters.dateTo)
+  const setFilter = useOrdersFilters((state) => state.setFilter)
 
   const onChange = (date: DateRange | undefined) => {
     setFilter({ key: 'dateFrom', value: date?.from })

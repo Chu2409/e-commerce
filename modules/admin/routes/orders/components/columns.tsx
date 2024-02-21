@@ -3,12 +3,25 @@
 import { formatDateHours, formatMoney } from '@/lib/utils'
 import { Order } from '@prisma/client'
 import { ColumnDef } from '@tanstack/react-table'
-import { OrdersCellActions } from './cell-actions'
+import { Button } from '@/components/ui/button'
+import { ArrowUpDown } from 'lucide-react'
+import { CellActions } from '@/modules/admin/components/cell-actions'
 
 export const ordersColumns: ColumnDef<Order>[] = [
   {
     accessorKey: 'date',
-    header: 'Fecha',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant='ghost'
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          className='font-bold'
+        >
+          Fecha
+          <ArrowUpDown className='ml-2 h-4 w-4' />
+        </Button>
+      )
+    },
     cell: ({ row }) => {
       const date = row.original.date
       if (date == null) return
@@ -72,6 +85,12 @@ export const ordersColumns: ColumnDef<Order>[] = [
   {
     header: 'Acciones',
     id: 'actions',
-    cell: ({ row }) => <OrdersCellActions order={row.original} />,
+    cell: ({ row }) => (
+      <CellActions
+        id={row.original.id}
+        message='Órden eliminada'
+        onDelete={(id) => Promise.resolve()}
+      />
+    ),
   },
 ]

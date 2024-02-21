@@ -1,16 +1,16 @@
 'use client'
 
 import { Separator } from '@/components/ui/separator'
-import { DataTable } from '@/modules/admin/components/data-table'
+import { DataTableWithFilters } from '@/modules/admin/components/data-table-with-filters'
 import { Header } from '@/modules/admin/components/header'
 import { ordersColumns } from './columns'
 import { getOrders } from '../data/get-orders'
 import { OrdersFilters } from './filters/filters'
-import { useFiltersStore } from '../store/filters'
+import { useOrdersFilters } from '../store/filters'
 import { Customer } from '@prisma/client'
 
 export const OrdersClient = ({ customers }: { customers: Customer[] }) => {
-  const filters = useFiltersStore((state) => state.filters)
+  const filters = useOrdersFilters((state) => state.filters)
 
   return (
     <div>
@@ -24,10 +24,11 @@ export const OrdersClient = ({ customers }: { customers: Customer[] }) => {
 
       <OrdersFilters customers={customers} />
 
-      <DataTable
+      <DataTableWithFilters
         columns={ordersColumns}
         filters={filters}
         getData={getOrders}
+        visibility
       />
     </div>
   )
