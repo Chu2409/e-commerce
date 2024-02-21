@@ -7,7 +7,7 @@ declare global {
   var prisma: PrismaClient | undefined
 }
 
-let prismadb
+let prismadb: PrismaClient
 
 if (globalThis.prisma) {
   prismadb = globalThis.prisma

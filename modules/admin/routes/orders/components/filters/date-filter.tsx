@@ -1,0 +1,75 @@
+'use client'
+
+import { CalendarIcon } from '@radix-ui/react-icons'
+import { DateRange } from 'react-day-picker'
+
+import { cn, formatDate } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import { Calendar } from '@/components/ui/calendar'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
+import { useFiltersStore } from '../../store/filters'
+
+export const DateFilter = ({
+  className,
+}: React.HTMLAttributes<HTMLDivElement>) => {
+  const dateFrom = useFiltersStore((state) => state.filters.dateFrom)
+  const dateTo = useFiltersStore((state) => state.filters.dateTo)
+  const setFilter = useFiltersStore((state) => state.setFilter)
+
+  const onChange = (date: DateRange | undefined) => {
+    setFilter({ key: 'dateFrom', value: date?.from })
+
+    if (date?.to !== undefined) {
+      setFilter({ key: 'dateTo', value: date?.to })
+    } else {
+      setFilter({ key: 'dateTo', value: date?.from })
+    }
+  }
+
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button
+          id='date'
+          variant='outline'
+          className={cn(
+            'w-[300px] justify-start text-left font-normal',
+            !dateFrom && 'text-muted-foreground',
+          )}
+        >
+          <CalendarIcon className='mr-2 h-4 w-4' />
+          {dateFrom ? (
+            dateTo ? (
+              <>
+                {formatDate(dateFrom)} - {formatDate(dateTo)}
+              </>
+            ) : (
+              formatDate(dateFrom)
+            )
+          ) : (
+            <span>Selecciona una fecha...</span>
+          )}
+        </Button>
+      </PopoverTrigger>
+
+      <PopoverContent className='w-auto p-0' align='start'>
+        <Calendar
+          initialFocus
+          captionLayout='dropdown'
+          mode='range'
+          selected={{
+            from: dateFrom,
+            to: dateTo,
+          }}
+          onSelect={(date) => onChange(date)}
+          fromYear={2020}
+          toYear={2025}
+        />
+      </PopoverContent>
+    </Popover>
+  )
+}
