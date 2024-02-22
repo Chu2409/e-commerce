@@ -172,12 +172,14 @@ export const getOrders = async (filters?: IOrdersFilters): Promise<Order[]> => {
         payMethod: filters?.payMethod,
         customerId: filters?.customerId,
       },
+      take: filters?.take || 11,
+      skip: filters?.skip || 0,
     })
 
-    return orders.length ? orders : ordersE
+    // return orders.length ? orders : ordersE
+    return orders
   } catch (error) {
     console.log('[ORDERS_GET]', error)
+    return []
   }
-
-  return []
 }

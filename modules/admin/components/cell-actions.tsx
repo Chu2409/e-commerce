@@ -10,13 +10,15 @@ import { AlertModal } from '@/components/alert-modal'
 interface CellActionsProps {
   id: string
   message: string
-  onDelete: (id: string) => Promise<void>
+  errorMessage?: string
+  onDelete: (id: string) => Promise<boolean>
 }
 
 export const CellActions: React.FC<CellActionsProps> = ({
   id,
   message,
   onDelete,
+  errorMessage,
 }) => {
   const router = useRouter()
   const pathName = usePathname()
@@ -27,11 +29,16 @@ export const CellActions: React.FC<CellActionsProps> = ({
   const onDeleteClick = async () => {
     try {
       setIsLoading(true)
-      await onDelete(id)
-      router.refresh()
-      toast.success(message)
+      const deleted = await onDelete(id)
+
+      if (deleted) {
+        router.refresh()
+        toast.success(message)
+      } else {
+        throw new Error()
+      }
     } catch (error) {
-      toast.error('Algo salió mal')
+      toast.error(errorMessage || 'Error al eliminar')
     } finally {
       setIsLoading(false)
       setIsOpen(false)

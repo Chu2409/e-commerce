@@ -1,7 +1,11 @@
+import { CategoriesClient } from '@/modules/admin/routes/categories/components/client'
+
 const CategoriesPage = () => {
   return (
-    <div>
-      <h1>Categories</h1>
+    <div className='flex flex-col'>
+      <div className='p-8 pt-6 flex flex-col flex-1'>
+        <CategoriesClient />
+      </div>
     </div>
   )
 }

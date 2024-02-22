@@ -1,16 +1,31 @@
 'use client'
 
 import { Separator } from '@/components/ui/separator'
-import { DataTableWithFilters } from '@/modules/admin/components/data-table-with-filters'
 import { Header } from '@/modules/admin/components/header'
-import { ordersColumns } from './columns'
-import { getOrders } from '../data/get-orders'
+import { getOrdersColumns } from './columns'
+import { getOrders } from '../actions/get-orders'
 import { OrdersFilters } from './filters/filters'
+import { Customer, Order } from '@prisma/client'
 import { useOrdersFilters } from '../store/filters'
-import { Customer } from '@prisma/client'
+import { useEffect, useState } from 'react'
+import { DataTable } from '@/modules/admin/components/data-table'
 
 export const OrdersClient = ({ customers }: { customers: Customer[] }) => {
+  const [data, setData] = useState<Order[]>([])
+
   const filters = useOrdersFilters((state) => state.filters)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getOrders(filters)
+      setData(data)
+      console.log(filters)
+    }
+
+    fetchData()
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filters])
 
   return (
     <div>
@@ -24,11 +39,11 @@ export const OrdersClient = ({ customers }: { customers: Customer[] }) => {
 
       <OrdersFilters customers={customers} />
 
-      <DataTableWithFilters
-        columns={ordersColumns}
-        filters={filters}
-        getData={getOrders}
+      <DataTable
+        columns={getOrdersColumns(customers)}
+        data={data}
         visibility
+        keySearch='s'
       />
     </div>
   )

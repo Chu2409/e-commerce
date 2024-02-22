@@ -15,33 +15,33 @@ interface FiltersState {
   clearFilters: () => void
 }
 
-export const useOrdersFilters = create<FiltersState>((set) => ({
-  filters: {
-    dateFrom: undefined,
-    dateTo: undefined,
-    state: undefined,
-    payMethod: undefined,
-    customerId: undefined,
-  },
+const initialFilters: IOrdersFilters = {
+  dateFrom: undefined,
+  dateTo: undefined,
+  state: undefined,
+  payMethod: undefined,
+  customerId: undefined,
+  take: 11,
+  skip: 0,
+}
 
-  setFilter: ({ key, value }) => {
-    set((state) => ({
-      filters: {
-        ...state.filters,
-        [key]: value,
-      },
-    }))
-  },
+export const useOrdersFilters = create<FiltersState>((set, get) => {
+  return {
+    filters: initialFilters,
 
-  clearFilters: () => {
-    set(() => ({
-      filters: {
-        dateFrom: undefined,
-        dateTo: undefined,
-        state: undefined,
-        payMethod: undefined,
-        customerId: undefined,
-      },
-    }))
-  },
-}))
+    setFilter: ({ key, value }) => {
+      set((state) => ({
+        filters: {
+          ...state.filters,
+          [key]: value,
+        },
+      }))
+    },
+
+    clearFilters: () => {
+      set(() => ({
+        filters: initialFilters,
+      }))
+    },
+  }
+})

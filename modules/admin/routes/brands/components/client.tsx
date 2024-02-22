@@ -1,7 +1,7 @@
 import { Separator } from '@/components/ui/separator'
 import { Header } from '@/modules/admin/components/header'
 import { brandsColumns } from './columns'
-import { getBrands } from '../data/get-brands'
+import { getBrands } from '../actions/get-brands'
 import { DataTable } from '@/modules/admin/components/data-table'
 
 export const BrandsClient = async () => {

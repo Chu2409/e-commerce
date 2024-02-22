@@ -6,4 +6,6 @@ export interface IOrdersFilters {
   state?: ORDER_STATE
   payMethod?: PAY_METHOD
   customerId?: string
+  take: number
+  skip: number
 }

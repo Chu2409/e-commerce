@@ -31,6 +31,7 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { cn } from '@/lib/utils'
 import { Input } from '@/components/ui/input'
+import { useOrdersFilters } from '../routes/orders/store/filters'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -51,6 +52,9 @@ export const DataTable = <TData, TValue>({
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
 
+  const skip = useOrdersFilters((state) => state.filters.skip)
+  const setFilter = useOrdersFilters((state) => state.setFilter)
+
   const table = useReactTable({
     data,
     columns,
@@ -70,22 +74,27 @@ export const DataTable = <TData, TValue>({
 
   return (
     <div>
-      <div className='flex items-center py-4'>
-        <div className={cn('flex items-center py-4', search ? '' : 'hidden')}>
-          <Input
-            placeholder='Filtrar...'
-            value={
-              (table.getColumn(keySearch!)?.getFilterValue() as string) ?? ''
-            }
-            onChange={(event) =>
-              table.getColumn(keySearch!)?.setFilterValue(event.target.value)
-            }
-            className='w-[200px]'
-          />
-        </div>
+      <div className='flex items-center py-4 justify-between'>
+        {search ? (
+          <div className={cn('flex items-center py-4')}>
+            <Input
+              placeholder='Filtrar...'
+              value={
+                (table.getColumn(keySearch!)?.getFilterValue() as string) ?? ''
+              }
+              onChange={(event) =>
+                table.getColumn(keySearch!)?.setFilterValue(event.target.value)
+              }
+              className='w-[300px]'
+            />
+          </div>
+        ) : null}
 
         <div
-          className={cn('flex items-center py-4', visibility ? '' : 'hidden')}
+          className={cn(
+            'flex items-center py-4 self-end ml-auto',
+            visibility ? '' : 'hidden',
+          )}
         >
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -173,16 +182,16 @@ export const DataTable = <TData, TValue>({
         <Button
           variant='outline'
           size='sm'
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
+          onClick={() => setFilter({ key: 'skip', value: skip - 10 })}
+          disabled={skip === 0}
         >
           Previous
         </Button>
         <Button
           variant='outline'
           size='sm'
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
+          onClick={() => setFilter({ key: 'skip', value: skip + 10 })}
+          disabled={data.length !== 11}
         >
           Next
         </Button>

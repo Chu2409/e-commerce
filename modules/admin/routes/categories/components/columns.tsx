@@ -5,9 +5,9 @@ import { ColumnDef } from '@tanstack/react-table'
 import { Button } from '@/components/ui/button'
 import { ArrowUpDown } from 'lucide-react'
 import { CellActions } from '@/modules/admin/components/cell-actions'
-import { deleteBrand } from '../actions/delete-brand'
+import { deleteCategory } from '../actions/delete-category'
 
-export const brandsColumns: ColumnDef<Brand>[] = [
+export const categoriesColumns: ColumnDef<Brand>[] = [
   {
     accessorKey: 'name',
     header: ({ column }) => {
@@ -48,7 +48,7 @@ export const brandsColumns: ColumnDef<Brand>[] = [
       <CellActions
         id={row.original.id}
         message='Marca eliminada'
-        onDelete={deleteBrand}
+        onDelete={deleteCategory}
         errorMessage='Elimine los productos asociados a esta marca primero'
       />
     ),
