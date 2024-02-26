@@ -90,10 +90,9 @@ model Color {
 }
 
 model Size {
-  id     String  @id @default(uuid()) @map("id")
-  name   String  @map("name")
-  value  String  @map("value")
-  active Boolean @default(true) @map("active")
+  id    String @id @default(uuid()) @map("id")
+  name  String @map("name")
+  value String @map("value")
 
   sizes SizeByCategory[]
 

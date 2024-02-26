@@ -2,18 +2,25 @@
 
 import { Separator } from '@/components/ui/separator'
 import { Header } from '@/modules/admin/components/header'
-import { getOrdersColumns } from './columns'
+import { ordersColumns } from './columns'
 import { getOrders } from '../actions/get-orders'
 import { OrdersFilters } from './filters/filters'
-import { Customer, Order } from '@prisma/client'
+import { Customer } from '@prisma/client'
 import { useOrdersFilters } from '../store/filters'
 import { useEffect, useState } from 'react'
 import { DataTable } from '@/modules/admin/components/data-table'
+import { IFullOrder } from '../interfaces/full-order'
 
 export const OrdersClient = ({ customers }: { customers: Customer[] }) => {
-  const [data, setData] = useState<Order[]>([])
+  const [data, setData] = useState<IFullOrder[]>([])
 
   const filters = useOrdersFilters((state) => state.filters)
+  const setFilter = useOrdersFilters((state) => state.setFilter)
+
+  const skip = useOrdersFilters((state) => state.filters.skip)
+  const setSkip = (skip: number) => {
+    setFilter({ key: 'skip', value: skip })
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,10 +47,13 @@ export const OrdersClient = ({ customers }: { customers: Customer[] }) => {
       <OrdersFilters customers={customers} />
 
       <DataTable
-        columns={getOrdersColumns(customers)}
+        columns={ordersColumns}
         data={data}
         visibility
-        keySearch='s'
+        filters={{
+          skip,
+          setSkip,
+        }}
       />
     </div>
   )

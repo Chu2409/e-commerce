@@ -1,31 +1,28 @@
-import { IOrdersFilters } from '../interfaces/order-filters'
 import { create } from 'zustand'
+import { ISizesFilters } from '../interfaces/sizes-filters'
 
 interface FiltersState {
-  filters: IOrdersFilters
+  filters: ISizesFilters
 
   setFilter: ({
     key,
     value,
   }: {
-    key: keyof IOrdersFilters
-    value: IOrdersFilters[keyof IOrdersFilters]
+    key: keyof ISizesFilters
+    value: ISizesFilters[keyof ISizesFilters]
   }) => void
 
   clearFilters: () => void
 }
 
-const initialFilters: IOrdersFilters = {
-  dateFrom: undefined,
-  dateTo: undefined,
-  state: undefined,
-  payMethod: undefined,
-  customerId: undefined,
+const initialFilters: ISizesFilters = {
+  categoryId: undefined,
+  search: undefined,
   take: 11,
   skip: 0,
 }
 
-export const useOrdersFilters = create<FiltersState>((set) => {
+export const useSizesFilters = create<FiltersState>((set) => {
   return {
     filters: initialFilters,
 

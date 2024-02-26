@@ -1,13 +1,12 @@
 'use client'
 
-import { Brand } from '@prisma/client'
+import { Category, Size, SizeByCategory } from '@prisma/client'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -20,35 +19,56 @@ import { Trash } from 'lucide-react'
 import { useState } from 'react'
 import { Separator } from '@/components/ui/separator'
 import { Input } from '@/components/ui/input'
-import { Checkbox } from '@/components/ui/checkbox'
-import { deleteBrand } from '../actions/delete-brand'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
-import { createBrand } from '../actions/create-brand'
-import { updateBrand } from '../actions/update-brand'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { deleteSize } from '../actions/delete-size'
+import { updateSize } from '../actions/update-size'
+import { createSize } from '../actions/create-size'
 
 const formSchema = z.object({
   name: z
     .string()
     .min(3, { message: 'Mínimo 3 caracteres' })
     .max(100, { message: 'Máximo 100 caracteres' }),
-  active: z.boolean().default(true),
+  value: z.string().min(1, { message: 'Mínimo 1 caracter' }).max(100, {
+    message: 'Máximo 100 caracteres',
+  }),
+  categoryId: z.string().min(1, { message: 'Selecciona una categoría' }),
 })
 
-interface BrandFormProps {
-  initialData: Brand | null
+interface SizeFormProps {
+  initialData:
+    | (SizeByCategory & {
+        size: Size
+        category: Category
+      })
+    | null
+  categories: Category[]
 }
 
-export const BrandForm: React.FC<BrandFormProps> = ({ initialData }) => {
+export const SizeForm: React.FC<SizeFormProps> = ({
+  initialData,
+  categories,
+}) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData
       ? {
-          ...initialData,
+          name: initialData.size.name,
+          value: initialData.size.value,
+          categoryId: initialData.category.id,
         }
       : {
           name: '',
-          active: true,
+          value: '',
+          categoryId: '',
         },
   })
 
@@ -57,25 +77,29 @@ export const BrandForm: React.FC<BrandFormProps> = ({ initialData }) => {
 
   const router = useRouter()
 
-  const title = initialData ? 'Actualizar marca' : 'Nueva marca'
-  const description = initialData ? 'Actualizar marca' : 'Agregar nueva marca'
-  const toastMessage = initialData ? 'Marca actualizada' : 'Marca creada'
+  const title = initialData ? 'Actualizar talla/tamaño' : 'Nueva talla/tamaño'
+  const description = initialData
+    ? 'Actualizar talla/tamaño'
+    : 'Agregar nueva talla/tamaño'
+  const toastMessage = initialData
+    ? 'Talla/Tamaño actualizada'
+    : 'Talla/Tamaño creada'
   const action = initialData ? 'Actualizar' : 'Crear'
 
   const onsubmit = async (data: z.infer<typeof formSchema>) => {
     try {
       let result
       if (initialData) {
-        result = await updateBrand(initialData.id, data)
+        result = await updateSize(initialData.id, data)
       } else {
-        result = await createBrand(data)
+        result = await createSize(data)
       }
 
       if (!result) {
         throw new Error()
       }
 
-      router.push('/admin/brands')
+      router.push('/admin/sizes')
       router.refresh()
       toast.success(toastMessage)
     } catch (error) {
@@ -88,17 +112,17 @@ export const BrandForm: React.FC<BrandFormProps> = ({ initialData }) => {
   const onDelete = async () => {
     try {
       setIsLoading(true)
-      const deleted = await deleteBrand(initialData?.id!)
+      const deleted = await deleteSize(initialData?.id!)
 
       if (!deleted) {
         throw new Error()
       }
 
-      router.push('/admin/brands')
+      router.push('/admin/sizes')
       router.refresh()
-      toast.success('Marca eliminada')
+      toast.success('Talla/Marca eliminada')
     } catch (error) {
-      toast.error('Elimine los productos asociados a esta marca primero')
+      toast.error('Elimine los productos asociados a esta talla/marca primero')
     } finally {
       setIsLoading(false)
       setIsOpen(false)
@@ -138,6 +162,41 @@ export const BrandForm: React.FC<BrandFormProps> = ({ initialData }) => {
           <div className='grid grid-cols-3 gap-8 max-lg:grid-cols-2 max-md:grid-cols-1'>
             <FormField
               control={form.control}
+              name='categoryId'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Categoría</FormLabel>
+                  <Select
+                    disabled={isLoading || initialData !== null}
+                    // eslint-disable-next-line react/jsx-handler-names
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          defaultValue={field.value}
+                          placeholder='Selecciona una categoría'
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+
+                    <SelectContent>
+                      {categories.map((category) => (
+                        <SelectItem key={category.id} value={category.id}>
+                          {category.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
               name='name'
               render={({ field }) => (
                 <FormItem>
@@ -145,7 +204,7 @@ export const BrandForm: React.FC<BrandFormProps> = ({ initialData }) => {
                   <FormControl>
                     <Input
                       disabled={isLoading}
-                      placeholder='Nombre de la marca'
+                      placeholder='Nombre de la talla/tamaño'
                       {...field}
                     />
                   </FormControl>
@@ -156,23 +215,18 @@ export const BrandForm: React.FC<BrandFormProps> = ({ initialData }) => {
 
             <FormField
               control={form.control}
-              name='active'
+              name='value'
               render={({ field }) => (
-                <FormItem className='flex flex-row items-center space-x-3 space-y-0 rounded-md border p-4'>
+                <FormItem>
+                  <FormLabel>Valor</FormLabel>
                   <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      // eslint-disable-next-line react/jsx-handler-names
-                      onCheckedChange={field.onChange}
+                    <Input
+                      disabled={isLoading}
+                      placeholder='Valor de la talla/tamaño'
+                      {...field}
                     />
                   </FormControl>
-
-                  <div className='space-y-1 leading-none'>
-                    <FormLabel>Activo</FormLabel>
-                    <FormDescription>
-                      Esta marca estará disponible para su uso
-                    </FormDescription>
-                  </div>
+                  <FormMessage />
                 </FormItem>
               )}
             />

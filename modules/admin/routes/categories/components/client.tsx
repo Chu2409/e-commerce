@@ -10,8 +10,8 @@ export const CategoriesClient = async () => {
   return (
     <div>
       <Header
-        title='Categorias'
-        description='Administra tus caregorías '
+        title='Categorías'
+        description='Administra tus categorías'
         buttonLabel='Nueva Categoría'
       />
 
@@ -20,7 +20,6 @@ export const CategoriesClient = async () => {
       <DataTable
         columns={categoriesColumns}
         data={categories}
-        search
         keySearch='name'
       />
     </div>

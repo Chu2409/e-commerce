@@ -31,29 +31,28 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { cn } from '@/lib/utils'
 import { Input } from '@/components/ui/input'
-import { useOrdersFilters } from '../routes/orders/store/filters'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   visibility?: boolean
-  search?: boolean
   keySearch?: string
+  filters?: {
+    skip: number
+    setSkip: (skip: number) => void
+  }
 }
 
 export const DataTable = <TData, TValue>({
   columns,
   data,
   visibility,
-  search,
   keySearch,
+  filters,
 }: DataTableProps<TData, TValue>) => {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-
-  const skip = useOrdersFilters((state) => state.filters.skip)
-  const setFilter = useOrdersFilters((state) => state.setFilter)
 
   const table = useReactTable({
     data,
@@ -75,16 +74,16 @@ export const DataTable = <TData, TValue>({
   return (
     <div>
       <div className='flex items-center py-4 justify-between'>
-        {search ? (
+        {keySearch ? (
           <div className={cn('flex items-center py-4')}>
             <Input
               placeholder='Filtrar...'
               value={
-                (table.getColumn(keySearch!)?.getFilterValue() as string) ?? ''
+                (table.getColumn(keySearch)?.getFilterValue() as string) ?? ''
               }
-              onChange={(event) =>
-                table.getColumn(keySearch!)?.setFilterValue(event.target.value)
-              }
+              onChange={(event) => {
+                table.getColumn(keySearch)?.setFilterValue(event.target.value)
+              }}
               className='w-[300px]'
             />
           </div>
@@ -117,7 +116,8 @@ export const DataTable = <TData, TValue>({
                       }
                       onSelect={(e) => e.preventDefault()}
                     >
-                      {column.id}
+                      {column.columnDef.meta?.title ??
+                        (column.columnDef.header as string)}
                     </DropdownMenuCheckboxItem>
                   )
                 })}
@@ -133,7 +133,7 @@ export const DataTable = <TData, TValue>({
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id} className='font-bold pl-0'>
+                    <TableHead key={header.id} className='font-bold'>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -182,18 +182,23 @@ export const DataTable = <TData, TValue>({
         <Button
           variant='outline'
           size='sm'
-          onClick={() => setFilter({ key: 'skip', value: skip - 10 })}
-          disabled={skip === 0}
+          onClick={() => {
+            filters ? filters.setSkip(filters.skip - 10) : table.previousPage()
+          }}
+          disabled={filters ? filters.skip === 0 : !table.getCanPreviousPage()}
         >
-          Previous
+          Anterior
         </Button>
         <Button
           variant='outline'
           size='sm'
-          onClick={() => setFilter({ key: 'skip', value: skip + 10 })}
-          disabled={data.length !== 11}
+          onClick={() => {
+            filters ? filters.setSkip(filters.skip + 10) : table.nextPage()
+          }}
+          // disabled={data.length !== 11}
+          disabled={filters ? data.length !== 11 : !table.getCanNextPage()}
         >
-          Next
+          Siguiente
         </Button>
       </div>
     </div>

@@ -15,7 +15,7 @@ export const categoriesColumns: ColumnDef<Brand>[] = [
         <Button
           variant='ghost'
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          className='font-bold ml-0'
+          className='font-bold m-0 p-0'
         >
           Nombre
           <ArrowUpDown className='ml-2 h-4 w-4' />
@@ -30,7 +30,7 @@ export const categoriesColumns: ColumnDef<Brand>[] = [
         <Button
           variant='ghost'
           onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          className='font-bold'
+          className='font-bold m-0 p-0'
         >
           Estado
           <ArrowUpDown className='ml-2 h-4 w-4' />

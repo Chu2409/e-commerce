@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Edit, Trash } from 'lucide-react'
 import toast from 'react-hot-toast'
@@ -11,6 +11,7 @@ interface CellActionsProps {
   id: string
   message: string
   errorMessage?: string
+  refresh?: boolean
   onDelete: (id: string) => Promise<boolean>
 }
 
@@ -18,6 +19,7 @@ export const CellActions: React.FC<CellActionsProps> = ({
   id,
   message,
   onDelete,
+  refresh,
   errorMessage,
 }) => {
   const router = useRouter()
@@ -30,10 +32,14 @@ export const CellActions: React.FC<CellActionsProps> = ({
     try {
       setIsLoading(true)
       const deleted = await onDelete(id)
+      console.log(deleted)
 
       if (deleted) {
-        router.refresh()
         toast.success(message)
+        if (refresh) {
+          window.location.reload()
+        }
+        router.refresh()
       } else {
         throw new Error()
       }

@@ -17,12 +17,7 @@ export const BrandsClient = async () => {
 
       <Separator className='my-4' />
 
-      <DataTable
-        columns={brandsColumns}
-        data={brands}
-        search
-        keySearch='name'
-      />
+      <DataTable columns={brandsColumns} data={brands} keySearch='name' />
     </div>
   )
 }
