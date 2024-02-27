@@ -14,18 +14,16 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
-import { Customer } from '@prisma/client'
+import { Brand } from '@prisma/client'
 import { CaretSortIcon } from '@radix-ui/react-icons'
 import { CheckIcon } from 'lucide-react'
 import { useState } from 'react'
-import { useOrdersFilters } from '../../store/filters'
+import { useProductsFilters } from '../../store/filters'
 
-export const CustomerFilter = ({ customers }: { customers: Customer[] }) => {
+export const BrandFilter = ({ brands }: { brands: Brand[] }) => {
   const [open, setOpen] = useState(false)
-  const value = useOrdersFilters((state) => state.filters.customerId)
-  const setValue = useOrdersFilters((state) => state.setFilter)
-
-  const customerSelected = customers.find((customer) => customer.id === value)
+  const value = useProductsFilters((state) => state.filters.brandId)
+  const setValue = useProductsFilters((state) => state.setFilter)
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -36,41 +34,38 @@ export const CustomerFilter = ({ customers }: { customers: Customer[] }) => {
           aria-expanded={open}
           className='w-[300px] justify-between font-light'
         >
-          {customerSelected
-            ? customerSelected.firstName + ' ' + customerSelected.lastName
-            : 'Selecciona un cliente...'}
+          {value
+            ? brands.find((brand) => brand.id === value)?.name
+            : 'Selecciona una marca...'}
           <CaretSortIcon className='h-4 w-4 shrink-0 opacity-50' />
         </Button>
       </PopoverTrigger>
 
       <PopoverContent className='w-[300px] p-0'>
         <Command>
-          <CommandInput
-            placeholder='Selecciona un cliente...'
-            className='h-9'
-          />
+          <CommandInput placeholder='Selecciona una marca...' className='h-9' />
 
-          <CommandEmpty>Cliente no encontrado</CommandEmpty>
+          <CommandEmpty>Marca no encontrado</CommandEmpty>
 
           <CommandGroup>
-            {customers.map((customer) => (
+            {brands.map((brand) => (
               <CommandItem
                 className='cursor-pointer'
-                key={customer.id}
-                value={customer.firstName + customer.lastName}
+                key={brand.id}
+                value={brand.name}
                 onSelect={() => {
-                  if (customer.id === value) {
-                    setValue({ key: 'customerId', value: undefined })
+                  if (brand.id === value) {
+                    setValue({ key: 'brandId', value: undefined })
                   } else {
-                    setValue({ key: 'customerId', value: customer.id })
+                    setValue({ key: 'brandId', value: brand.id })
                   }
                 }}
               >
-                {customer.firstName} {customer.lastName}
+                {brand.name}
                 <CheckIcon
                   className={cn(
                     'ml-auto h-4 w-4',
-                    value === customer.id ? 'opacity-100' : 'opacity-0',
+                    value === brand.id ? 'opacity-100' : 'opacity-0',
                   )}
                 />
               </CommandItem>

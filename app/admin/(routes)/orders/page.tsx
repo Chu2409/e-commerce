@@ -1,6 +1,8 @@
 import { getCustomers } from '@/modules/admin/routes/customers/actions/get-customers'
 import { OrdersClient } from '@/modules/admin/routes/orders/components/client'
 
+export const revalidate = 0
+
 const OrdersPage = async () => {
   const customers = await getCustomers()
 

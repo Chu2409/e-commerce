@@ -29,8 +29,4 @@ export const adminRoutes: IRoute[] = [
     href: '/admin/customers',
     label: 'Clientes',
   },
-  {
-    href: '/admin/users',
-    label: 'Usuarios',
-  },
 ]

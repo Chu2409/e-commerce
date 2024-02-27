@@ -14,18 +14,16 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
-import { Customer } from '@prisma/client'
+import { Category } from '@prisma/client'
 import { CaretSortIcon } from '@radix-ui/react-icons'
 import { CheckIcon } from 'lucide-react'
 import { useState } from 'react'
-import { useOrdersFilters } from '../../store/filters'
+import { useProductsFilters } from '../../store/filters'
 
-export const CustomerFilter = ({ customers }: { customers: Customer[] }) => {
+export const CategoryFilter = ({ categories }: { categories: Category[] }) => {
   const [open, setOpen] = useState(false)
-  const value = useOrdersFilters((state) => state.filters.customerId)
-  const setValue = useOrdersFilters((state) => state.setFilter)
-
-  const customerSelected = customers.find((customer) => customer.id === value)
+  const value = useProductsFilters((state) => state.filters.categoryId)
+  const setValue = useProductsFilters((state) => state.setFilter)
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -36,9 +34,9 @@ export const CustomerFilter = ({ customers }: { customers: Customer[] }) => {
           aria-expanded={open}
           className='w-[300px] justify-between font-light'
         >
-          {customerSelected
-            ? customerSelected.firstName + ' ' + customerSelected.lastName
-            : 'Selecciona un cliente...'}
+          {value
+            ? categories.find((category) => category.id === value)?.name
+            : 'Selecciona una categoría...'}
           <CaretSortIcon className='h-4 w-4 shrink-0 opacity-50' />
         </Button>
       </PopoverTrigger>
@@ -46,31 +44,31 @@ export const CustomerFilter = ({ customers }: { customers: Customer[] }) => {
       <PopoverContent className='w-[300px] p-0'>
         <Command>
           <CommandInput
-            placeholder='Selecciona un cliente...'
+            placeholder='Selecciona una categoría...'
             className='h-9'
           />
 
-          <CommandEmpty>Cliente no encontrado</CommandEmpty>
+          <CommandEmpty>Categoría no encontrada</CommandEmpty>
 
           <CommandGroup>
-            {customers.map((customer) => (
+            {categories.map((category) => (
               <CommandItem
                 className='cursor-pointer'
-                key={customer.id}
-                value={customer.firstName + customer.lastName}
+                key={category.id}
+                value={category.name}
                 onSelect={() => {
-                  if (customer.id === value) {
-                    setValue({ key: 'customerId', value: undefined })
+                  if (category.id === value) {
+                    setValue({ key: 'categoryId', value: undefined })
                   } else {
-                    setValue({ key: 'customerId', value: customer.id })
+                    setValue({ key: 'categoryId', value: category.id })
                   }
                 }}
               >
-                {customer.firstName} {customer.lastName}
+                {category.name}
                 <CheckIcon
                   className={cn(
                     'ml-auto h-4 w-4',
-                    value === customer.id ? 'opacity-100' : 'opacity-0',
+                    value === category.id ? 'opacity-100' : 'opacity-0',
                   )}
                 />
               </CommandItem>

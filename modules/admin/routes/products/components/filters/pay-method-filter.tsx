@@ -14,18 +14,18 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
-import { Customer } from '@prisma/client'
+import { PAY_METHOD } from '@prisma/client'
 import { CaretSortIcon } from '@radix-ui/react-icons'
 import { CheckIcon } from 'lucide-react'
 import { useState } from 'react'
 import { useOrdersFilters } from '../../store/filters'
 
-export const CustomerFilter = ({ customers }: { customers: Customer[] }) => {
-  const [open, setOpen] = useState(false)
-  const value = useOrdersFilters((state) => state.filters.customerId)
-  const setValue = useOrdersFilters((state) => state.setFilter)
+const payMethods = Object.values(PAY_METHOD)
 
-  const customerSelected = customers.find((customer) => customer.id === value)
+export const PayMethodFilter = () => {
+  const [open, setOpen] = useState(false)
+  const value = useOrdersFilters((state) => state.filters.payMethod)
+  const setValue = useOrdersFilters((state) => state.setFilter)
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -36,41 +36,44 @@ export const CustomerFilter = ({ customers }: { customers: Customer[] }) => {
           aria-expanded={open}
           className='w-[300px] justify-between font-light'
         >
-          {customerSelected
-            ? customerSelected.firstName + ' ' + customerSelected.lastName
-            : 'Selecciona un cliente...'}
-          <CaretSortIcon className='h-4 w-4 shrink-0 opacity-50' />
+          {value
+            ? payMethods.find((state) => state === value.toUpperCase())
+            : 'Selecciona un método de pago...'}
+          <CaretSortIcon className='ml-2 h-4 w-4 shrink-0 opacity-50' />
         </Button>
       </PopoverTrigger>
 
       <PopoverContent className='w-[300px] p-0'>
         <Command>
-          <CommandInput
-            placeholder='Selecciona un cliente...'
-            className='h-9'
-          />
+          <CommandInput placeholder='Selecciona un estado...' className='h-9' />
 
-          <CommandEmpty>Cliente no encontrado</CommandEmpty>
+          <CommandEmpty>Método de pago no encontrado</CommandEmpty>
 
           <CommandGroup>
-            {customers.map((customer) => (
+            {payMethods.map((state) => (
               <CommandItem
                 className='cursor-pointer'
-                key={customer.id}
-                value={customer.firstName + customer.lastName}
-                onSelect={() => {
-                  if (customer.id === value) {
-                    setValue({ key: 'customerId', value: undefined })
+                key={state}
+                value={state}
+                onSelect={(currentValue) => {
+                  if (currentValue.toUpperCase() === value) {
+                    setValue({ key: 'payMethod', value: undefined })
                   } else {
-                    setValue({ key: 'customerId', value: customer.id })
+                    setValue({
+                      key: 'payMethod',
+                      value: currentValue.toUpperCase() as PAY_METHOD,
+                    })
                   }
+                  setOpen(false)
                 }}
               >
-                {customer.firstName} {customer.lastName}
+                {state}
                 <CheckIcon
                   className={cn(
                     'ml-auto h-4 w-4',
-                    value === customer.id ? 'opacity-100' : 'opacity-0',
+                    value?.toUpperCase() === state
+                      ? 'opacity-100'
+                      : 'opacity-0',
                   )}
                 />
               </CommandItem>
