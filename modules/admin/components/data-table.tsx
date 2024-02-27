@@ -116,7 +116,7 @@ export const DataTable = <TData, TValue>({
                       }
                       onSelect={(e) => e.preventDefault()}
                     >
-                      {column.columnDef.meta?.title ??
+                      {(column.columnDef.meta as any)?.title ??
                         (column.columnDef.header as string)}
                     </DropdownMenuCheckboxItem>
                   )

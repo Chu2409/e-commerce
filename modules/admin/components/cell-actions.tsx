@@ -32,7 +32,6 @@ export const CellActions: React.FC<CellActionsProps> = ({
     try {
       setIsLoading(true)
       const deleted = await onDelete(id)
-      console.log(deleted)
 
       if (deleted) {
         toast.success(message)
