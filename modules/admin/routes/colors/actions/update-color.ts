@@ -6,7 +6,7 @@ import { Color } from '@prisma/client'
 export const updateColor = async (
   id: string,
   data: Partial<Pick<Color, 'name' | 'value' | 'active'>>,
-) => {
+): Promise<Color | null> => {
   try {
     const color = await prismadb.color.update({
       where: {

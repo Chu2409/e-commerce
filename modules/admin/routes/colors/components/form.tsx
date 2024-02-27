@@ -59,7 +59,7 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
         }
       : {
           name: '',
-          value: '#1EC9C9',
+          value: '#1ec9c9',
           active: true,
         },
   })

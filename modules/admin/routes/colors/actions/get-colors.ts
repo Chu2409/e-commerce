@@ -1,5 +1,3 @@
-'use server'
-
 import prismadb from '@/lib/prismadb'
 import { Color } from '@prisma/client'
 

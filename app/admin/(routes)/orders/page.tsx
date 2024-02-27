@@ -1,4 +1,4 @@
-import { getCustomers } from '@/modules/admin/routes/customers/data/get-customers'
+import { getCustomers } from '@/modules/admin/routes/customers/actions/get-customers'
 import { OrdersClient } from '@/modules/admin/routes/orders/components/client'
 
 const OrdersPage = async () => {

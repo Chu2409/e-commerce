@@ -1,12 +1,10 @@
 import { Separator } from '@/components/ui/separator'
 import { Header } from '@/modules/admin/components/header'
 import { DataTable } from '@/modules/admin/components/data-table'
-import { getColors } from '../actions/get-colors'
 import { colorsColumns } from './columns'
+import { Color } from '@prisma/client'
 
-export const ColorsClient = async () => {
-  const colors = await getColors()
-
+export const ColorsClient = ({ colors }: { colors: Color[] }) => {
   return (
     <div>
       <Header

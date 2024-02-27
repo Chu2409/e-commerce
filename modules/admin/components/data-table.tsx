@@ -32,6 +32,8 @@ import {
 import { cn } from '@/lib/utils'
 import { Input } from '@/components/ui/input'
 
+export const revalidate = 0
+
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]

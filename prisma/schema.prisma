@@ -24,10 +24,10 @@ model User {
 
 model Customer {
   id          String  @id @default(uuid()) @map("id")
-  dni         String? @unique @map("dni")
+  dni         String  @unique @map("dni")
   firstName   String  @map("first_name")
   lastName    String  @map("last_name")
-  phoneNumber String? @map("phone_number")
+  phoneNumber String  @map("phone_number")
   city        String? @map("city")
   email       String  @unique @map("email")
   password    String  @map("password")
@@ -77,8 +77,8 @@ enum PAY_METHOD {
 
 model Color {
   id     String  @id @default(uuid()) @map("id")
-  name   String  @map("name")
-  value  String  @map("value")
+  name   String  @unique @map("name")
+  value  String  @unique @map("value")
   active Boolean @default(true) @map("active")
 
   products Product[]
