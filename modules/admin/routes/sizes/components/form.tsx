@@ -1,6 +1,6 @@
 'use client'
 
-import { Category, Size, SizeByCategory } from '@prisma/client'
+import { Category } from '@prisma/client'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -31,6 +31,7 @@ import {
 import { deleteSize } from '../actions/delete-size'
 import { updateSize } from '../actions/update-size'
 import { createSize } from '../actions/create-size'
+import { IFullSize } from '../interfaces/full-size'
 
 const formSchema = z.object({
   name: z
@@ -44,12 +45,7 @@ const formSchema = z.object({
 })
 
 interface SizeFormProps {
-  initialData:
-    | (SizeByCategory & {
-        size: Size
-        category: Category
-      })
-    | null
+  initialData: IFullSize | null
   categories: Category[]
 }
 
@@ -184,7 +180,11 @@ export const SizeForm: React.FC<SizeFormProps> = ({
 
                     <SelectContent>
                       {categories.map((category) => (
-                        <SelectItem key={category.id} value={category.id}>
+                        <SelectItem
+                          key={category.id}
+                          value={category.id}
+                          className='cursor-pointer'
+                        >
                           {category.name}
                         </SelectItem>
                       ))}

@@ -2,13 +2,13 @@
 
 import { Separator } from '@/components/ui/separator'
 import { Header } from '@/modules/admin/components/header'
-import { getProducts } from '../actions/get-products'
 import { Brand, Category, Color } from '@prisma/client'
-import { useProductsFilters } from '../store/filters'
+import { ProductsFilters } from './filters/filters'
 import { useEffect, useState } from 'react'
 import { IFullProduct } from '../interfaces/full-product'
-import { IFullSize } from '../../sizes/interfaces/full-size'
-import { ProductsFilters } from './filters/filters'
+import { useProductsFilters } from '../store/filters'
+import { getProducts } from '../actions/get-products'
+import { ProductsList } from './products-list'
 
 export const ProductsClient = ({
   brands,
@@ -17,7 +17,7 @@ export const ProductsClient = ({
 }: {
   brands: Brand[]
   categories: Category[]
-  color: Color[]
+  colors: Color[]
 }) => {
   const [data, setData] = useState<IFullProduct[]>([])
 
@@ -53,6 +53,14 @@ export const ProductsClient = ({
         brands={brands}
         categories={categories}
         colors={colors}
+      />
+
+      <ProductsList
+        products={data}
+        filters={{
+          skip,
+          setSkip,
+        }}
       />
     </div>
   )

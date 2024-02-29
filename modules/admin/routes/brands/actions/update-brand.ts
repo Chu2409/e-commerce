@@ -5,7 +5,7 @@ import { Brand } from '@prisma/client'
 
 export const updateBrand = async (
   id: string,
-  data: Partial<Pick<Brand, 'name' | 'active'>>,
+  data: Pick<Brand, 'name' | 'active'>,
 ) => {
   try {
     const brand = await prismadb.brand.update({

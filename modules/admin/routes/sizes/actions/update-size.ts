@@ -5,7 +5,7 @@ import { Size } from '@prisma/client'
 
 export const updateSize = async (
   id: string,
-  data: Partial<Pick<Size, 'name' | 'value'>>,
+  data: Pick<Size, 'name' | 'value'>,
 ) => {
   try {
     const sizeSelected = await prismadb.size.findFirst({

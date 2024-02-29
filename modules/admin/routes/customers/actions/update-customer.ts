@@ -6,7 +6,7 @@ import { CreateCustomerProps } from './create-customer'
 
 export const updateCustomer = async (
   id: string,
-  data: Partial<CreateCustomerProps>,
+  data: CreateCustomerProps,
 ): Promise<Customer | null> => {
   try {
     const customer = await prismadb.customer.update({

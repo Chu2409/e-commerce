@@ -5,7 +5,7 @@ import { Category } from '@prisma/client'
 
 export const updateCategory = async (
   id: string,
-  data: Partial<Pick<Category, 'name' | 'active'>>,
+  data: Pick<Category, 'name' | 'active'>,
 ) => {
   try {
     const category = await prismadb.category.update({

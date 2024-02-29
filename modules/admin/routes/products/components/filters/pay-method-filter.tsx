@@ -18,7 +18,7 @@ import { PAY_METHOD } from '@prisma/client'
 import { CaretSortIcon } from '@radix-ui/react-icons'
 import { CheckIcon } from 'lucide-react'
 import { useState } from 'react'
-import { useOrdersFilters } from '../../store/filters'
+import { useOrdersFilters } from '../../../orders/store/filters'
 
 const payMethods = Object.values(PAY_METHOD)
 

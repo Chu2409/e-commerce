@@ -17,6 +17,7 @@ export const getProducts = async (
         brandId: filters?.brandId,
         categoryId: filters?.categoryId,
         sizeId: filters?.sizeId,
+        colorId: filters?.colorId,
       },
       include: {
         brand: true,
