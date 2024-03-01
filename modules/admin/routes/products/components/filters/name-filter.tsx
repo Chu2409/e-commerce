@@ -32,7 +32,7 @@ export const NameFilter = () => {
 
   return (
     <Input
-      placeholder='Filtrar...'
+      placeholder='Filtrar Nombre...'
       className='w-[300px]'
       onChange={handleChange}
       value={value}

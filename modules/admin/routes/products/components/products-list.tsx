@@ -13,7 +13,7 @@ interface ProductsListProps {
 export const ProductsList = ({ products, filters }: ProductsListProps) => {
   return (
     <div className='mt-2'>
-      <div className='flex items-center justify-end space-x-2'>
+      <div className='flex items-center justify-end space-x-2 my-2'>
         <Button
           variant='outline'
           size='sm'
@@ -41,7 +41,7 @@ export const ProductsList = ({ products, filters }: ProductsListProps) => {
         </div>
       )}
 
-      <div className='flex flex-wrap gap-x-6 gap-y-4'>
+      <div className='gap-y-8 gap-x-6 grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 max-md:justify-items-center'>
         {products.map((product) => (
           <ProductCard key={product.id} data={product} />
         ))}
