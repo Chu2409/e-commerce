@@ -5,7 +5,7 @@ import { Header } from '@/modules/admin/components/header'
 import { Brand, Category, Color } from '@prisma/client'
 import { ProductsFilters } from './filters/filters'
 import { useEffect, useState } from 'react'
-import { IFullProduct } from '../interfaces/full-product'
+import { IFullProductMaster } from '../interfaces/full-product'
 import { useProductsFilters } from '../store/filters'
 import { getProducts } from '../actions/get-products'
 import { ProductsList } from './products-list'
@@ -19,7 +19,7 @@ export const ProductsClient = ({
   categories: Category[]
   colors: Color[]
 }) => {
-  const [data, setData] = useState<IFullProduct[]>([])
+  const [data, setData] = useState<IFullProductMaster[]>([])
 
   const filters = useProductsFilters((state) => state.filters)
 
@@ -56,7 +56,7 @@ export const ProductsClient = ({
       />
 
       <ProductsList
-        products={data}
+        productsMasters={data}
         filters={{
           skip,
           setSkip,

@@ -1,37 +1,50 @@
 'use server'
 
 import prismadb from '@/lib/prismadb'
-import { IFullProduct } from '../interfaces/full-product'
+import { IFullProductMaster } from '../interfaces/full-product'
 import { IProductsFilters } from '../interfaces/products-filters'
 
 export const getProducts = async (
   filters?: IProductsFilters,
-): Promise<IFullProduct[]> => {
+): Promise<IFullProductMaster[]> => {
   try {
-    const products = await prismadb.product.findMany({
+    const products = await prismadb.productMaster.findMany({
       where: {
         name: {
           contains: filters?.name,
+          mode: 'insensitive',
         },
-        state: filters?.state,
         brandId: filters?.brandId,
         categoryId: filters?.categoryId,
-        sizeId: filters?.sizeId,
-        colorId: filters?.colorId,
+        products: {
+          some: {
+            state: filters?.state,
+            sizeId: filters?.sizeId,
+            colorId: filters?.colorId,
+          },
+        },
       },
       include: {
         brand: true,
         category: true,
-        color: true,
-        size: {
+        products: {
+          where: {
+            state: filters?.state,
+            sizeId: filters?.sizeId,
+            colorId: filters?.colorId,
+          },
           include: {
-            size: true,
-            category: true,
+            color: true,
+            size: {
+              include: {
+                size: true,
+              },
+            },
+            images: true,
           },
         },
-        images: true,
       },
-      take: filters?.take || 11,
+      take: filters?.take || 16,
       skip: filters?.skip || 0,
     })
 

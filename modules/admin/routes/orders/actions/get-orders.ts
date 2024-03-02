@@ -2,11 +2,11 @@
 
 import prismadb from '@/lib/prismadb'
 import { IOrdersFilters } from '../interfaces/order-filters'
-import { IFullOrder } from '../interfaces/full-order'
+import { IOrderWithCustomer } from '../interfaces/order-with-customer'
 
 export const getOrders = async (
   filters?: IOrdersFilters,
-): Promise<IFullOrder[]> => {
+): Promise<IOrderWithCustomer[]> => {
   try {
     const orders = await prismadb.order.findMany({
       where: {

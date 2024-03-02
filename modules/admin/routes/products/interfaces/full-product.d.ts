@@ -1,10 +1,20 @@
-import { Brand, Category, Color, Image, Product } from '@prisma/client'
+import {
+  Brand,
+  Category,
+  Color,
+  Image,
+  Product,
+  ProductMaster,
+} from '@prisma/client'
 import { IFullSize } from '../../sizes/interfaces/full-size'
 
-export interface IFullProduct extends Product {
+interface IFullProduct extends Product {
+  color: Color
+  size: Omit<IFullSize, 'category'>
+  images: Image[]
+}
+export interface IFullProductMaster extends ProductMaster {
   brand: Brand
   category: Category
-  color: Color
-  size: IFullSize
-  images: Image[]
+  products: IFullProduct[]
 }

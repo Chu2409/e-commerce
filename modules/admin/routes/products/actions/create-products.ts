@@ -1,7 +1,7 @@
 'use server'
 
 import prismadb from '@/lib/prismadb'
-import { Product } from '@prisma/client'
+import { PRODUCT_STATE, Product } from '@prisma/client'
 
 interface CreateProductProps
   extends Omit<Product, 'id' | 'createdAt' | 'updatedAt'> {
@@ -15,6 +15,7 @@ export const createProduct = async (
     const product = await prismadb.product.create({
       data: {
         ...data,
+        state: data.state.replace(' ', '_') as PRODUCT_STATE,
         images: {
           createMany: {
             data: data.images.map((image) => ({

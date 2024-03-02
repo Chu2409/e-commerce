@@ -27,7 +27,7 @@ model Customer {
   dni         String  @unique @map("dni")
   firstName   String  @map("first_name")
   lastName    String  @map("last_name")
-  phoneNumber String  @map("phone_number")
+  phoneNumber String  @unique @map("phone_number")
   city        String? @map("city")
   email       String  @unique @map("email")
   password    String  @map("password")
@@ -63,10 +63,8 @@ model Order {
 
 enum ORDER_STATE {
   PENDIENTE
-  PAGADO
-  ENVIADO
-  ENTREGADO
   CANCELADO
+  SOLICITADO
 }
 
 enum PAY_METHOD {
@@ -91,8 +89,8 @@ model Color {
 
 model Size {
   id    String @id @default(uuid()) @map("id")
-  name  String @map("name")
-  value String @map("value")
+  name  String @unique @map("name")
+  value String @unique @map("value")
 
   sizes SizeByCategory[]
 
@@ -104,10 +102,10 @@ model Size {
 
 model Category {
   id     String  @id @default(uuid()) @map("id")
-  name   String  @map("name")
+  name   String  @unique @map("name")
   active Boolean @default(true) @map("active")
 
-  products Product[]
+  products ProductMaster[]
   sizes    SizeByCategory[]
 
   createdAt DateTime @default(now()) @map("created_at")
@@ -118,10 +116,10 @@ model Category {
 
 model Brand {
   id     String  @id @default(uuid()) @map("id")
-  name   String  @map("name")
+  name   String  @unique @map("name")
   active Boolean @default(true) @map("active")
 
-  products Product[]
+  products ProductMaster[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -145,22 +143,36 @@ model SizeByCategory {
   @@map("sizes_by_categories")
 }
 
-model Product {
-  id          String        @id @default(uuid()) @map("id")
-  name        String        @map("name")
-  description String?       @map("description")
-  price       Float         @map("price")
-  stock       Int           @map("stock")
-  state       PRODUCT_STATE @default(DISPONIBLE) @map("state")
+model ProductMaster {
+  id          String  @id @default(uuid()) @map("id")
+  name        String  @map("name")
+  description String? @map("description")
 
-  colorId    String         @map("color_id")
-  color      Color          @relation(fields: [colorId], references: [id])
-  sizeId     String         @map("size_id")
-  size       SizeByCategory @relation(fields: [sizeId], references: [id])
-  brandId    String         @map("brand_id")
-  brand      Brand          @relation(fields: [brandId], references: [id])
-  categoryId String         @map("category_id")
-  category   Category       @relation(fields: [categoryId], references: [id])
+  brandId    String   @map("brand_id")
+  brand      Brand    @relation(fields: [brandId], references: [id])
+  categoryId String   @map("category_id")
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  products Product[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("products_master")
+}
+
+model Product {
+  id    String        @id @default(uuid()) @map("id")
+  price Float         @map("price")
+  stock Int           @map("stock")
+  state PRODUCT_STATE @default(DISPONIBLE) @map("state")
+
+  productId String         @map("product_id")
+  product   ProductMaster  @relation(fields: [productId], references: [id])
+  colorId   String         @map("color_id")
+  color     Color          @relation(fields: [colorId], references: [id])
+  sizeId    String         @map("size_id")
+  size      SizeByCategory @relation(fields: [sizeId], references: [id])
 
   images Image[]
   items  Item[]
@@ -173,7 +185,6 @@ model Product {
 
 enum PRODUCT_STATE {
   DISPONIBLE
-  AGOTADO
   BAJO_PEDIDO
 }
 

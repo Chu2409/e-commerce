@@ -5,9 +5,9 @@ import { ColumnDef } from '@tanstack/react-table'
 import { Button } from '@/components/ui/button'
 import { ArrowUpDown } from 'lucide-react'
 import { CellActions } from '@/modules/admin/components/cell-actions'
-import { IFullOrder } from '../interfaces/full-order'
+import { IOrderWithCustomer } from '../interfaces/order-with-customer'
 
-export const ordersColumns: ColumnDef<IFullOrder>[] = [
+export const ordersColumns: ColumnDef<IOrderWithCustomer>[] = [
   {
     accessorKey: 'date',
     meta: {
