@@ -1,14 +1,14 @@
 'use server'
 
 import prismadb from '@/lib/prismadb'
-import { IFullSize } from '../interfaces/full-size'
+import { IFullSize } from '../interfaces/size'
 import { ISizesFilters } from '../interfaces/sizes-filters'
 
 export const getSizes = async (
   filters?: ISizesFilters,
 ): Promise<IFullSize[]> => {
   try {
-    const categories = await prismadb.sizeByCategory.findMany({
+    const categories = await prismadb.sizeCategory.findMany({
       where: {
         categoryId: filters?.categoryId,
         size: {

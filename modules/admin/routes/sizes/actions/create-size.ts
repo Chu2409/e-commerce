@@ -1,7 +1,7 @@
 'use server'
 
 import prismadb from '@/lib/prismadb'
-import { SizeByCategory } from '@prisma/client'
+import { SizeCategory } from '@prisma/client'
 
 interface CreateSizeProps {
   name: string
@@ -11,7 +11,7 @@ interface CreateSizeProps {
 
 export const createSize = async (
   data: CreateSizeProps,
-): Promise<SizeByCategory | null> => {
+): Promise<SizeCategory | null> => {
   try {
     const sizeSelected = await prismadb.size.findFirst({
       where: {
@@ -21,7 +21,7 @@ export const createSize = async (
     })
 
     if (sizeSelected) {
-      const sizeExists = await prismadb.sizeByCategory.findFirst({
+      const sizeExists = await prismadb.sizeCategory.findFirst({
         where: {
           sizeId: sizeSelected.id,
           categoryId: data.categoryId,
@@ -30,7 +30,7 @@ export const createSize = async (
 
       if (sizeExists) return null
 
-      const sizeByCategory = await prismadb.sizeByCategory.create({
+      const sizeByCategory = await prismadb.sizeCategory.create({
         data: {
           sizeId: sizeSelected.id,
           categoryId: data.categoryId,
@@ -47,7 +47,7 @@ export const createSize = async (
       },
     })
 
-    const sizeByCategory = await prismadb.sizeByCategory.create({
+    const sizeByCategory = await prismadb.sizeCategory.create({
       data: {
         sizeId: size.id,
         categoryId: data.categoryId,

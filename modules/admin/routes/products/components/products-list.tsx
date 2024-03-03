@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
-import ProductCard from './product-card'
-import { IFullProductMaster } from '../interfaces/full-product'
+import GroupProductCard from './group-product-card'
+import { IFullProductMaster } from '../interfaces/product'
 
 interface ProductsListProps {
   productsMasters: IFullProductMaster[]
@@ -24,7 +24,10 @@ export const ProductsList = ({
 
       <div className='gap-y-8 gap-x-6 grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 max-md:justify-items-center'>
         {productsMasters.map((productMaster) => (
-          <ProductCard key={productMaster.id} productsMasters={productMaster} />
+          <GroupProductCard
+            key={productMaster.id}
+            productMaster={productMaster}
+          />
         ))}
       </div>
 

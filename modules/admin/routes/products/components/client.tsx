@@ -5,10 +5,10 @@ import { Header } from '@/modules/admin/components/header'
 import { Brand, Category, Color } from '@prisma/client'
 import { ProductsFilters } from './filters/filters'
 import { useEffect, useState } from 'react'
-import { IFullProductMaster } from '../interfaces/full-product'
 import { useProductsFilters } from '../store/filters'
 import { getProducts } from '../actions/get-products'
 import { ProductsList } from './products-list'
+import { IFullProductMaster } from '../interfaces/product'
 
 export const ProductsClient = ({
   brands,

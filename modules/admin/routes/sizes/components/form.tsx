@@ -31,7 +31,7 @@ import {
 import { deleteSize } from '../actions/delete-size'
 import { updateSize } from '../actions/update-size'
 import { createSize } from '../actions/create-size'
-import { IFullSize } from '../interfaces/full-size'
+import { IFullSize } from '../interfaces/size'
 
 const formSchema = z.object({
   name: z

@@ -1,54 +1,80 @@
 'use server'
 
 import prismadb from '@/lib/prismadb'
-import { IFullProductMaster } from '../interfaces/full-product'
 import { IProductsFilters } from '../interfaces/products-filters'
+import { PRODUCT_STATE } from '@prisma/client'
+import { IFullProductMaster } from '../interfaces/product'
 
 export const getProducts = async (
   filters?: IProductsFilters,
 ): Promise<IFullProductMaster[]> => {
   try {
-    const products = await prismadb.productMaster.findMany({
+    const productMasters = await prismadb.productMaster.findMany({
       where: {
         name: {
           contains: filters?.name,
-          mode: 'insensitive',
         },
         brandId: filters?.brandId,
         categoryId: filters?.categoryId,
-        products: {
+        productsColors: {
           some: {
-            state: filters?.state,
-            sizeId: filters?.sizeId,
             colorId: filters?.colorId,
+            products: {
+              some: {
+                sizeCategoryId: filters?.sizeId,
+                state: filters?.state?.replace(' ', '_') as PRODUCT_STATE,
+              },
+            },
           },
         },
       },
       include: {
         brand: true,
         category: true,
-        products: {
-          where: {
-            state: filters?.state,
-            sizeId: filters?.sizeId,
-            colorId: filters?.colorId,
-          },
-          include: {
-            color: true,
-            size: {
-              include: {
-                size: true,
-              },
-            },
-            images: true,
-          },
-        },
       },
       take: filters?.take || 16,
       skip: filters?.skip || 0,
     })
 
-    return products
+    const productsWithFilteredProducts = await Promise.all(
+      productMasters.map(async (productMaster) => {
+        const productsColors = await prismadb.productColor.findMany({
+          where: {
+            productMasterId: productMaster.id,
+            colorId: filters?.colorId,
+            products: {
+              some: {
+                state: filters?.state?.replace(' ', '_') as PRODUCT_STATE,
+                sizeCategoryId: filters?.sizeId,
+              },
+            },
+          },
+          include: {
+            color: true,
+            images: true,
+            products: {
+              where: {
+                state: filters?.state?.replace(' ', '_') as PRODUCT_STATE,
+                sizeCategoryId: filters?.sizeId,
+              },
+              include: {
+                sizeCategory: {
+                  include: {
+                    size: true,
+                  },
+                },
+              },
+            },
+          },
+        })
+
+        return {
+          ...productMaster,
+          productsColors,
+        }
+      }),
+    )
+    return productsWithFilteredProducts
   } catch (error) {
     console.log('[PRODUCTS_GET]', error)
     return []

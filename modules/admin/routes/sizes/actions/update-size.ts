@@ -16,7 +16,7 @@ export const updateSize = async (
     })
 
     if (sizeSelected) {
-      const sizeByCategory = await prismadb.sizeByCategory.updateMany({
+      const sizeByCategory = await prismadb.sizeCategory.updateMany({
         where: {
           sizeId: id,
         },
@@ -28,14 +28,23 @@ export const updateSize = async (
       return sizeByCategory
     }
 
-    const size = await prismadb.size.update({
+    const size = await prismadb.size.create({
+      data: {
+        name: data.name,
+        value: data.value,
+      },
+    })
+
+    const sizeByCategory = await prismadb.sizeCategory.update({
       where: {
         id,
       },
-      data,
+      data: {
+        sizeId: size.id,
+      },
     })
 
-    return size
+    return sizeByCategory
   } catch (error) {
     console.log('[SIZE_UPDATE]', error)
     return null

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { ArrowUpDown } from 'lucide-react'
 import { CellActions } from '@/modules/admin/components/cell-actions'
 import { deleteSize } from '../actions/delete-size'
-import { IFullSize } from '../interfaces/full-size'
+import { IFullSize } from '../interfaces/size'
 
 export const brandsColumns: ColumnDef<IFullSize>[] = [
   {

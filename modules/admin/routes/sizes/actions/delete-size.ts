@@ -4,7 +4,7 @@ import prismadb from '@/lib/prismadb'
 
 export const deleteSize = async (id: string) => {
   try {
-    const size = await prismadb.sizeByCategory.delete({
+    const size = await prismadb.sizeCategory.delete({
       where: {
         id,
       },

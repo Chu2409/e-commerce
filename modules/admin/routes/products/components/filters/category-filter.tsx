@@ -55,7 +55,7 @@ export const CategoryFilter = ({ categories }: { categories: Category[] }) => {
               <CommandItem
                 className='cursor-pointer'
                 key={category.id}
-                value={category.name}
+                value={category.id}
                 onSelect={() => {
                   if (category.id === value) {
                     setValue({ key: 'categoryId', value: undefined })

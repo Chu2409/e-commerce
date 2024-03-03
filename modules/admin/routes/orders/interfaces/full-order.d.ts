@@ -1,8 +1,8 @@
 import { Customer, Item, Order } from '@prisma/client'
-import { IFullProduct } from '../../products/interfaces/full-product'
+import { IFullProductWithMaster } from '../../products/interfaces/product'
 
 interface IFullItem extends Item {
-  product: IFullProduct
+  product: IFullProductWithMaster
 }
 export interface IFullOrder extends Order {
   customer: Customer

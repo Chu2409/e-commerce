@@ -52,7 +52,7 @@ export const BrandFilter = ({ brands }: { brands: Brand[] }) => {
               <CommandItem
                 className='cursor-pointer'
                 key={brand.id}
-                value={brand.name}
+                value={brand.id}
                 onSelect={() => {
                   if (brand.id === value) {
                     setValue({ key: 'brandId', value: undefined })

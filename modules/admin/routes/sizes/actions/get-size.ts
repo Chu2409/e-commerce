@@ -1,11 +1,11 @@
 'use server'
 
 import prismadb from '@/lib/prismadb'
-import { IFullSize } from '../interfaces/full-size'
+import { IFullSize } from '../interfaces/size'
 
 export const getSize = async (id: string): Promise<IFullSize | null> => {
   try {
-    const size = await prismadb.sizeByCategory.findUnique({
+    const size = await prismadb.sizeCategory.findUnique({
       where: {
         id,
       },

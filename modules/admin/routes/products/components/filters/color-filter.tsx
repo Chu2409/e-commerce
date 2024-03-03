@@ -62,7 +62,7 @@ export const ColorFilter = ({ colors }: { colors: Color[] }) => {
               <CommandItem
                 className='cursor-pointer'
                 key={color.id}
-                value={color.name}
+                value={color.id}
                 onSelect={() => {
                   if (color.id === value) {
                     setValue({ key: 'colorId', value: undefined })

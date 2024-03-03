@@ -18,7 +18,7 @@ import { CaretSortIcon } from '@radix-ui/react-icons'
 import { CheckIcon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useProductsFilters } from '../../store/filters'
-import { IFullSize } from '../../../sizes/interfaces/full-size'
+import { IFullSize } from '../../../sizes/interfaces/size'
 import { getSizesByCategory } from '../../../sizes/actions/get-sizes-by-category'
 
 export const SizeFilter = () => {
@@ -38,6 +38,10 @@ export const SizeFilter = () => {
       }
     }
     fetchSizes()
+
+    return () => {
+      setData([])
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryId])
 
@@ -72,7 +76,7 @@ export const SizeFilter = () => {
               <CommandItem
                 className='cursor-pointer'
                 key={sizeByCategory.id}
-                value={sizeByCategory.size.name}
+                value={sizeByCategory.id}
                 onSelect={() => {
                   if (sizeByCategory.id === value) {
                     setValue({ key: 'sizeId', value: undefined })

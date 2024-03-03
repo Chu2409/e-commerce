@@ -73,134 +73,6 @@ enum PAY_METHOD {
   DEPOSITO
 }
 
-model Color {
-  id     String  @id @default(uuid()) @map("id")
-  name   String  @unique @map("name")
-  value  String  @unique @map("value")
-  active Boolean @default(true) @map("active")
-
-  products Product[]
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  @@map("colors")
-}
-
-model Size {
-  id    String @id @default(uuid()) @map("id")
-  name  String @unique @map("name")
-  value String @unique @map("value")
-
-  sizes SizeByCategory[]
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  @@map("sizes")
-}
-
-model Category {
-  id     String  @id @default(uuid()) @map("id")
-  name   String  @unique @map("name")
-  active Boolean @default(true) @map("active")
-
-  products ProductMaster[]
-  sizes    SizeByCategory[]
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  @@map("categories")
-}
-
-model Brand {
-  id     String  @id @default(uuid()) @map("id")
-  name   String  @unique @map("name")
-  active Boolean @default(true) @map("active")
-
-  products ProductMaster[]
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  @@map("brands")
-}
-
-model SizeByCategory {
-  id String @id @default(uuid()) @map("id")
-
-  categoryId String   @map("category_id")
-  category   Category @relation(fields: [categoryId], references: [id])
-  sizeId     String   @map("size_id")
-  size       Size     @relation(fields: [sizeId], references: [id])
-
-  products Product[]
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  @@map("sizes_by_categories")
-}
-
-model ProductMaster {
-  id          String  @id @default(uuid()) @map("id")
-  name        String  @map("name")
-  description String? @map("description")
-
-  brandId    String   @map("brand_id")
-  brand      Brand    @relation(fields: [brandId], references: [id])
-  categoryId String   @map("category_id")
-  category   Category @relation(fields: [categoryId], references: [id])
-
-  products Product[]
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  @@map("products_master")
-}
-
-model Product {
-  id    String        @id @default(uuid()) @map("id")
-  price Float         @map("price")
-  stock Int           @map("stock")
-  state PRODUCT_STATE @default(DISPONIBLE) @map("state")
-
-  productId String         @map("product_id")
-  product   ProductMaster  @relation(fields: [productId], references: [id])
-  colorId   String         @map("color_id")
-  color     Color          @relation(fields: [colorId], references: [id])
-  sizeId    String         @map("size_id")
-  size      SizeByCategory @relation(fields: [sizeId], references: [id])
-
-  images Image[]
-  items  Item[]
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  @@map("products")
-}
-
-enum PRODUCT_STATE {
-  DISPONIBLE
-  BAJO_PEDIDO
-}
-
-model Image {
-  id  String @id @default(uuid()) @map("id")
-  url String @map("url")
-
-  productId String  @map("product_id")
-  product   Product @relation(fields: [productId], references: [id])
-
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-
-  @@map("images")
-}
-
 model Item {
   id       String @id @default(uuid()) @map("id")
   quantity Int    @default(1) @map("quantity")
@@ -214,4 +86,147 @@ model Item {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("items")
+}
+
+model Product {
+  id    String        @id @default(uuid()) @map("id")
+  price Float         @map("price")
+  stock Int           @map("stock")
+  state PRODUCT_STATE @default(DISPONIBLE) @map("state")
+
+  productColorId String       @map("product_color_id")
+  productColor   ProductColor @relation(fields: [productColorId], references: [id])
+
+  sizeCategoryId String       @map("size_category_id")
+  sizeCategory   SizeCategory @relation(fields: [sizeCategoryId], references: [id])
+
+  items Item[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("products")
+}
+
+enum PRODUCT_STATE {
+  DISPONIBLE
+  BAJO_PEDIDO
+}
+
+model ProductColor {
+  id String @id @default(uuid()) @map("id")
+
+  productMasterId String        @map("product_master_id")
+  productMaster   ProductMaster @relation(fields: [productMasterId], references: [id])
+  colorId         String        @map("color_id")
+  color           Color         @relation(fields: [colorId], references: [id])
+
+  images   Image[]
+  products Product[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("products_colors")
+}
+
+model Color {
+  id     String  @id @default(uuid()) @map("id")
+  name   String  @unique @map("name")
+  value  String  @unique @map("value")
+  active Boolean @default(true) @map("active")
+
+  productsColors ProductColor[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("colors")
+}
+
+model SizeCategory {
+  id String @id @default(uuid()) @map("id")
+
+  categoryId String   @map("category_id")
+  category   Category @relation(fields: [categoryId], references: [id])
+  sizeId     String   @map("size_id")
+  size       Size     @relation(fields: [sizeId], references: [id])
+
+  products Product[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("sizes_categories")
+}
+
+model ProductMaster {
+  id          String  @id @default(uuid()) @map("id")
+  name        String  @map("name")
+  description String? @map("description")
+
+  brandId    String   @map("brand_id")
+  brand      Brand    @relation(fields: [brandId], references: [id])
+  categoryId String   @map("category_id")
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  productsColors ProductColor[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("products_master")
+}
+
+model Size {
+  id    String @id @default(uuid()) @map("id")
+  name  String @map("name")
+  value String @map("value")
+
+  sizesCategories SizeCategory[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("sizes")
+}
+
+model Category {
+  id     String  @id @default(uuid()) @map("id")
+  name   String  @unique @map("name")
+  active Boolean @default(true) @map("active")
+
+  productsMaster  ProductMaster[]
+  sizesCategories SizeCategory[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("categories")
+}
+
+model Brand {
+  id     String  @id @default(uuid()) @map("id")
+  name   String  @unique @map("name")
+  active Boolean @default(true) @map("active")
+
+  productsMaster ProductMaster[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("brands")
+}
+
+model Image {
+  id  String @id @default(uuid()) @map("id")
+  url String @map("url")
+
+  productColorId String       @map("product_color_id")
+  productColor   ProductColor @relation(fields: [productColorId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("images")
 }

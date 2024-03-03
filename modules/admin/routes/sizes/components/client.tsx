@@ -7,7 +7,7 @@ import { DataTable } from '@/modules/admin/components/data-table'
 import { getSizes } from '../actions/get-sizes'
 import { Category } from '@prisma/client'
 import { useEffect, useState } from 'react'
-import { IFullSize } from '../interfaces/full-size'
+import { IFullSize } from '../interfaces/size'
 import { useSizesFilters } from '../store/filters'
 import { SizesFilters } from './filters/filters'
 

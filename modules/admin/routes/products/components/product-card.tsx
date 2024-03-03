@@ -3,23 +3,27 @@
 import { useRouter } from 'next/navigation'
 import { CldImage } from 'next-cloudinary'
 import { formatMoney } from '@/lib/utils'
-import { IFullProductMaster } from '../interfaces/full-product'
+import { IFullProduct } from '../interfaces/product'
 
 interface ProductCardProps {
-  productsMasters: IFullProductMaster
+  product: IFullProduct
+  id: string
+  name: string
+  category: string
+  brand: string
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ productsMasters }) => {
+const ProductCard: React.FC<ProductCardProps> = ({
+  product,
+  id,
+  name,
+  brand,
+  category,
+}) => {
   const router = useRouter()
 
-  const mainProduct = productsMasters.products[0]
-  const colors = productsMasters.products.map((product) => product.color.value)
-  const sizes = productsMasters.products
-    .map((product) => product.size.size.value)
-    .filter((value, index, self) => self.indexOf(value) === index)
-
   const handleClick = () => {
-    router.push(`/admin/products/${productsMasters.id}`)
+    router.push(`/admin/products/${product.id}`)
   }
 
   return (
@@ -28,7 +32,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ productsMasters }) => {
       className='bg-[#f6f6f6] w-[300px] group cursor-pointer rounded-xl border p-3 space-y-4 hover:drop-shadow-lg transition-shadow duration-300'
     >
       <CldImage
-        src={mainProduct.images?.[0]?.url}
+        src={product.images?.[0]?.url}
         crop='fill'
         width={300}
         height={300}
@@ -37,29 +41,22 @@ const ProductCard: React.FC<ProductCardProps> = ({ productsMasters }) => {
       />
 
       <div>
-        <p className='font-semibold text-lg'>{productsMasters.name}</p>
+        <p className='font-semibold text-lg'>{name}</p>
 
         <div className='flex gap-2 items-center'>
           <div className='text-sm text-gray-500'>Tallas disponibles:</div>
-          {sizes.map((size, index) => (
-            <div key={index} className='text-sm text-gray-600'>
-              {size}
-            </div>
-          ))}
+          <div className='text-sm text-gray-600'>{product.size.size.name}</div>
         </div>
       </div>
 
       <div className='flex items-center justify-between font-semibold '>
-        {formatMoney(mainProduct.price)}
+        {formatMoney(product.price)}
 
         <div className='flex gap-1'>
-          {colors.map((color, index) => (
-            <div
-              key={index}
-              className='w-4 h-4 rounded-full border'
-              style={{ backgroundColor: color }}
-            />
-          ))}
+          <div
+            className='w-4 h-4 rounded-full border'
+            style={{ backgroundColor: product.color.value }}
+          />
         </div>
       </div>
     </div>
