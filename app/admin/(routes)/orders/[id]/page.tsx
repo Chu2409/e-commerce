@@ -1,5 +1,3 @@
-import { getOrder } from '@/modules/admin/routes/orders/actions/get-order'
-
 const OrderPage = async ({
   params,
 }: {
@@ -7,7 +5,7 @@ const OrderPage = async ({
     id: string
   }
 }) => {
-  const order = await getOrder(params.id)
+  // const order = await getOrder(params.id)
 
   return <div>Order Page</div>
 }

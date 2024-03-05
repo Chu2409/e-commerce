@@ -91,6 +91,8 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
   colors,
   sizesCategories,
 }) => {
+  const [isLoading, setIsLoading] = useState(false)
+
   const productMasterForm = useForm<z.infer<typeof productMasterFormSchema>>({
     resolver: zodResolver(productMasterFormSchema),
     defaultValues: initialProductMaster
@@ -120,6 +122,7 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
         ),
     )
   })
+
   const [sizesAvailable, setSizesAvailable] = useState<
     Omit<IFullSize, 'category'>[]
   >([])
@@ -199,8 +202,6 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
           },
   })
 
-  const [isLoading, setIsLoading] = useState(false)
-
   const router = useRouter()
 
   const title = initialProductMaster ? 'Actualizar producto' : 'Nueva producto'
@@ -222,7 +223,6 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
           description: data.description || null,
         },
       )
-
       if (!productMaster) {
         throw new Error()
       }
@@ -243,7 +243,6 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
       setIsLoading(true)
 
       const productColor = await updateProductColor(mainProductColor?.id!, data)
-
       if (!productColor) {
         throw new Error()
       }
@@ -284,6 +283,7 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
         }
 
         toast.success('Variación creada')
+        router.push(`/admin/products/${product.id}`)
       } else if (mainProduct == null) {
         const product = await createProduct({
           ...data,
@@ -296,6 +296,7 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
         }
 
         toast.success('Variación secundaria creada')
+        router.push(`/admin/products/${product.id}`)
       } else {
         const result = await updateProduct(mainProduct?.id!, {
           ...data,
@@ -328,9 +329,8 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
         !productMasterFromSubmit ||
         !productColorFormSubmit ||
         !productFormSubmit
-      ) {
+      )
         return
-      }
 
       const productMasterData = productMasterForm.getValues()
       const productColorData = productColorForm.getValues()
@@ -363,7 +363,6 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
       router.refresh()
     } catch (error) {
       toast.error('Algo salió mal')
-      console.log(error)
     } finally {
       setIsLoading(false)
     }
@@ -532,9 +531,14 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
           className='space-y-8 w-full mt-4'
         >
           <div className='flex items-center justify-between'>
-            <h2 className='text-xl font-semibold tracking-tight'>
-              Variación Principal
-            </h2>
+            <div>
+              <h2 className='text-xl font-semibold tracking-tight'>
+                Información Adicional
+              </h2>
+              <p className='text-sm text-muted-foreground'>
+                Administra las variaciones de colores y sus imágenes
+              </p>
+            </div>
 
             <Button
               onClick={(e) => {
@@ -669,9 +673,15 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
           className='space-y-8 w-full mt-4'
         >
           <div className='flex items-center justify-between'>
-            <h2 className='text-xl font-semibold tracking-tight'>
-              Variación Secundaria
-            </h2>
+            <div>
+              <h2 className='text-xl font-semibold tracking-tight'>
+                Variaciones
+              </h2>
+              <p className='text-sm text-muted-foreground'>
+                Administra los precios, stock, estado y tallas/tamaños de las
+                variaciones de colores
+              </p>
+            </div>
 
             <Button
               onClick={(e) => {

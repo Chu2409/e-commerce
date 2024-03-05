@@ -16,9 +16,11 @@ export const getMasterByProduct = async (
       },
     })
 
+    if (!product) return null
+
     const productMaster = await prismadb.productMaster.findUnique({
       where: {
-        id: product?.productColor.productMasterId,
+        id: product.productColor.productMasterId,
       },
       include: {
         brand: true,
