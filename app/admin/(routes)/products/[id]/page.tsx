@@ -1,8 +1,11 @@
 import { Separator } from '@/components/ui/separator'
 import { getBrands } from '@/modules/admin/routes/brands/actions/get-brands'
 import { getCategories } from '@/modules/admin/routes/categories/actions/get-categories'
-import { getProductsByMaster } from '@/modules/admin/routes/products/actions/get-products-by-master'
+import { getColors } from '@/modules/admin/routes/colors/actions/get-colors'
+import { getMasterByProduct } from '@/modules/admin/routes/products/actions/get-master-by-product'
 import { FullProductForm } from '@/modules/admin/routes/products/components/form'
+import ProductCard from '@/modules/admin/routes/products/components/product-card'
+import { getSizesByCategory } from '@/modules/admin/routes/sizes/actions/get-sizes-by-category'
 
 export const revalidate = 0
 
@@ -15,38 +18,39 @@ const ProductPage = async ({
 }) => {
   const categories = await getCategories()
   const brands = await getBrands()
+  const colors = await getColors()
 
-  const product = await getProductsByMaster(params.id)
+  const productMaster = await getMasterByProduct(params.id)
+  const sizesCategories = await getSizesByCategory(productMaster?.categoryId!)
 
   return (
     <div className='flex flex-col p-8 pt-6'>
       <FullProductForm
-        initialData={product}
+        initialProductMaster={productMaster}
+        selectedProductId={params.id}
         brands={brands}
         categories={categories}
+        colors={colors}
+        sizesCategories={sizesCategories}
       />
 
-      {/* <Separator className='mt-8 mb-4' /> */}
+      <Separator className='mt-8 mb-4' />
 
-      {/* <div className='mb-4'>
-        <h2 className='text-xl font-bold tracking-tight'>Variaciones</h2>
-        <p className='text-sm text-muted-foreground'>
-          Todos las variaciones de este producto
-        </p>
-      </div>
+      {productMaster && (
+        <div>
+          <div className='mb-4'>
+            <h2 className='text-xl font-semibold tracking-tight'>
+              Todas las variaciones
+            </h2>
+          </div>
 
-      <div className='gap-y-8 gap-x-6 grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 max-md:justify-items-center'>
-        {productMaster?.products.map((product) => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            id={productMaster.id}
-            name={productMaster.name}
-            brand={productMaster.brand.name}
-            category={productMaster.category.name}
-          />
-        ))}
-      </div> */}
+          <div className='gap-y-8 gap-x-6 grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 max-md:justify-items-center'>
+            {productMaster?.productsColors.map((productColor) => (
+              <ProductCard key={productColor.id} productColor={productColor} />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   )
 }

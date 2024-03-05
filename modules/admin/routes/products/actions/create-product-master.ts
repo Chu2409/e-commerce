@@ -3,23 +3,19 @@
 import prismadb from '@/lib/prismadb'
 import { ProductMaster } from '@prisma/client'
 
-export const updateProductMaster = async (
-  id: string,
+export const createProductMaster = async (
   data: Omit<ProductMaster, 'id' | 'createdAt' | 'updatedAt'>,
 ) => {
   try {
-    const productMaster = await prismadb.productMaster.update({
-      where: {
-        id,
-      },
+    const product = await prismadb.productMaster.create({
       data: {
         ...data,
       },
     })
 
-    return productMaster
+    return product
   } catch (error) {
-    console.log('[PRODUCT_MASTER_UPDATE]', error)
+    console.log('[CREATE_MASTER_PRODUCT]', error)
     return null
   }
 }

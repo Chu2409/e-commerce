@@ -1,6 +1,6 @@
 'use client'
 
-import { Brand, Category } from '@prisma/client'
+import { Brand, Category, Color, PRODUCT_STATE } from '@prisma/client'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -12,11 +12,9 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { AlertModal } from '@/components/alert-modal'
 import { Heading } from '@/components/heading'
 import { Button } from '@/components/ui/button'
-import { Trash } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Separator } from '@/components/ui/separator'
 import { Input } from '@/components/ui/input'
 import { useRouter } from 'next/navigation'
@@ -30,6 +28,16 @@ import {
 } from '@/components/ui/select'
 import { IFullProductMaster } from '../interfaces/product'
 import { cn } from '@/lib/utils'
+import { updateProductMaster } from '../actions/update-product-master'
+import { ImageUpload } from './image-upload'
+import { IFullSize } from '../../sizes/interfaces/size'
+import { getSizesByCategory } from '../../sizes/actions/get-sizes-by-category'
+import { Plus } from 'lucide-react'
+import { updateProductColor } from '../actions/update-product-color'
+import { updateProduct } from '../actions/update-product'
+import { createProductColor } from '../actions/create-product-color'
+import { createProduct } from '../actions/create-product'
+import { createProductMaster } from '../actions/create-product-master'
 
 const productMasterFormSchema = z.object({
   name: z
@@ -41,23 +49,54 @@ const productMasterFormSchema = z.object({
   categoryId: z.string().min(1, { message: 'Selecciona una categoría' }),
 })
 
+const productStates = Object.values(PRODUCT_STATE).map((state) =>
+  state.replace('_', ' '),
+)
+
+const productColorFormSchema = z.object({
+  colorId: z.string().min(1, { message: 'Selecciona un color' }),
+  images: z
+    .object({ url: z.string() })
+    .array()
+    .min(1, { message: 'Agrega al menos una imagen' }),
+})
+
+const productFormSchema = z.object({
+  sizeCategoryId: z.string().min(1, { message: 'Selecciona una talla/tamaño' }),
+  price: z.coerce
+    .number()
+    .positive({ message: 'Precio inválido' })
+    .nonnegative({ message: 'Precio inválido' }),
+  stock: z.coerce
+    .number()
+    .int({ message: 'Stock inválido' })
+    .nonnegative({ message: 'Stock inválido' }),
+  state: z.enum(productStates as any),
+})
+
 interface FullProductFormProps {
-  initialData: IFullProductMaster | null
+  initialProductMaster: IFullProductMaster | null
+  selectedProductId?: string
   brands: Brand[]
   categories: Category[]
+  colors: Color[]
+  sizesCategories: Omit<IFullSize, 'category'>[]
 }
 
 export const FullProductForm: React.FC<FullProductFormProps> = ({
-  initialData,
+  initialProductMaster,
+  selectedProductId,
   categories,
   brands,
+  colors,
+  sizesCategories,
 }) => {
   const productMasterForm = useForm<z.infer<typeof productMasterFormSchema>>({
     resolver: zodResolver(productMasterFormSchema),
-    defaultValues: initialData
+    defaultValues: initialProductMaster
       ? {
-          ...initialData,
-          description: initialData.description || '',
+          ...initialProductMaster,
+          description: initialProductMaster.description || '',
         }
       : {
           name: '',
@@ -67,56 +106,129 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
         },
   })
 
-  const [isOpen, setIsOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [mainProductColor, setMainProductColor] = useState(
+    initialProductMaster?.productsColors.find((productColor) =>
+      productColor.products.find((product) => product.id === selectedProductId),
+    ) || null,
+  )
 
-  const [categoryId, setCategoryId] = useState<string | null>(() => {
-    return initialData?.category.id || null
+  const [colorsAvailable, setColorsAvailable] = useState<Color[]>(() => {
+    return colors.filter(
+      (color) =>
+        !initialProductMaster?.productsColors.some(
+          (productColor) => productColor.colorId === color.id,
+        ),
+    )
   })
-  // const [sizes, setSizes] = useState<Omit<IFullSize, 'category'>[]>([])
+  const [sizesAvailable, setSizesAvailable] = useState<
+    Omit<IFullSize, 'category'>[]
+  >([])
 
-  // useEffect(() => {
-  //   form.setValue('sizeId', '')
+  const [mainProduct, setMainProduct] = useState(
+    mainProductColor?.products.find(
+      (product) => product.id === selectedProductId,
+    ) || null,
+  )
 
-  //   if (categoryId) {
-  //     const fetchSizes = async () => {
-  //       const sizes = await getSizesByCategory(categoryId)
-  //       setSizes(sizes)
-  //     }
-  //     fetchSizes()
-  //   }
+  useEffect(() => {
+    if (!mainProductColor) {
+      const categoryId = productMasterForm.getValues('categoryId')
+      const fetchSizes = async () => {
+        if (categoryId) {
+          const sizes = await getSizesByCategory(categoryId)
+          setSizesAvailable(sizes)
+        }
+      }
+      fetchSizes()
+      setColorsAvailable(colors)
+    }
 
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [categoryId])
+    return () => {
+      setSizesAvailable([])
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [productMasterForm.watch('categoryId'), mainProductColor])
 
-  // useEffect(() => {
-  //   form.setValue('sizeId', initialData?.size.id || '')
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [])
+  useEffect(() => {
+    if (mainProductColor) {
+      setSizesAvailable(
+        sizesCategories.filter(
+          (sizeCategory) =>
+            !mainProductColor?.products.some(
+              (product) => product.sizeCategory.id === sizeCategory.id,
+            ),
+        ),
+      )
+    }
+
+    return () => {
+      setSizesAvailable([])
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mainProduct])
+
+  const productColorForm = useForm<z.infer<typeof productColorFormSchema>>({
+    resolver: zodResolver(productColorFormSchema),
+    defaultValues:
+      mainProductColor && mainProduct
+        ? {
+            colorId: mainProductColor.colorId,
+            images: mainProductColor.images,
+          }
+        : {
+            colorId: '',
+            images: [],
+          },
+  })
+
+  const productForm = useForm<z.infer<typeof productFormSchema>>({
+    resolver: zodResolver(productFormSchema),
+    defaultValues:
+      mainProductColor && mainProduct
+        ? {
+            sizeCategoryId: mainProduct.sizeCategoryId,
+            price: mainProduct.price,
+            stock: mainProduct.stock,
+            state: mainProduct.state.replace('_', ' '),
+          }
+        : {
+            sizeCategoryId: '',
+            price: 0,
+            stock: 0,
+            state: PRODUCT_STATE.DISPONIBLE,
+          },
+  })
+
+  const [isLoading, setIsLoading] = useState(false)
 
   const router = useRouter()
 
-  const title = initialData ? 'Actualizar producto' : 'Nueva producto'
-  const description = initialData
+  const title = initialProductMaster ? 'Actualizar producto' : 'Nueva producto'
+  const description = initialProductMaster
     ? 'Actualizar producto'
     : 'Agregar nuevo producto'
-  const toastMessage = initialData ? 'Producto actualizado' : 'Producto creado'
-  const action = initialData ? 'Actualizar' : 'Crear'
+  const action = initialProductMaster ? 'Actualizar' : 'Crear'
 
   const handleProductMasterSubmit = async (
     data: z.infer<typeof productMasterFormSchema>,
   ) => {
     try {
-      const result = await updateProduct(initialData?.id, {
-        ...data,
-        description: data.description || null,
-      })
+      setIsLoading(true)
 
-      if (!result) {
+      const productMaster = await updateProductMaster(
+        initialProductMaster?.id!,
+        {
+          ...data,
+          description: data.description || null,
+        },
+      )
+
+      if (!productMaster) {
         throw new Error()
       }
+
       router.refresh()
-      toast.success(toastMessage)
+      toast.success('Información principal actualizada')
     } catch (error) {
       toast.error('Algo salió mal')
     } finally {
@@ -124,335 +236,621 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
     }
   }
 
-  const onDelete = async () => {
+  const handleProductColorSubmit = async (
+    data: z.infer<typeof productColorFormSchema>,
+  ) => {
     try {
       setIsLoading(true)
-      const deleted = await deleteProduct(initialData?.id!)
 
-      if (!deleted) {
+      const productColor = await updateProductColor(mainProductColor?.id!, data)
+
+      if (!productColor) {
         throw new Error()
       }
 
-      router.push('/admin/products')
       router.refresh()
-      toast.success('Producto eliminado')
+      toast.success('Variación principal actualizada')
     } catch (error) {
-      toast.error('Elimine las órdenes asociadas a este producto')
+      toast.error('Algo salió mal')
     } finally {
       setIsLoading(false)
-      setIsOpen(false)
+    }
+  }
+
+  const handleProductSubmit = async (
+    data: z.infer<typeof productFormSchema>,
+  ) => {
+    try {
+      setIsLoading(true)
+
+      if (mainProductColor == null && mainProduct == null) {
+        const productColorFormSubmit = await productColorForm.trigger()
+        if (!productColorFormSubmit) return
+
+        const productColorData = productColorForm.getValues()
+        const productColor = await createProductColor({
+          productMasterId: initialProductMaster?.id!,
+          ...productColorData,
+        })
+
+        const product = await createProduct({
+          ...data,
+          productColorId: productColor?.id!,
+          state: data.state as PRODUCT_STATE,
+        })
+
+        if (!product || !productColor) {
+          throw new Error()
+        }
+
+        toast.success('Variación creada')
+      } else if (mainProduct == null) {
+        const product = await createProduct({
+          ...data,
+          productColorId: mainProductColor?.id!,
+          state: data.state as PRODUCT_STATE,
+        })
+
+        if (!product) {
+          throw new Error()
+        }
+
+        toast.success('Variación secundaria creada')
+      } else {
+        const result = await updateProduct(mainProduct?.id!, {
+          ...data,
+          state: data.state as PRODUCT_STATE,
+        })
+        if (!result) {
+          throw new Error()
+        }
+
+        toast.success('Variación secundaria actualizada')
+      }
+
+      router.refresh()
+    } catch (error) {
+      toast.error('Algo salió mal')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const handleProductFormSubmit = async () => {
+    try {
+      setIsLoading(true)
+
+      const productMasterFromSubmit = await productMasterForm.trigger()
+      const productColorFormSubmit = await productColorForm.trigger()
+      const productFormSubmit = await productForm.trigger()
+
+      if (
+        !productMasterFromSubmit ||
+        !productColorFormSubmit ||
+        !productFormSubmit
+      ) {
+        return
+      }
+
+      const productMasterData = productMasterForm.getValues()
+      const productColorData = productColorForm.getValues()
+      const productData = productForm.getValues()
+
+      const productMaster = await createProductMaster({
+        ...productMasterData,
+        description: productMasterData.description || null,
+      })
+
+      const productColor = await createProductColor({
+        ...productColorData,
+        productMasterId: productMaster?.id!,
+      })
+
+      const product = await createProduct({
+        sizeCategoryId: productData.sizeCategoryId,
+        stock: parseFloat(String(productData.stock)),
+        price: parseFloat(String(productData.price)),
+        productColorId: productColor?.id!,
+        state: productData.state as PRODUCT_STATE,
+      })
+
+      if (!product || !productColor || !productMaster) {
+        throw new Error()
+      }
+
+      toast.success('Producto creado')
+      router.push(`/admin/products`)
+      router.refresh()
+    } catch (error) {
+      toast.error('Algo salió mal')
+      console.log(error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
   return (
-    <>
-      <AlertModal
-        isOpen={isOpen}
-        isLoading={isLoading}
-        onClose={() => setIsOpen(false)}
-        onConfirm={onDelete}
-      />
+    <div className='flex flex-col gap-y-4'>
+      <Heading title={title} description={description} />
 
-      <div className='flex flex-col gap-y-4'>
-        <div className='flex items-center justify-between'>
-          <Heading title={title} description={description} />
-          {initialData && (
-            <Button
-              disabled={isLoading}
-              variant='destructive'
-              size='sm'
-              onClick={() => setIsOpen(true)}
-            >
-              <Trash className='h-4 w-4' />
-            </Button>
-          )}
-        </div>
+      <Separator />
 
-        <Separator />
-
-        <Form {...productMasterForm}>
-          <form
-            onSubmit={productMasterForm.handleSubmit(handleProductMasterSubmit)}
-            className='space-y-6 w-full mt-4'
-          >
+      <Form {...productMasterForm}>
+        <form
+          onSubmit={productMasterForm.handleSubmit(handleProductMasterSubmit)}
+          className='space-y-6 w-full mt-4'
+        >
+          <div className='flex items-center justify-between'>
             <h2 className='text-xl font-semibold tracking-tight'>
               Información Principal
             </h2>
 
-            <div className='grid grid-cols-3 gap-8 max-lg:grid-cols-2 max-md:grid-cols-1'>
-              <FormField
-                control={productMasterForm.control}
-                name='name'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nombre</FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled={isLoading}
-                        placeholder='Nombre del producto'
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+            <Button
+              onClick={(e) => {
+                e.preventDefault()
+                router.push('/admin/products/new')
+                e.stopPropagation()
+              }}
+              className={cn('ml-4', initialProductMaster ? 'flex' : 'hidden')}
+            >
+              <Plus className='mr-2 h-4 w-4' />
+              Nuevo Producto
+            </Button>
+          </div>
 
-              <FormField
-                control={productMasterForm.control}
-                name='description'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Descripción</FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled={isLoading}
-                        placeholder='Descripción del producto'
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={productMasterForm.control}
-                name='brandId'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Marca</FormLabel>
-                    <Select
+          <div className='grid grid-cols-3 gap-x-8 gap-y-4 max-lg:grid-cols-2 max-md:grid-cols-1'>
+            <FormField
+              control={productMasterForm.control}
+              name='name'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nombre</FormLabel>
+                  <FormControl>
+                    <Input
                       disabled={isLoading}
-                      // eslint-disable-next-line react/jsx-handler-names
-                      onValueChange={field.onChange}
-                      value={field.value}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue
-                            defaultValue={field.value}
-                            placeholder='Selecciona una marca'
-                          />
-                        </SelectTrigger>
-                      </FormControl>
+                      placeholder='Nombre del producto'
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-                      <SelectContent>
-                        {brands.map((brand) => (
-                          <SelectItem
-                            key={brand.id}
-                            value={brand.id}
-                            className='cursor-pointer'
-                          >
-                            {brand.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={productMasterForm.control}
-                name='categoryId'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Categoría</FormLabel>
-                    <Select
+            <FormField
+              control={productMasterForm.control}
+              name='description'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Descripción</FormLabel>
+                  <FormControl>
+                    <Input
                       disabled={isLoading}
-                      // eslint-disable-next-line react/jsx-handler-names
-                      onValueChange={(value) => {
-                        field.onChange(value)
-                        setCategoryId(value)
-                      }}
-                      value={field.value}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue
-                            defaultValue={field.value}
-                            placeholder='Selecciona una categoría'
-                          />
-                        </SelectTrigger>
-                      </FormControl>
+                      placeholder='Descripción del producto'
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-                      <SelectContent>
-                        {categories.map((category) => (
-                          <SelectItem
-                            key={category.id}
-                            value={category.id}
-                            className='cursor-pointer'
-                          >
-                            {category.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
+            <FormField
+              control={productMasterForm.control}
+              name='brandId'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Marca</FormLabel>
+                  <Select
+                    disabled={isLoading}
+                    // eslint-disable-next-line react/jsx-handler-names
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          defaultValue={field.value}
+                          placeholder='Selecciona una marca'
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+
+                    <SelectContent>
+                      {brands.map((brand) => (
+                        <SelectItem
+                          key={brand.id}
+                          value={brand.id}
+                          className='cursor-pointer'
+                        >
+                          {brand.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={productMasterForm.control}
+              name='categoryId'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Categoría</FormLabel>
+                  <Select
+                    disabled={isLoading || initialProductMaster !== null}
+                    // eslint-disable-next-line react/jsx-handler-names
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          defaultValue={field.value}
+                          placeholder='Selecciona una categoría'
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+
+                    <SelectContent>
+                      {categories.map((category) => (
+                        <SelectItem
+                          key={category.id}
+                          value={category.id}
+                          className='cursor-pointer'
+                        >
+                          {category.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <Button
+            disabled={isLoading}
+            type='submit'
+            className={cn(initialProductMaster ? 'block' : 'hidden')}
+          >
+            {action}
+          </Button>
+        </form>
+      </Form>
+
+      <Separator className='mt-4' />
+
+      <Form {...productColorForm}>
+        <form
+          onSubmit={productColorForm.handleSubmit(handleProductColorSubmit)}
+          className='space-y-8 w-full mt-4'
+        >
+          <div className='flex items-center justify-between'>
+            <h2 className='text-xl font-semibold tracking-tight'>
+              Variación Principal
+            </h2>
 
             <Button
-              disabled={isLoading}
-              type='submit'
-              className={cn({
-                'bg-primary': !isLoading,
-                'bg-muted-foreground': isLoading,
-              })}
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                setMainProductColor(null)
+                setMainProduct(null)
+                productColorForm.setValue('colorId', '')
+                productColorForm.setValue('images', [])
+                productForm.setValue('sizeCategoryId', '')
+                productForm.setValue('price', 0)
+                productForm.setValue('stock', 0)
+                productForm.setValue('state', PRODUCT_STATE.DISPONIBLE)
+              }}
+              className={cn('ml-4', initialProductMaster ? 'flex' : 'hidden')}
             >
-              {action}
+              <Plus className='mr-2 h-4 w-4' />
+              Nueva Variación Principal
             </Button>
-          </form>
-        </Form>
+          </div>
 
-        <Separator />
+          <div className='grid lg:grid-cols-2 gap-8 grid-cols-1'>
+            <FormField
+              control={productColorForm.control}
+              name='images'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Imágenes</FormLabel>
+                  <FormControl>
+                    <ImageUpload
+                      imagesUrl={field.value.map((image) => image.url)}
+                      isDisabled={isLoading}
+                      onChange={(url) =>
+                        field.onChange([...field.value, { url }])
+                      }
+                      onRemove={(url) =>
+                        field.onChange([
+                          ...field.value.filter(
+                            (current) => current.url !== url,
+                          ),
+                        ])
+                      }
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-        <Form {...productMasterForm}>
-          <form
-            onSubmit={productMasterForm.handleSubmit(handleProductMasterSubmit)}
-            className='space-y-8 w-full mt-4'
+            <FormField
+              control={productColorForm.control}
+              name='colorId'
+              render={({ field }) => (
+                <FormItem className='w-[300px] lg:ml-8'>
+                  <FormLabel>Color</FormLabel>
+                  <Select
+                    disabled={isLoading}
+                    // eslint-disable-next-line react/jsx-handler-names
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          defaultValue={field.value}
+                          placeholder='Selecciona un color'
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+
+                    <SelectContent>
+                      {colorsAvailable.map((color) => (
+                        <SelectItem
+                          key={color.id}
+                          value={color.id}
+                          className='cursor-pointer'
+                        >
+                          <div className='flex items-center gap-x-2'>
+                            {color.name}
+                            <div
+                              className='w-6 h-6 rounded-full border'
+                              style={{ backgroundColor: color.value }}
+                            />
+                          </div>
+                        </SelectItem>
+                      ))}
+                      {initialProductMaster && mainProductColor !== null && (
+                        <SelectItem
+                          key={mainProductColor?.colorId!}
+                          value={mainProductColor?.colorId!}
+                          className='cursor-pointer'
+                        >
+                          <div className='flex items-center gap-x-2'>
+                            {mainProductColor.color.name}
+                            <div
+                              className='w-6 h-6 rounded-full border'
+                              style={{
+                                backgroundColor: mainProductColor.color.value,
+                              }}
+                            />
+                          </div>
+                        </SelectItem>
+                      )}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <Button
+            disabled={isLoading}
+            type='submit'
+            className={cn(
+              initialProductMaster && mainProductColor !== null
+                ? 'block'
+                : 'hidden',
+            )}
           >
+            {action}
+          </Button>
+        </form>
+      </Form>
+
+      <Separator className='mt-4' />
+
+      <Form {...productForm}>
+        <form
+          onSubmit={productForm.handleSubmit(handleProductSubmit)}
+          className='space-y-8 w-full mt-4'
+        >
+          <div className='flex items-center justify-between'>
             <h2 className='text-xl font-semibold tracking-tight'>
-              Variaciones
+              Variación Secundaria
             </h2>
 
-            <div className='grid grid-cols-3 gap-8 max-lg:grid-cols-2 max-md:grid-cols-1'>
-              <FormField
-                control={productMasterForm.control}
-                name='name'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nombre</FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled={isLoading}
-                        placeholder='Nombre del producto'
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={productMasterForm.control}
-                name='description'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Descripción</FormLabel>
-                    <FormControl>
-                      <Input
-                        disabled={isLoading}
-                        placeholder='Descripción del producto'
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={productMasterForm.control}
-                name='brandId'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Marca</FormLabel>
-                    <Select
-                      disabled={isLoading}
-                      // eslint-disable-next-line react/jsx-handler-names
-                      onValueChange={field.onChange}
-                      value={field.value}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue
-                            defaultValue={field.value}
-                            placeholder='Selecciona una marca'
-                          />
-                        </SelectTrigger>
-                      </FormControl>
-
-                      <SelectContent>
-                        {brands.map((brand) => (
-                          <SelectItem
-                            key={brand.id}
-                            value={brand.id}
-                            className='cursor-pointer'
-                          >
-                            {brand.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={productMasterForm.control}
-                name='categoryId'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Categoría</FormLabel>
-                    <Select
-                      disabled={isLoading}
-                      // eslint-disable-next-line react/jsx-handler-names
-                      onValueChange={(value) => {
-                        field.onChange(value)
-                        setCategoryId(value)
-                      }}
-                      value={field.value}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue
-                            defaultValue={field.value}
-                            placeholder='Selecciona una categoría'
-                          />
-                        </SelectTrigger>
-                      </FormControl>
-
-                      <SelectContent>
-                        {categories.map((category) => (
-                          <SelectItem
-                            key={category.id}
-                            value={category.id}
-                            className='cursor-pointer'
-                          >
-                            {category.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <Separator />
-
-            <h2 className='text-xl font-semibold tracking-tight'>
-              Variaciones
-            </h2>
-
-            <Button disabled={isLoading} type='submit'>
-              {action}
+            <Button
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                setMainProduct(null)
+                productForm.setValue('sizeCategoryId', '')
+                productForm.setValue('price', 0)
+                productForm.setValue('stock', 0)
+                productForm.setValue('state', PRODUCT_STATE.DISPONIBLE)
+              }}
+              className={cn(
+                'ml-4',
+                initialProductMaster && mainProductColor !== null
+                  ? 'flex'
+                  : 'hidden',
+              )}
+            >
+              <Plus className='mr-2 h-4 w-4' />
+              Nueva Variación Secundaria
             </Button>
-          </form>
-        </Form>
+          </div>
+
+          <div className='grid grid-cols-3 gap-8 max-lg:grid-cols-2 max-md:grid-cols-1'>
+            <FormField
+              control={productForm.control}
+              name='sizeCategoryId'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Talla/Tamaño</FormLabel>
+                  <Select
+                    disabled={
+                      isLoading ||
+                      (initialProductMaster !== null &&
+                        mainProductColor !== null &&
+                        mainProduct !== null)
+                    }
+                    // eslint-disable-next-line react/jsx-handler-names
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          defaultValue={field.value}
+                          placeholder='Selecciona una talla/tamaño'
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+
+                    <SelectContent>
+                      {sizesAvailable.map((sizeCategory) => (
+                        <SelectItem
+                          key={sizeCategory.id}
+                          value={sizeCategory.id}
+                          className='cursor-pointer'
+                        >
+                          {sizeCategory.size.name}
+                        </SelectItem>
+                      ))}
+                      {initialProductMaster && mainProduct !== null && (
+                        <SelectItem
+                          key={mainProduct?.sizeCategoryId!}
+                          value={mainProduct?.sizeCategoryId!}
+                          className='cursor-pointer'
+                        >
+                          {mainProduct?.sizeCategory.size.name}
+                        </SelectItem>
+                      )}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={productForm.control}
+              name='price'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Precio</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isLoading}
+                      type='number'
+                      placeholder='9.99'
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={productForm.control}
+              name='stock'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Stock</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isLoading}
+                      type='number'
+                      placeholder='3'
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={productForm.control}
+              name='state'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Estado</FormLabel>
+                  <Select
+                    disabled={isLoading}
+                    // eslint-disable-next-line react/jsx-handler-names
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          defaultValue={field.value}
+                          placeholder='Selecciona una estado'
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+
+                    <SelectContent>
+                      {productStates.map((state) => (
+                        <SelectItem
+                          key={state}
+                          value={state}
+                          className='cursor-pointer'
+                        >
+                          {state}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <Button
+            disabled={isLoading}
+            type='submit'
+            className={cn(initialProductMaster ? 'block' : 'hidden')}
+          >
+            {mainProduct !== null ? 'Actualizar' : 'Crear'}
+          </Button>
+        </form>
+      </Form>
+
+      <div className='ml-auto'>
+        <Button
+          disabled={isLoading}
+          type='submit'
+          className={cn(
+            'mt-6 w-[200px]',
+            initialProductMaster == null ? 'flex' : 'hidden',
+          )}
+          onClick={handleProductFormSubmit}
+        >
+          <Plus className='mr-2 h-4 w-4' />
+          Crear Producto
+        </Button>
       </div>
-    </>
+    </div>
   )
 }

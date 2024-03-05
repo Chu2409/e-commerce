@@ -32,7 +32,7 @@ const GroupProductCard: React.FC<GroupProductCardProps> = ({
 
   const router = useRouter()
   const handleClick = () => {
-    router.push(`/admin/products/${productMaster.id}`)
+    router.push(`/admin/products/${mainProduct.id}`)
   }
 
   const handleColorChange = (colorId: string) => {

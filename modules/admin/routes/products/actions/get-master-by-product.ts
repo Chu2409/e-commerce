@@ -3,13 +3,22 @@
 import prismadb from '@/lib/prismadb'
 import { IFullProductMaster } from '../interfaces/product'
 
-export const getProductsByMaster = async (
+export const getMasterByProduct = async (
   id: string,
 ): Promise<IFullProductMaster | null> => {
   try {
-    const productMaster = await prismadb.productMaster.findUnique({
+    const product = await prismadb.product.findUnique({
       where: {
         id,
+      },
+      include: {
+        productColor: true,
+      },
+    })
+
+    const productMaster = await prismadb.productMaster.findUnique({
+      where: {
+        id: product?.productColor.productMasterId,
       },
       include: {
         brand: true,
