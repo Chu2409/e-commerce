@@ -9,10 +9,10 @@ import { Customer } from '@prisma/client'
 import { useOrdersFilters } from '../store/filters'
 import { useEffect, useState } from 'react'
 import { DataTable } from '@/modules/admin/components/data-table'
-import { IOrderWithCustomer } from '../interfaces/order-with-customer'
+import { IFullOrder } from '../interfaces/order'
 
 export const OrdersClient = ({ customers }: { customers: Customer[] }) => {
-  const [data, setData] = useState<IOrderWithCustomer[]>([])
+  const [data, setData] = useState<Omit<IFullOrder, 'items'>[]>([])
 
   const filters = useOrdersFilters((state) => state.filters)
   const setFilter = useOrdersFilters((state) => state.setFilter)

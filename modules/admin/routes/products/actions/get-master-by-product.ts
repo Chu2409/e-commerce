@@ -45,7 +45,7 @@ export const getMasterByProduct = async (
 
     return productMaster
   } catch (error) {
-    console.log('[PRODUCTS_GET]', error)
+    console.log('[PRODUCT_MASTER_GET]', error)
     return null
   }
 }
