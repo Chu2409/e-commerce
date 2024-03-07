@@ -20,7 +20,7 @@ interface IFullProductColorOrder extends ProductColor {
   productMaster: IFullProductMasterOrder
 }
 
-interface IFullProductOrder extends Product {
+export interface IFullProductOrder extends Product {
   sizeCategory: IFullSize
   productColor: IFullProductColorOrder
 }
