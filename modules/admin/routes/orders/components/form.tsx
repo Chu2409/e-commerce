@@ -40,6 +40,8 @@ import {
 } from '@/components/ui/select'
 import { useItems } from '../store/items'
 import { CldImage } from 'next-cloudinary'
+import { createOrderWithItems } from '../actions/create-order-with-items'
+import { updateOrderWithItems } from '../actions/update-order-with-items'
 
 const orderStates = Object.values(ORDER_STATE).map((state) =>
   state.replace('_', ' '),
@@ -50,18 +52,21 @@ const payMethods = Object.values(PAY_METHOD).map((method) =>
 )
 
 const formSchema = z.object({
-  date: z.date().optional(),
-  state: z.enum(orderStates as any),
-  payMethod: z.enum(payMethods as any).optional(),
-  payLimit: z.date().optional(),
-  valuePaid: z.coerce.number().optional(),
-  total: z.coerce.number().optional(),
-  finalTotal: z.coerce.number().optional(),
+  date: z.date(),
+  state: z.enum(orderStates as any).default(ORDER_STATE.GENERADO),
+  payMethod: z
+    .enum(payMethods as any)
+    .optional()
+    .nullable(),
+  payLimit: z.date().optional().nullable(),
+  valuePaid: z.coerce.number().optional().nullable(),
+  total: z.coerce.number(),
+  finalTotal: z.coerce.number(),
   customerId: z.string().min(1, { message: 'Ingrese un cliente' }),
   items: z
     .array(
       z.object({
-        id: z.string(),
+        productId: z.string(),
         quantity: z.number(),
       }),
     )
@@ -82,19 +87,16 @@ export const OrderForm: React.FC<OrderFormProps> = ({
     defaultValues: initialData
       ? {
           ...initialData,
-          date: initialData.date || undefined,
-          payMethod: initialData.payMethod || undefined,
-          payLimit: initialData.payLimit || undefined,
-          valuePaid: initialData.valuePaid || undefined,
-          total: initialData.total || undefined,
-          finalTotal: initialData.finalTotal || undefined,
+          payMethod: initialData.payMethod?.replace('_', ' ') || undefined,
+          finalTotal: initialData.finalTotal.toFixed(2) as any,
           items: initialData.items.map((item) => ({
             id: item.product.id,
             quantity: item.quantity,
           })),
         }
       : {
-          state: ORDER_STATE.CANCELADO,
+          date: new Date(),
+          state: ORDER_STATE.GENERADO,
           customerId: '',
           items: [],
         },
@@ -103,6 +105,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({
   const items = useItems((state) => state.productItems)
   const setItems = useItems((state) => state.setProductItems)
   const removeItem = useItems((state) => state.removeProductItem)
+  const modifyQuantity = useItems((state) => state.modifyQuantity)
 
   const [total, setTotal] = useState(0)
 
@@ -116,10 +119,15 @@ export const OrderForm: React.FC<OrderFormProps> = ({
       return acc + item.product.price * item.quantity
     }, 0)
     setTotal(total)
+    form.setValue('total', total)
+    form.setValue('finalTotal', total.toFixed(2) as any)
 
     form.setValue(
       'items',
-      items.map((item) => ({ id: item.product.id, quantity: item.quantity })),
+      items.map((item) => ({
+        productId: item.product.id,
+        quantity: item.quantity,
+      })),
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items])
@@ -133,6 +141,45 @@ export const OrderForm: React.FC<OrderFormProps> = ({
   const description = initialData ? 'Actualizar orden' : 'Agregar nueva orden'
   const toastMessage = initialData ? 'Orden actualizado' : 'Orden creada'
   const action = initialData ? 'Actualizar' : 'Crear'
+
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    console.log(data)
+
+    try {
+      let result
+
+      if (initialData) {
+        result = await updateOrderWithItems(initialData.id, {
+          ...data,
+          state: data.state.replace(' ', '_') as ORDER_STATE,
+          payLimit: data.payLimit || null,
+          payMethod: data.payMethod || null,
+          valuePaid: data.valuePaid || null,
+        })
+      } else {
+        result = await createOrderWithItems({
+          ...data,
+          state: data.state.replace(' ', '_') as ORDER_STATE,
+          payLimit: data.payLimit || null,
+          payMethod: data.payMethod || null,
+          valuePaid: data.valuePaid || null,
+        })
+      }
+      console.log(result)
+
+      if (result == null) {
+        throw new Error()
+      }
+
+      router.push('/admin/orders')
+      router.refresh()
+      toast.success(toastMessage)
+    } catch (error) {
+      toast.error('Error al crear la orden')
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   return (
     <>
@@ -162,7 +209,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({
       <Form {...form}>
         <form
           className='space-y-8 w-full mt-4'
-          onSubmit={form.handleSubmit(() => {})}
+          onSubmit={form.handleSubmit(onSubmit)}
         >
           <div className='grid grid-cols-1 min-[1050px]:grid-cols-[1fr_600px] gap-8'>
             <div className='grid gap-8 items-start grid-cols-1 min-[1300px]:grid-cols-2'>
@@ -260,7 +307,6 @@ export const OrderForm: React.FC<OrderFormProps> = ({
                       // eslint-disable-next-line react/jsx-handler-names
                       onValueChange={field.onChange}
                       value={field.value}
-                      defaultValue={field.value}
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -340,10 +386,11 @@ export const OrderForm: React.FC<OrderFormProps> = ({
                     <FormLabel>Valor Pagado</FormLabel>
                     <FormControl>
                       <Input
+                        {...field}
+                        value={field.value || ''}
                         disabled={isLoading}
                         type='number'
                         placeholder='Ingrese el valor pagado'
-                        {...field}
                       />
                     </FormControl>
                     <FormMessage />
@@ -380,6 +427,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({
                     <FormControl>
                       <Input
                         {...field}
+                        value={field.value || ''}
                         disabled={isLoading}
                         type='number'
                         placeholder='Ingrese el valor total final'
@@ -447,7 +495,14 @@ export const OrderForm: React.FC<OrderFormProps> = ({
                             <div className='flex items-center'>
                               <div
                                 className='relative group'
-                                onClick={() => removeItem(item.product.id)}
+                                onClick={() => {
+                                  if (
+                                    initialData == null ||
+                                    initialData.state === ORDER_STATE.GENERADO
+                                  ) {
+                                    removeItem(item.product.id)
+                                  }
+                                }}
                               >
                                 <CldImage
                                   src={
@@ -457,10 +512,23 @@ export const OrderForm: React.FC<OrderFormProps> = ({
                                   width={90}
                                   height={90}
                                   alt='Image'
-                                  className='aspect-square object-cover rounded-md w-full h-auto transition duration-300 ease-in-out group-hover:opacity-50 '
+                                  className={cn(
+                                    'aspect-square object-cover rounded-md w-full h-auto',
+                                    (initialData == null ||
+                                      initialData.state ===
+                                        ORDER_STATE.GENERADO) &&
+                                      ' transition duration-300 ease-in-out group-hover:opacity-50',
+                                  )}
                                 />
 
-                                <div className='absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 ease-in-out cursor-pointer'>
+                                <div
+                                  className={cn(
+                                    initialData == null ||
+                                      initialData.state === ORDER_STATE.GENERADO
+                                      ? 'absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 ease-in-out cursor-pointer'
+                                      : 'hidden',
+                                  )}
+                                >
                                   <Trash className='h-6 w-6' />
                                 </div>
                               </div>
@@ -477,27 +545,65 @@ export const OrderForm: React.FC<OrderFormProps> = ({
                                   </span>
                                 </p>
 
-                                <p className='text-sm text-gray-600'>
-                                  Stock:{' '}
-                                  <span className='font-medium'>
-                                    {item.product.stock}
-                                  </span>
-                                </p>
-
-                                <p className='text-sm text-gray-600'>
-                                  Estado:{' '}
-                                  <span className='capitalize font-medium'>
-                                    {item.product.state
-                                      .replace('_', ' ')
-                                      .toLowerCase()}
-                                  </span>
-                                </p>
+                                {initialData != null &&
+                                initialData.state !== ORDER_STATE.GENERADO ? (
+                                  <p className='text-sm text-gray-600'>
+                                    Solicitud:{' '}
+                                    <span className='font-medium capitalize'>
+                                      {item?.state
+                                        ?.replace('_', ' ')
+                                        .toLowerCase()}
+                                    </span>
+                                  </p>
+                                ) : (
+                                  <>
+                                    <p className='text-sm text-gray-600'>
+                                      Stock:{' '}
+                                      <span className='font-medium'>
+                                        {item.product.stock}
+                                      </span>
+                                    </p>
+                                    <p className='text-sm text-gray-600'>
+                                      Estado:{' '}
+                                      <span className='capitalize font-medium'>
+                                        {item.product.state
+                                          .replace('_', ' ')
+                                          .toLowerCase()}
+                                      </span>
+                                    </p>
+                                  </>
+                                )}
                               </div>
                             </div>
 
-                            <div className='flex items-center'>
+                            <div className='flex items-center gap-4'>
+                              <Input
+                                type='number'
+                                value={item.quantity}
+                                disabled={
+                                  isLoading ||
+                                  (initialData != null &&
+                                    initialData.state !== ORDER_STATE.GENERADO)
+                                }
+                                min={1}
+                                max={
+                                  item.product.stock === 0
+                                    ? 10
+                                    : item.product.stock
+                                }
+                                onChange={(e) => {
+                                  modifyQuantity(
+                                    item.product.id,
+                                    +e.target.value,
+                                  )
+                                }}
+                                className='w-[60px] h-[30px] rounded-md'
+                              />
+
                               <p className='text-sm font-semibold'>
-                                {formatMoney(item.product.price)}
+                                {formatMoney(
+                                  item.product.price * item.quantity,
+                                )}
                               </p>
                               <ShoppingCart className='ml-2 h-4 w-4 shrink-0 opacity-50' />
                             </div>

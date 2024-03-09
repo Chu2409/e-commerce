@@ -91,6 +91,13 @@ const GroupProductCard: React.FC<GroupProductCardProps> = ({
           Stock:
           <span className='font-semibold'>{mainProduct.stock}</span>
         </div>
+
+        <p className='text-sm text-gray-600'>
+          Estado:{' '}
+          <span className='capitalize font-medium'>
+            {mainProduct.state.replace('_', ' ').toLowerCase()}
+          </span>
+        </p>
       </div>
 
       <div className='flex items-center justify-between font-semibold'>

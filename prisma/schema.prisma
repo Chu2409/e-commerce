@@ -42,13 +42,13 @@ model Customer {
 
 model Order {
   id         String      @id @default(uuid()) @map("id")
-  date       DateTime?   @map("date")
+  date       DateTime    @map("date")
   state      ORDER_STATE @default(PENDIENTE) @map("state")
   payMethod  PAY_METHOD? @map("pay_method")
   payLimit   DateTime?   @map("pay_limit")
   valuePaid  Float?      @map("value_paid")
-  total      Float?      @map("total")
-  finalTotal Float?      @map("final_total")
+  total      Float       @map("total")
+  finalTotal Float       @map("final_total")
 
   customerId String   @map("customer_id")
   customer   Customer @relation(fields: [customerId], references: [id])
@@ -62,9 +62,9 @@ model Order {
 }
 
 enum ORDER_STATE {
+  GENERADO
   PENDIENTE
-  CANCELADO
-  SOLICITADO
+  FINALIZADO
 }
 
 enum PAY_METHOD {
@@ -74,11 +74,13 @@ enum PAY_METHOD {
 }
 
 model Item {
-  id       String @id @default(uuid()) @map("id")
-  quantity Int    @default(1) @map("quantity")
+  id        String        @id @default(uuid()) @map("id")
+  quantity  Int           @default(1) @map("quantity")
+  delivered Boolean       @default(false) @map("delivered")
+  state     PRODUCT_STATE @default(DISPONIBLE) @map("state")
 
   orderId   String  @map("order_id")
-  order     Order   @relation(fields: [orderId], references: [id])
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
   productId String  @map("product_id")
   product   Product @relation(fields: [productId], references: [id])
 
@@ -111,6 +113,7 @@ model Product {
 enum PRODUCT_STATE {
   DISPONIBLE
   BAJO_PEDIDO
+  NO_DISPONIBLE
 }
 
 model ProductColor {

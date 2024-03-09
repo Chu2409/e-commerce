@@ -39,7 +39,7 @@ export const OrdersClient = ({ customers }: { customers: Customer[] }) => {
       <Header
         title='Órdenes'
         description='Administra tus órdenes'
-        buttonLabel='Nueva Órden'
+        buttonLabel='Nueva Orden'
       />
 
       <Separator className='my-4' />
