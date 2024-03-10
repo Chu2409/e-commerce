@@ -3,9 +3,7 @@
 import prismadb from '@/lib/prismadb'
 import { Category } from '@prisma/client'
 
-export const createCategory = async (
-  data: Pick<Category, 'name' | 'active'>,
-) => {
+export const createCategory = async (data: Pick<Category, 'name'>) => {
   try {
     const category = await prismadb.category.create({
       data: {

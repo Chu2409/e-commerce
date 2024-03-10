@@ -21,12 +21,17 @@ export const DateFilter = ({
   const setFilter = useOrdersFilters((state) => state.setFilter)
 
   const onChange = (date: DateRange | undefined) => {
-    setFilter({ key: 'dateFrom', value: date?.from })
+    if (date?.from == null) return
 
-    if (date?.to !== undefined) {
-      setFilter({ key: 'dateTo', value: date?.to })
+    setFilter({ key: 'dateFrom', value: date.from })
+    if (date.to != null) {
+      const endDate = new Date(date.to)
+      endDate.setHours(23, 59, 59)
+      setFilter({ key: 'dateTo', value: endDate })
     } else {
-      setFilter({ key: 'dateTo', value: date?.from })
+      const endDate = new Date(date.from)
+      endDate.setHours(23, 59, 59)
+      setFilter({ key: 'dateTo', value: endDate })
     }
   }
 

@@ -10,7 +10,10 @@ export const getOrders = async (
   try {
     const orders = await prismadb.order.findMany({
       where: {
-        date: filters?.dateFrom,
+        date: {
+          gte: filters?.dateFrom,
+          lte: filters?.dateTo,
+        },
         state: filters?.state,
         payMethod: filters?.payMethod,
         customerId: filters?.customerId,
@@ -20,6 +23,9 @@ export const getOrders = async (
       },
       take: filters?.take || 11,
       skip: filters?.skip || 0,
+      orderBy: {
+        createdAt: 'desc',
+      },
     })
 
     // return orders.length ? orders : ordersE

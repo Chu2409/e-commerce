@@ -11,6 +11,7 @@ export const createProduct = async (
       data: {
         ...data,
         state: data.state.replace(' ', '_') as PRODUCT_STATE,
+        stock: data.state === PRODUCT_STATE.DISPONIBLE ? data.stock : 0,
       },
     })
 

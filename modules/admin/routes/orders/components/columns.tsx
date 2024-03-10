@@ -4,8 +4,8 @@ import { formatDateHours, formatMoney } from '@/lib/utils'
 import { ColumnDef } from '@tanstack/react-table'
 import { Button } from '@/components/ui/button'
 import { ArrowUpDown } from 'lucide-react'
-import { CellActions } from '@/modules/admin/components/cell-actions'
 import { IFullOrder } from '../interfaces/order'
+import { OrderCellActions } from './cell-actions'
 
 export const ordersColumns: ColumnDef<Omit<IFullOrder, 'items'>>[] = [
   {
@@ -29,6 +29,36 @@ export const ordersColumns: ColumnDef<Omit<IFullOrder, 'items'>>[] = [
       const date = row.original.date
       if (date == null) return
       return <div>{formatDateHours(date)}</div>
+    },
+  },
+  {
+    accessorKey: 'customerId',
+    header: 'Cliente',
+    cell: ({ row }) => {
+      const customer = row.original.customer
+      return <div>{`${customer.firstName} ${customer.lastName}`} </div>
+    },
+  },
+  {
+    accessorKey: 'total',
+    header: 'Total',
+    cell: ({ row }) => {
+      const data = row.original.total
+      if (data == null) return
+      const amount = parseFloat(String(data))
+
+      return <div>{formatMoney(amount)}</div>
+    },
+  },
+  {
+    accessorKey: 'finalTotal',
+    header: 'Total final',
+    cell: ({ row }) => {
+      const data = row.original.finalTotal
+      if (data == null) return
+      const amount = parseFloat(String(data))
+
+      return <div>{formatMoney(amount)}</div>
     },
   },
   {
@@ -60,44 +90,8 @@ export const ordersColumns: ColumnDef<Omit<IFullOrder, 'items'>>[] = [
     },
   },
   {
-    accessorKey: 'total',
-    header: 'Total',
-    cell: ({ row }) => {
-      const data = row.original.total
-      if (data == null) return
-      const amount = parseFloat(String(data))
-
-      return <div>{formatMoney(amount)}</div>
-    },
-  },
-  {
-    accessorKey: 'finalTotal',
-    header: 'Total final',
-    cell: ({ row }) => {
-      const data = row.original.finalTotal
-      if (data == null) return
-      const amount = parseFloat(String(data))
-
-      return <div>{formatMoney(amount)}</div>
-    },
-  },
-  {
-    accessorKey: 'customerId',
-    header: 'Cliente',
-    cell: ({ row }) => {
-      const customer = row.original.customer
-      return <div>{`${customer.firstName} ${customer.lastName}`} </div>
-    },
-  },
-  {
     header: 'Acciones',
     id: 'actions',
-    cell: ({ row }) => (
-      <CellActions
-        id={row.original.id}
-        message='Órden eliminada'
-        onDelete={() => Promise.resolve(true)}
-      />
-    ),
+    cell: ({ row }) => <OrderCellActions id={row.original.id} />,
   },
 ]

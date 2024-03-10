@@ -11,7 +11,7 @@ export const OrdersFilters = ({ customers }: { customers: Customer[] }) => {
   const clearFilters = useOrdersFilters((state) => state.clearFilters)
 
   return (
-    <div className='flex items-center justify-between '>
+    <div className='flex items-center justify-between'>
       <div className='grid grid-cols-5 max-2xl:grid-cols-4 max-xl:grid-cols-3 gap-x-4 max-lg:grid max-lg:grid-cols-2 max-sm:grid-cols-1 gap-y-4 mb-4'>
         <DateFilter />
         <StateFilter />

@@ -134,10 +134,9 @@ model ProductColor {
 }
 
 model Color {
-  id     String  @id @default(uuid()) @map("id")
-  name   String  @unique @map("name")
-  value  String  @unique @map("value")
-  active Boolean @default(true) @map("active")
+  id    String @id @default(uuid()) @map("id")
+  name  String @unique @map("name")
+  value String @unique @map("value")
 
   productsColors ProductColor[]
 
@@ -195,9 +194,8 @@ model Size {
 }
 
 model Category {
-  id     String  @id @default(uuid()) @map("id")
-  name   String  @unique @map("name")
-  active Boolean @default(true) @map("active")
+  id   String @id @default(uuid()) @map("id")
+  name String @unique @map("name")
 
   productsMaster  ProductMaster[]
   sizesCategories SizeCategory[]
@@ -209,9 +207,8 @@ model Category {
 }
 
 model Brand {
-  id     String  @id @default(uuid()) @map("id")
-  name   String  @unique @map("name")
-  active Boolean @default(true) @map("active")
+  id   String @id @default(uuid()) @map("id")
+  name String @unique @map("name")
 
   productsMaster ProductMaster[]
 

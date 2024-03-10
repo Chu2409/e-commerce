@@ -9,7 +9,6 @@ import { SketchPicker } from 'react-color'
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -22,7 +21,6 @@ import { Trash } from 'lucide-react'
 import { useState } from 'react'
 import { Separator } from '@/components/ui/separator'
 import { Input } from '@/components/ui/input'
-import { Checkbox } from '@/components/ui/checkbox'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { updateColor } from '../actions/update-color'
@@ -43,7 +41,6 @@ const formSchema = z.object({
     .string()
     .min(7, { message: 'Mínimo 7 caracteres' })
     .max(7, { message: 'Máximo 7 caracteres' }),
-  active: z.boolean().default(true),
 })
 
 interface ColorFormProps {
@@ -60,7 +57,6 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
       : {
           name: '',
           value: '#1ec9c9',
-          active: true,
         },
   })
 
@@ -189,29 +185,6 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
                       />
                     </PopoverContent>
                   </Popover>
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name='active'
-              render={({ field }) => (
-                <FormItem className='flex flex-row items-center space-x-3 space-y-0 rounded-md border p-4'>
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      // eslint-disable-next-line react/jsx-handler-names
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-
-                  <div className='space-y-1 leading-none'>
-                    <FormLabel>Activo</FormLabel>
-                    <FormDescription>
-                      Esta color estará disponible para su uso
-                    </FormDescription>
-                  </div>
                 </FormItem>
               )}
             />

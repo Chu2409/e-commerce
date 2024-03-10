@@ -114,14 +114,12 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
     ) || null,
   )
 
-  const [colorsAvailable, setColorsAvailable] = useState<Color[]>(() => {
-    return colors.filter(
-      (color) =>
-        !initialProductMaster?.productsColors.some(
-          (productColor) => productColor.colorId === color.id,
-        ),
-    )
-  })
+  const colorsAvailable = colors.filter(
+    (color) =>
+      !initialProductMaster?.productsColors.some(
+        (productColor) => productColor.colorId === color.id,
+      ),
+  )
 
   const [sizesAvailable, setSizesAvailable] = useState<
     Omit<IFullSize, 'category'>[]
@@ -143,7 +141,6 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
         }
       }
       fetchSizes()
-      setColorsAvailable(colors)
     }
 
     return () => {
@@ -367,6 +364,14 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
       setIsLoading(false)
     }
   }
+
+  useEffect(() => {
+    const state = productForm.getValues('state')
+
+    if (state !== PRODUCT_STATE.DISPONIBLE) {
+      productForm.setValue('stock', 0)
+    }
+  }, [productForm.watch('state')])
 
   return (
     <div className='flex flex-col gap-y-4'>
@@ -786,7 +791,11 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
                   <FormLabel>Stock</FormLabel>
                   <FormControl>
                     <Input
-                      disabled={isLoading}
+                      disabled={
+                        isLoading ||
+                        productForm.getValues('state') !==
+                          PRODUCT_STATE.DISPONIBLE
+                      }
                       type='number'
                       placeholder='3'
                       {...field}

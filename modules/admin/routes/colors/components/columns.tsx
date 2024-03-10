@@ -40,24 +40,6 @@ export const colorsColumns: ColumnDef<Color>[] = [
     },
   },
   {
-    accessorKey: 'active',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant='ghost'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          className='font-bold m-0 p-0'
-        >
-          Estado
-          <ArrowUpDown className='ml-2 h-4 w-4' />
-        </Button>
-      )
-    },
-    cell: ({ row }) => {
-      return row.original.active ? 'Activo' : 'Inactivo'
-    },
-  },
-  {
     header: 'Acciones',
     id: 'actions',
     cell: ({ row }) => (

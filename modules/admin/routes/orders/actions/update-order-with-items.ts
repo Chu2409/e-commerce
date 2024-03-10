@@ -1,9 +1,8 @@
 'use server'
 
 import prismadb from '@/lib/prismadb'
-import { Item, ORDER_STATE, Order } from '@prisma/client'
+import { ORDER_STATE, Order, PAY_METHOD } from '@prisma/client'
 import { decrementProductQuantity } from '../utils/decrement-product-quantity'
-import { incrementProductQuantity } from '../utils/increment-product-quantity'
 
 interface UpdateOrderProps
   extends Omit<Order, 'id' | 'createdAt' | 'updatedAt'> {
@@ -21,104 +20,90 @@ export const updateOrderWithItems = async (
     const { items, ...orderData } = data
 
     return await prismadb.$transaction(async (prisma) => {
-      const order = await prisma.order.update({
+      const order = await prisma.order.findUnique({
+        where: {
+          id,
+        },
+      })
+
+      const orderUpdated = await prisma.order.update({
         where: {
           id,
         },
         data: {
           ...orderData,
-        },
-        include: {
-          items: true,
+          payMethod:
+            orderData.state === ORDER_STATE.GENERADO
+              ? null
+              : orderData.payMethod || PAY_METHOD.EFECTIVO,
         },
       })
+      console.log('1')
 
-      const itemsToDelete = order.items.filter(
-        (item) =>
-          !items.some((newItem) => newItem.productId === item.productId),
-      )
-      for (const item of itemsToDelete) {
-        await prisma.item.delete({
+      if (orderData.state === ORDER_STATE.GENERADO) {
+        console.log('2')
+
+        await prisma.order.update({
           where: {
-            id: item.id,
+            id,
           },
-        })
-        if (order.state === ORDER_STATE.CANCELADO) {
-          await incrementProductQuantity({
-            prisma,
-            productId: item.productId,
-            quantity: item.quantity,
-          })
-        }
-      }
-
-      const itemsToCreate = items.filter(
-        (newItem) =>
-          !order.items.some((item) => item.productId === newItem.productId),
-      )
-      for (const item of itemsToCreate) {
-        await prisma.item.create({
           data: {
-            orderId: id,
-            productId: item.productId,
-            quantity: item.quantity,
+            items: {
+              deleteMany: {},
+            },
           },
         })
 
-        if (order.state === ORDER_STATE.CANCELADO) {
+        await prisma.order.update({
+          where: {
+            id,
+          },
+          data: {
+            items: {
+              createMany: {
+                data: items.map(({ productId, quantity }) => ({
+                  productId,
+                  quantity,
+                })),
+              },
+            },
+          },
+        })
+      } else {
+        console.log('3')
+
+        if (
+          order?.state === ORDER_STATE.PENDIENTE ||
+          order?.state === ORDER_STATE.FINALIZADO
+        )
+          return orderUpdated
+
+        console.log('4')
+
+        for (const { productId, quantity } of items) {
+          const product = await prisma.product.findUnique({
+            where: { id: productId },
+          })
+
+          await prisma.item.updateMany({
+            where: {
+              productId,
+              orderId: id,
+            },
+            data: {
+              state: product?.state,
+            },
+          })
+
           await decrementProductQuantity({
             prisma,
-            productId: item.productId,
-            quantity: item.quantity,
+            productId,
+            quantity,
           })
         }
       }
 
-      if (order.state === ORDER_STATE.CANCELADO) {
-        const itemsToUpdate = items.filter((newItem) =>
-          order.items.some((item) => item.productId === newItem.productId),
-        )
-
-        console.log('itemsToUpdate', itemsToUpdate)
-
-        for (const item of itemsToUpdate) {
-          const oldItem = order.items.find(
-            (oldItem) => oldItem.productId === item.productId,
-          ) as Item
-
-          console.log('oldItem', oldItem)
-
-          if (order.state === ORDER_STATE.CANCELADO) {
-            await decrementProductQuantity({
-              prisma,
-              productId: item.productId,
-              quantity: item.quantity,
-            })
-
-            continue
-          }
-
-          if (oldItem.quantity === item.quantity) {
-            continue
-          }
-
-          if (oldItem.quantity > item.quantity) {
-            await incrementProductQuantity({
-              prisma,
-              productId: item.productId,
-              quantity: oldItem.quantity - item.quantity,
-            })
-          } else {
-            await decrementProductQuantity({
-              prisma,
-              productId: item.productId,
-              quantity: item.quantity - oldItem.quantity,
-            })
-          }
-        }
-      }
-
-      return order
+      return orderUpdated
     })
   } catch (error) {
     console.log('[ORDER_UPDATE]', error)

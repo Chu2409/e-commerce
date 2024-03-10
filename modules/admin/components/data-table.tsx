@@ -75,9 +75,9 @@ export const DataTable = <TData, TValue>({
 
   return (
     <div>
-      <div className='flex items-center py-4 justify-between'>
+      <div className='flex items-center py-2 justify-between'>
         {keySearch ? (
-          <div className={cn('flex items-center py-4')}>
+          <div className={cn('flex items-center py-2')}>
             <Input
               placeholder='Filtrar...'
               value={
@@ -93,7 +93,7 @@ export const DataTable = <TData, TValue>({
 
         <div
           className={cn(
-            'flex items-center py-4 self-end ml-auto',
+            'flex items-center py-2 self-end ml-auto',
             visibility ? '' : 'hidden',
           )}
         >

@@ -3,7 +3,7 @@
 import prismadb from '@/lib/prismadb'
 import { Brand } from '@prisma/client'
 
-export const createBrand = async (data: Pick<Brand, 'name' | 'active'>) => {
+export const createBrand = async (data: Pick<Brand, 'name'>) => {
   try {
     const brand = await prismadb.brand.create({
       data: {

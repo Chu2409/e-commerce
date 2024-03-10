@@ -1,7 +1,7 @@
 'use server'
 
 import prismadb from '@/lib/prismadb'
-import { ORDER_STATE, Order } from '@prisma/client'
+import { ORDER_STATE, Order, PAY_METHOD } from '@prisma/client'
 import { decrementProductQuantity } from '../utils/decrement-product-quantity'
 
 interface CreateOrderProps
@@ -20,6 +20,10 @@ export const createOrderWithItems = async (data: CreateOrderProps) => {
       const order = await prisma.order.create({
         data: {
           ...orderData,
+          payMethod:
+            orderData.state === ORDER_STATE.GENERADO
+              ? null
+              : orderData.payMethod || PAY_METHOD.EFECTIVO,
         },
       })
 

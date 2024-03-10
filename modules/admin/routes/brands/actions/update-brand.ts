@@ -3,10 +3,7 @@
 import prismadb from '@/lib/prismadb'
 import { Brand } from '@prisma/client'
 
-export const updateBrand = async (
-  id: string,
-  data: Pick<Brand, 'name' | 'active'>,
-) => {
+export const updateBrand = async (id: string, data: Pick<Brand, 'name'>) => {
   try {
     const brand = await prismadb.brand.update({
       where: {

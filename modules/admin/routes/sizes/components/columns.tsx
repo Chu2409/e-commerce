@@ -1,8 +1,6 @@
 'use client'
 
 import { ColumnDef } from '@tanstack/react-table'
-import { Button } from '@/components/ui/button'
-import { ArrowUpDown } from 'lucide-react'
 import { CellActions } from '@/modules/admin/components/cell-actions'
 import { deleteSize } from '../actions/delete-size'
 import { IFullSize } from '../interfaces/size'
@@ -31,24 +29,6 @@ export const brandsColumns: ColumnDef<IFullSize>[] = [
     header: 'Categoría',
     cell: ({ row }) => {
       return row.original.category.name
-    },
-  },
-  {
-    accessorKey: 'active',
-    header: ({ column }) => {
-      return (
-        <Button
-          variant='ghost'
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-          className='font-bold m-0 p-0'
-        >
-          Estado
-          <ArrowUpDown className='ml-2 h-4 w-4' />
-        </Button>
-      )
-    },
-    cell: ({ row }) => {
-      return row.original.category.active ? 'Activo' : 'Inactivo'
     },
   },
   {

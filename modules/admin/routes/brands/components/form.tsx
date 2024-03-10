@@ -7,7 +7,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -20,7 +19,6 @@ import { Trash } from 'lucide-react'
 import { useState } from 'react'
 import { Separator } from '@/components/ui/separator'
 import { Input } from '@/components/ui/input'
-import { Checkbox } from '@/components/ui/checkbox'
 import { deleteBrand } from '../actions/delete-brand'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
@@ -32,7 +30,6 @@ const formSchema = z.object({
     .string()
     .min(3, { message: 'Mínimo 3 caracteres' })
     .max(100, { message: 'Máximo 100 caracteres' }),
-  active: z.boolean().default(true),
 })
 
 interface BrandFormProps {
@@ -48,7 +45,6 @@ export const BrandForm: React.FC<BrandFormProps> = ({ initialData }) => {
         }
       : {
           name: '',
-          active: true,
         },
   })
 
@@ -150,29 +146,6 @@ export const BrandForm: React.FC<BrandFormProps> = ({ initialData }) => {
                     />
                   </FormControl>
                   <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name='active'
-              render={({ field }) => (
-                <FormItem className='flex flex-row items-center space-x-3 space-y-0 rounded-md border p-4'>
-                  <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      // eslint-disable-next-line react/jsx-handler-names
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-
-                  <div className='space-y-1 leading-none'>
-                    <FormLabel>Activo</FormLabel>
-                    <FormDescription>
-                      Esta marca estará disponible para su uso
-                    </FormDescription>
-                  </div>
                 </FormItem>
               )}
             />

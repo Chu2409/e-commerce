@@ -42,6 +42,7 @@ import { useItems } from '../store/items'
 import { CldImage } from 'next-cloudinary'
 import { createOrderWithItems } from '../actions/create-order-with-items'
 import { updateOrderWithItems } from '../actions/update-order-with-items'
+import { deleteOrder } from '../actions/delete-order'
 
 const orderStates = Object.values(ORDER_STATE).map((state) =>
   state.replace('_', ' '),
@@ -53,7 +54,7 @@ const payMethods = Object.values(PAY_METHOD).map((method) =>
 
 const formSchema = z.object({
   date: z.date(),
-  state: z.enum(orderStates as any).default(ORDER_STATE.GENERADO),
+  state: z.enum(orderStates as any),
   payMethod: z
     .enum(payMethods as any)
     .optional()
@@ -120,7 +121,10 @@ export const OrderForm: React.FC<OrderFormProps> = ({
     }, 0)
     setTotal(total)
     form.setValue('total', total)
-    form.setValue('finalTotal', total.toFixed(2) as any)
+
+    if (initialData == null || initialData.state === ORDER_STATE.GENERADO) {
+      form.setValue('finalTotal', total.toFixed(2) as any)
+    }
 
     form.setValue(
       'items',
@@ -143,8 +147,6 @@ export const OrderForm: React.FC<OrderFormProps> = ({
   const action = initialData ? 'Actualizar' : 'Crear'
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
-    console.log(data)
-
     try {
       let result
 
@@ -181,18 +183,41 @@ export const OrderForm: React.FC<OrderFormProps> = ({
     }
   }
 
+  const onDelete = async () => {
+    try {
+      setIsLoading(true)
+
+      if (initialData?.state !== ORDER_STATE.GENERADO) return
+
+      const deleted = await deleteOrder(initialData?.id!)
+
+      if (!deleted) {
+        throw new Error()
+      }
+
+      router.push('/admin/orders')
+      router.refresh()
+      toast.success('Orden eliminada')
+    } catch (error) {
+      toast.error('Algo salió mal')
+    } finally {
+      setIsLoading(false)
+      setIsOpen(false)
+    }
+  }
+
   return (
     <>
       <AlertModal
         isOpen={isOpen}
         isLoading={isLoading}
         onClose={() => setIsOpen(false)}
-        onConfirm={() => {}}
+        onConfirm={onDelete}
       />
 
       <div className='flex items-center justify-between'>
         <Heading title={title} description={description} />
-        {initialData && (
+        {initialData && initialData.state === ORDER_STATE.GENERADO && (
           <Button
             disabled={isLoading}
             variant='destructive'
@@ -280,15 +305,32 @@ export const OrderForm: React.FC<OrderFormProps> = ({
                       </FormControl>
 
                       <SelectContent>
-                        {orderStates.map((state) => (
+                        {(initialData == null ||
+                          initialData?.state === ORDER_STATE.GENERADO) && (
                           <SelectItem
-                            key={state}
-                            value={state}
+                            value={orderStates[0]}
                             className='cursor-pointer'
                           >
-                            {state}
+                            {orderStates[0]}
                           </SelectItem>
-                        ))}
+                        )}
+
+                        {(initialData == null ||
+                          initialData?.state !== ORDER_STATE.FINALIZADO) && (
+                          <SelectItem
+                            value={orderStates[1]}
+                            className='cursor-pointer'
+                          >
+                            {orderStates[1]}
+                          </SelectItem>
+                        )}
+
+                        <SelectItem
+                          value={orderStates[2]}
+                          className='cursor-pointer'
+                        >
+                          {orderStates[2]}
+                        </SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />

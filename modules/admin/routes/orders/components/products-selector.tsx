@@ -70,6 +70,8 @@ export const ProductsSelector: React.FC<ProductsSelectorProps> = ({
                   addItem({
                     product,
                     quantity: 1,
+                    delivered: false,
+                    state: product.state,
                   })
                 }}
                 className='cursor-pointer'
