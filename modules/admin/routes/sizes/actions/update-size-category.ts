@@ -3,7 +3,7 @@
 import prismadb from '@/lib/prismadb'
 import { Size } from '@prisma/client'
 
-export const updateSize = async (
+export const updateSizeCategory = async (
   id: string,
   data: Pick<Size, 'name' | 'value'>,
 ) => {
@@ -46,7 +46,7 @@ export const updateSize = async (
 
     return sizeByCategory
   } catch (error: any) {
-    console.log('[UPDATE_SIZE]', error.message)
+    console.log('[UPDATE_SIZE_CATEGORY]', error.message)
     return null
   }
 }

@@ -2,7 +2,7 @@
 
 import prismadb from '@/lib/prismadb'
 
-export const deleteSize = async (id: string) => {
+export const deleteSizeCategory = async (id: string) => {
   try {
     const size = await prismadb.sizeCategory.delete({
       where: {
@@ -12,7 +12,7 @@ export const deleteSize = async (id: string) => {
 
     return !!size
   } catch (error: any) {
-    console.log('[DELETE_SIZE]', error.message)
+    console.log('[DELETE_SIZE_CATEGORY]', error.message)
     return false
   }
 }

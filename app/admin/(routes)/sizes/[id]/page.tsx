@@ -1,6 +1,9 @@
 import { getCategories } from '@/modules/admin/routes/categories/actions/get-categories'
-import { getSize } from '@/modules/admin/routes/sizes/actions/get-size'
+import { getSizeCategory } from '@/modules/admin/routes/sizes/actions/get-size-category'
+import { getSizes } from '@/modules/admin/routes/sizes/actions/get-sizes'
 import { SizeForm } from '@/modules/admin/routes/sizes/components/form'
+
+export const revalidate = 0
 
 const SizePage = async ({
   params,
@@ -9,14 +12,17 @@ const SizePage = async ({
     id: string
   }
 }) => {
-  const size = await getSize(params.id)
+  const sizeCategory = await getSizeCategory(params.id)
   const categories = await getCategories()
+  const sizes = await getSizes()
 
   return (
-    <div className='flex flex-col'>
-      <div className='p-8 pt-6 flex flex-col flex-1'>
-        <SizeForm initialData={size} categories={categories} />
-      </div>
+    <div className='p-8 pt-6 grid'>
+      <SizeForm
+        initialData={sizeCategory}
+        categories={categories}
+        sizes={sizes}
+      />
     </div>
   )
 }

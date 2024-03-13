@@ -3,7 +3,9 @@
 import prismadb from '@/lib/prismadb'
 import { IFullSize } from '../interfaces/size'
 
-export const getSize = async (id: string): Promise<IFullSize | null> => {
+export const getSizeCategory = async (
+  id: string,
+): Promise<IFullSize | null> => {
   try {
     const size = await prismadb.sizeCategory.findUnique({
       where: {
@@ -17,7 +19,7 @@ export const getSize = async (id: string): Promise<IFullSize | null> => {
 
     return size
   } catch (error: any) {
-    console.log('[GET_SIZE]', error.message)
+    console.log('[GET_SIZE_CATEGORY]', error.message)
     return null
   }
 }
