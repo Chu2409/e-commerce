@@ -10,7 +10,7 @@ export const CustomersClient = ({ customers }: { customers: Customer[] }) => {
       <Header
         title='Clientes'
         description='Administra tus clientes'
-        buttonLabel='Nuevo cliente'
+        buttonLabel='Nuevo'
       />
 
       <Separator className='my-4' />

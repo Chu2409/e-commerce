@@ -43,7 +43,7 @@ export const ProductsClient = ({
       <Header
         title='Productos'
         description='Administra tus productos'
-        buttonLabel='Nuevo Producto'
+        buttonLabel='Nuevo'
       />
 
       <Separator className='my-4' />

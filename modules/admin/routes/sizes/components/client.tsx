@@ -34,9 +34,9 @@ export const SizesClient = ({ categories }: { categories: Category[] }) => {
   return (
     <div>
       <Header
-        title='Tallas/Tamaños'
+        title='Tallas y Tamaños'
         description='Administra las tallas y tamaños'
-        buttonLabel='Nueva Talla/Tamaño'
+        buttonLabel='Nuevo'
       />
 
       <Separator className='my-4' />

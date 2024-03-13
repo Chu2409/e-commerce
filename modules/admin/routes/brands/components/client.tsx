@@ -10,7 +10,7 @@ export const BrandsClient = ({ brands }: { brands: Brand[] }) => {
       <Header
         title='Marcas'
         description='Administra tus marcas'
-        buttonLabel='Nueva Marca'
+        buttonLabel='Nueva'
       />
 
       <Separator className='my-4' />

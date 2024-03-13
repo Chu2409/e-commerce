@@ -21,7 +21,7 @@ export const ProductsFilters = ({
   const clearFilters = useProductsFilters((state) => state.clearFilters)
 
   return (
-    <div className='flex items-center justify-between '>
+    <div className='flex items-center justify-between'>
       <div className='w-full gap-y-4 gap-x-4 mb-4 grid grid-cols-1 max-[700px]:justify-items-center min-[700px]:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'>
         <StateFilter />
         <BrandFilter brands={brands} />
