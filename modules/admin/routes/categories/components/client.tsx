@@ -14,7 +14,7 @@ export const CategoriesClient = ({
       <Header
         title='Categorías'
         description='Administra tus categorías'
-        buttonLabel='Nueva Categoría'
+        buttonLabel='Nueva'
       />
 
       <Separator className='my-4' />

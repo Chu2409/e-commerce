@@ -285,10 +285,8 @@ export const SizeForm: React.FC<SizeFormProps> = ({
                   }}
                 >
                   <div className='flex items-center gap-x-2'>
-                    <h3 className='text-base font-medium text-gray-800'>
-                      {size.name}
-                    </h3>
-                    <p className='text-base text-gray-500'>{size.value}</p>
+                    <h3 className='text-sm font-medium'>{size.name}</h3>
+                    <p className='text-sm text-gray-500'>{size.value}</p>
                   </div>
                 </CommandItem>
               ))}

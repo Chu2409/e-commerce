@@ -38,7 +38,7 @@ export const OrdersClient = ({ customers }: { customers: Customer[] }) => {
       <Header
         title='Órdenes'
         description='Administra tus órdenes'
-        buttonLabel='Nueva Orden'
+        buttonLabel='Nueva'
       />
 
       <Separator className='my-4' />

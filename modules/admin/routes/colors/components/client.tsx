@@ -10,7 +10,7 @@ export const ColorsClient = ({ colors }: { colors: Color[] }) => {
       <Header
         title='Colores'
         description='Administra tus colores'
-        buttonLabel='Nueva Color'
+        buttonLabel='Nuevo'
       />
 
       <Separator className='my-4' />
