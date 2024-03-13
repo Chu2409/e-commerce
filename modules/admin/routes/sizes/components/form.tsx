@@ -1,6 +1,6 @@
 'use client'
 
-import { Category } from '@prisma/client'
+import { Category, Size } from '@prisma/client'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -28,18 +28,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { deleteSize } from '../actions/delete-size'
-import { updateSize } from '../actions/update-size'
-import { createSize } from '../actions/create-size'
+import { deleteSizeCategory } from '../actions/delete-size-category'
+import { updateSizeCategory } from '../actions/update-size-category'
+import { createSizeCategory } from '../actions/create-size-category'
 import { IFullSize } from '../interfaces/size'
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command'
 
 const formSchema = z.object({
   name: z
     .string()
     .min(3, { message: 'Mínimo 3 caracteres' })
     .max(100, { message: 'Máximo 100 caracteres' }),
-  value: z.string().min(1, { message: 'Mínimo 1 caracter' }).max(100, {
-    message: 'Máximo 100 caracteres',
+  value: z.string().min(1, { message: 'Mínimo 1 caracter' }).max(3, {
+    message: 'Máximo 3 caracteres',
   }),
   categoryId: z.string().min(1, { message: 'Selecciona una categoría' }),
 })
@@ -47,11 +55,13 @@ const formSchema = z.object({
 interface SizeFormProps {
   initialData: IFullSize | null
   categories: Category[]
+  sizes: Size[]
 }
 
 export const SizeForm: React.FC<SizeFormProps> = ({
   initialData,
   categories,
+  sizes,
 }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -86,9 +96,9 @@ export const SizeForm: React.FC<SizeFormProps> = ({
     try {
       let result
       if (initialData) {
-        result = await updateSize(initialData.id, data)
+        result = await updateSizeCategory(initialData.id, data)
       } else {
-        result = await createSize(data)
+        result = await createSizeCategory(data)
       }
 
       if (!result) {
@@ -108,7 +118,7 @@ export const SizeForm: React.FC<SizeFormProps> = ({
   const onDelete = async () => {
     try {
       setIsLoading(true)
-      const deleted = await deleteSize(initialData?.id!)
+      const deleted = await deleteSizeCategory(initialData?.id!)
 
       if (!deleted) {
         throw new Error()
@@ -237,6 +247,55 @@ export const SizeForm: React.FC<SizeFormProps> = ({
           </Button>
         </form>
       </Form>
+
+      <div className='mt-8'>
+        <h2 className='text-lg font-medium tracking-tight mb-2'>
+          Tallas/Tamaños disponibles
+        </h2>
+
+        <Command
+          className='rounded-lg border shadow-md '
+          filter={(value, search) => {
+            const data = value.split('_')
+            const name = data[0]
+            const sizeValue = data[1]
+
+            if (
+              name.toLowerCase().includes(search.toLowerCase()) ||
+              sizeValue.toLowerCase().includes(search.toLowerCase())
+            )
+              return 1
+
+            return 0
+          }}
+        >
+          <CommandInput placeholder='Buscar talla/tamaño...' />
+          <CommandList className='min-h-[200px] overflow-y-auto'>
+            <CommandEmpty>Talla/Tamaño no encontrado</CommandEmpty>
+
+            <CommandGroup>
+              {sizes.map((size) => (
+                <CommandItem
+                  key={size.id}
+                  value={size.name + '_' + size.value}
+                  className='cursor-pointer'
+                  onSelect={() => {
+                    form.setValue('name', size.name)
+                    form.setValue('value', size.value)
+                  }}
+                >
+                  <div className='flex items-center gap-x-2'>
+                    <h3 className='text-base font-medium text-gray-800'>
+                      {size.name}
+                    </h3>
+                    <p className='text-base text-gray-500'>{size.value}</p>
+                  </div>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </div>
     </>
   )
 }

@@ -9,7 +9,7 @@ interface CreateSizeProps {
   categoryId: string
 }
 
-export const createSize = async (
+export const createSizeCategory = async (
   data: CreateSizeProps,
 ): Promise<SizeCategory | null> => {
   try {
@@ -56,7 +56,7 @@ export const createSize = async (
 
     return sizeByCategory
   } catch (error: any) {
-    console.log('[CREATE_SIZE]', error.message)
+    console.log('[CREATE_SIZE_CATEGORY]', error.message)
     return null
   }
 }

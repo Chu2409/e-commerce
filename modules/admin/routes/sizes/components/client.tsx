@@ -4,7 +4,7 @@ import { Separator } from '@/components/ui/separator'
 import { Header } from '@/modules/admin/components/header'
 import { brandsColumns } from './columns'
 import { DataTable } from '@/modules/admin/components/data-table'
-import { getSizes } from '../actions/get-sizes'
+import { getSizesCategories } from '../actions/get-sizes-categories'
 import { Category } from '@prisma/client'
 import { useEffect, useState } from 'react'
 import { IFullSize } from '../interfaces/size'
@@ -24,7 +24,7 @@ export const SizesClient = ({ categories }: { categories: Category[] }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getSizes(filters)
+      const data = await getSizesCategories(filters)
       setData(data)
     }
 
