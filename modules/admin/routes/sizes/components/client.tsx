@@ -26,7 +26,6 @@ export const SizesClient = ({ categories }: { categories: Category[] }) => {
     const fetchData = async () => {
       const data = await getSizes(filters)
       setData(data)
-      console.log(filters)
     }
 
     fetchData()

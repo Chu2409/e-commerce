@@ -18,8 +18,8 @@ export const updateProductMaster = async (
     })
 
     return productMaster
-  } catch (error) {
-    console.log('[PRODUCT_MASTER_UPDATE]', error)
+  } catch (error: any) {
+    console.log('[UPDATE_PRODUCT_MASTER]', error.message)
     return null
   }
 }

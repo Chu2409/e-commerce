@@ -16,8 +16,8 @@ export const getSize = async (id: string): Promise<IFullSize | null> => {
     })
 
     return size
-  } catch (error) {
-    console.log('[SIZE_GET]', error)
+  } catch (error: any) {
+    console.log('[GET_SIZE]', error.message)
     return null
   }
 }

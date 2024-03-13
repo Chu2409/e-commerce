@@ -24,8 +24,8 @@ export const createProductColor = async (data: CreateProductColorData) => {
     })
 
     return productColor
-  } catch (error) {
-    console.log('[CREATE_PRODUCT_COLOR]', error)
+  } catch (error: any) {
+    console.log('[CREATE_PRODUCT_COLOR]', error.message)
     return null
   }
 }

@@ -167,7 +167,6 @@ export const OrderForm: React.FC<OrderFormProps> = ({
           valuePaid: data.valuePaid || null,
         })
       }
-      console.log(result)
 
       if (result == null) {
         throw new Error()

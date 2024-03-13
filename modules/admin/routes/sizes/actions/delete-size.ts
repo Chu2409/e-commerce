@@ -11,8 +11,8 @@ export const deleteSize = async (id: string) => {
     })
 
     return !!size
-  } catch (error) {
-    console.log('[SIZE_DELETE]', error)
+  } catch (error: any) {
+    console.log('[DELETE_SIZE]', error.message)
     return false
   }
 }

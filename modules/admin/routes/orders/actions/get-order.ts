@@ -40,8 +40,8 @@ export const getOrder = async (id: string): Promise<IFullOrder | null> => {
     })
 
     return order
-  } catch (error) {
-    console.log('[ORDER_GET]', error)
+  } catch (error: any) {
+    console.log('[GET_ORDER]', error.message)
     return null
   }
 }

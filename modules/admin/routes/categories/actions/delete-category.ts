@@ -11,8 +11,8 @@ export const deleteCategory = async (id: string) => {
     })
 
     return !!category
-  } catch (error) {
-    console.log('[CATEGORY_DELETE]', error)
+  } catch (error: any) {
+    console.log('[DELETE_CATEGORY]', error.message)
     return false
   }
 }

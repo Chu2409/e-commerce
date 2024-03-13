@@ -33,7 +33,6 @@ export const ProductsClient = ({
     const fetchData = async () => {
       const data = await getProducts(filters)
       setData(data)
-      console.log(filters)
     }
 
     fetchData()

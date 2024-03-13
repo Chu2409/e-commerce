@@ -75,8 +75,8 @@ export const getProducts = async (
       }),
     )
     return productsWithFilteredProducts
-  } catch (error) {
-    console.log('[PRODUCTS_GET]', error)
+  } catch (error: any) {
+    console.log('[GET_PRODUCTS]', error.message)
     return []
   }
 }

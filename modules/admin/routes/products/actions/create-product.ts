@@ -16,8 +16,8 @@ export const createProduct = async (
     })
 
     return product
-  } catch (error) {
-    console.log('[CREATE_PRODUCT]', error)
+  } catch (error: any) {
+    console.log('[CREATE_PRODUCT]', error.message)
     return null
   }
 }

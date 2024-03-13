@@ -62,8 +62,8 @@ export const createOrderWithItems = async (data: CreateOrderProps) => {
 
       return order
     })
-  } catch (error) {
-    console.log('[ORDER_CREATE]', error)
+  } catch (error: any) {
+    console.log('[CREATE_ORDER_WITH_ITEMS]', error.message)
     return null
   }
 }

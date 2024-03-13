@@ -18,8 +18,8 @@ export const updateCategory = async (
     })
 
     return category
-  } catch (error) {
-    console.log('[CATEGORY_UPDATE]', error)
+  } catch (error: any) {
+    console.log('[UPDATE_CATEGORY]', error.message)
     return null
   }
 }

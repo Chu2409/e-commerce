@@ -37,7 +37,6 @@ export const ProductsSelector: React.FC<ProductsSelectorProps> = ({
         (product) => !items.find((item) => item.product.id === product.id),
       ),
     )
-    console.log(items)
   }, [items, products])
 
   return (

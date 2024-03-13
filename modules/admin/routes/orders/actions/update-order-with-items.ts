@@ -38,11 +38,8 @@ export const updateOrderWithItems = async (
               : orderData.payMethod || PAY_METHOD.EFECTIVO,
         },
       })
-      console.log('1')
 
       if (orderData.state === ORDER_STATE.GENERADO) {
-        console.log('2')
-
         await prisma.order.update({
           where: {
             id,
@@ -70,15 +67,11 @@ export const updateOrderWithItems = async (
           },
         })
       } else {
-        console.log('3')
-
         if (
           order?.state === ORDER_STATE.PENDIENTE ||
           order?.state === ORDER_STATE.FINALIZADO
         )
           return orderUpdated
-
-        console.log('4')
 
         for (const { productId, quantity } of items) {
           const product = await prisma.product.findUnique({
@@ -105,8 +98,8 @@ export const updateOrderWithItems = async (
 
       return orderUpdated
     })
-  } catch (error) {
-    console.log('[ORDER_UPDATE]', error)
+  } catch (error: any) {
+    console.log('[UPDATE_ORDER_WITH_ITEMS]', error.message)
     return null
   }
 }

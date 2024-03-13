@@ -17,8 +17,8 @@ export const getSizesByCategory = async (
     })
 
     return categories
-  } catch (error) {
-    console.log('[SIZES_BY_CATEGORY_GET]', error)
+  } catch (error: any) {
+    console.log('[GET_SIZES_BY_CATEGORY]', error.message)
     return []
   }
 }

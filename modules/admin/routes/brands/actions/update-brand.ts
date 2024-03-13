@@ -15,8 +15,8 @@ export const updateBrand = async (id: string, data: Pick<Brand, 'name'>) => {
     })
 
     return brand
-  } catch (error) {
-    console.log('[BRAND_UPDATE]', error)
+  } catch (error: any) {
+    console.log('[UPDATE_BRAND]', error.message)
     return null
   }
 }

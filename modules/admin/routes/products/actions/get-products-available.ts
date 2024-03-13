@@ -36,8 +36,8 @@ export const getAllProductsAvailable = async (): Promise<
     })
 
     return products
-  } catch (error) {
-    console.log('ALL_PRODUCTS_AVAILABLE_GET]', error)
+  } catch (error: any) {
+    console.log('[GET_PRODUCTS_AVAILABLE]', error.message)
     return []
   }
 }

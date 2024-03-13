@@ -19,8 +19,8 @@ export const updateProduct = async (
     })
 
     return product
-  } catch (error) {
-    console.log('[PRODUCT_UPDATE]', error)
+  } catch (error: any) {
+    console.log('[UPDATE_PRODUCT]', error.message)
     return null
   }
 }

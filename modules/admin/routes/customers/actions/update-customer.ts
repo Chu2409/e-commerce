@@ -19,8 +19,8 @@ export const updateCustomer = async (
     })
 
     return customer
-  } catch (error) {
-    console.log('[CUSTOMER_UPDATE]', error)
+  } catch (error: any) {
+    console.log('[UPDATE_CUSTOMER]', error.message)
     return null
   }
 }

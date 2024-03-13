@@ -14,8 +14,8 @@ export const createColor = async (
     })
 
     return color
-  } catch (error) {
-    console.log('[COLOR_CREATE]', error)
+  } catch (error: any) {
+    console.log('[CREATE_COLOR]', error.message)
     return null
   }
 }

@@ -371,6 +371,7 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
     if (state !== PRODUCT_STATE.DISPONIBLE) {
       productForm.setValue('stock', 0)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productForm.watch('state')])
 
   return (

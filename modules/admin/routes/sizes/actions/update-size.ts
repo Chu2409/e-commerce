@@ -45,8 +45,8 @@ export const updateSize = async (
     })
 
     return sizeByCategory
-  } catch (error) {
-    console.log('[SIZE_UPDATE]', error)
+  } catch (error: any) {
+    console.log('[UPDATE_SIZE]', error.message)
     return null
   }
 }

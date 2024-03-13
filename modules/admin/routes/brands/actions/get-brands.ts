@@ -8,8 +8,8 @@ export const getBrands = async (): Promise<Brand[]> => {
     const brands = await prismadb.brand.findMany()
 
     return brands
-  } catch (error) {
-    console.log('[BRANDS_GET]', error)
+  } catch (error: any) {
+    console.log('[GET_BRANDS]', error.message)
     return []
   }
 }

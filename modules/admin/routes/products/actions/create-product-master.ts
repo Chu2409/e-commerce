@@ -14,8 +14,8 @@ export const createProductMaster = async (
     })
 
     return product
-  } catch (error) {
-    console.log('[CREATE_MASTER_PRODUCT]', error)
+  } catch (error: any) {
+    console.log('[CREATE_PRODUCT_MASTER]', error.message)
     return null
   }
 }

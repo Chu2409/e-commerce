@@ -30,8 +30,8 @@ export const getOrders = async (
 
     // return orders.length ? orders : ordersE
     return orders
-  } catch (error) {
-    console.log('[ORDERS_GET]', error)
+  } catch (error: any) {
+    console.log('[GET_ORDERS]', error.message)
     return []
   }
 }

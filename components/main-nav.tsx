@@ -17,7 +17,7 @@ export const MainNav: React.FC<MainNavProps> = ({ routes }) => {
   const pathname = usePathname()
 
   return (
-    <nav className='h-14 px-4 w-full justify-between max-lg:flex-col max-lg:gap-y-8 flex items-center gap-x-14 mx-2'>
+    <nav className='h-14 px-6 w-full justify-between max-lg:flex-col max-lg:gap-y-8 flex items-center gap-x-14'>
       {routes.map((route) => (
         <Link
           key={route.href}

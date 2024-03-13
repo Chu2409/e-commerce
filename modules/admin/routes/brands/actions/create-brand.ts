@@ -12,8 +12,8 @@ export const createBrand = async (data: Pick<Brand, 'name'>) => {
     })
 
     return brand
-  } catch (error) {
-    console.log('[BRAND_CREATE]', error)
+  } catch (error: any) {
+    console.log('[CREATE_BRAND]', error.message)
     return null
   }
 }

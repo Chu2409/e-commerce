@@ -11,8 +11,8 @@ export const deleteBrand = async (id: string) => {
     })
 
     return !!brand
-  } catch (error) {
-    console.log('[BRAND_DELETE]', error)
+  } catch (error: any) {
+    console.log('[DELETE_BRAND]', error.message)
     return false
   }
 }

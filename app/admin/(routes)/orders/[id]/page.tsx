@@ -2,7 +2,7 @@ import { getCustomers } from '@/modules/admin/routes/customers/actions/get-custo
 import { getOrder } from '@/modules/admin/routes/orders/actions/get-order'
 import { OrderForm } from '@/modules/admin/routes/orders/components/form'
 import { ProductsSelector } from '@/modules/admin/routes/orders/components/products-selector'
-import { getAllProductsAvailable } from '@/modules/admin/routes/products/actions/get-all-products-available'
+import { getAllProductsAvailable } from '@/modules/admin/routes/products/actions/get-products-available'
 import { ORDER_STATE } from '@prisma/client'
 
 export const revalidate = 0

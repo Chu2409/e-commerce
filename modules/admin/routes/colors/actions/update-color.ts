@@ -18,8 +18,8 @@ export const updateColor = async (
     })
 
     return color
-  } catch (error) {
-    console.log('[COLOR_UPDATE]', error)
+  } catch (error: any) {
+    console.log('[UPDATE_COLOR]', error.message)
     return null
   }
 }

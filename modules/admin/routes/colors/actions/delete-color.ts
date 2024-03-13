@@ -11,8 +11,8 @@ export const deleteColor = async (id: string) => {
     })
 
     return !!color
-  } catch (error) {
-    console.log('[COLOR_DELETE]', error)
+  } catch (error: any) {
+    console.log('[DELETE_COLOR]', error.message)
     return false
   }
 }

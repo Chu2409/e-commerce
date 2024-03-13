@@ -12,8 +12,8 @@ export const getBrand = async (id: string): Promise<Brand | null> => {
     })
 
     return brand
-  } catch (error) {
-    console.log('[BRAND_GET]', error)
+  } catch (error: any) {
+    console.log('[GET_BRAND]', error.message)
     return null
   }
 }

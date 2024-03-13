@@ -11,8 +11,8 @@ export const deleteCustomer = async (id: string) => {
     })
 
     return !!customer
-  } catch (error) {
-    console.log('[CUSTOMER_DELETE]', error)
+  } catch (error: any) {
+    console.log('[DELETE_CUSTOMER]', error.message)
     return false
   }
 }

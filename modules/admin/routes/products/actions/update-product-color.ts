@@ -40,8 +40,8 @@ export const updateProductColor = async (
     })
 
     return productColor
-  } catch (error) {
-    console.log('[PRODUCT_COLOR_UPDATE]', error)
+  } catch (error: any) {
+    console.log('[UPDATE_PRODUCT_COLOR]', error.message)
     return null
   }
 }

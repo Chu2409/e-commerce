@@ -8,8 +8,8 @@ export const getCategories = async (): Promise<Category[]> => {
     const categories = await prismadb.category.findMany()
 
     return categories
-  } catch (error) {
-    console.log('[CATEGORIES_GET]', error)
+  } catch (error: any) {
+    console.log('[GET_CATEGORIES]', error.message)
     return []
   }
 }

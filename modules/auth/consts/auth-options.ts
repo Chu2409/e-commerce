@@ -24,6 +24,8 @@ export const authOptions = {
           adminFound.password,
         )
 
+        // console.log(bcrypt.hashSync('0703224337_store', 10))
+
         if (!passwordMatch) throw new Error('Contraseña incorrecta')
 
         return {

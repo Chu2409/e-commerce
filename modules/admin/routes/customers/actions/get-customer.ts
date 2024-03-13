@@ -12,8 +12,8 @@ export const getCustomer = async (id: string): Promise<Customer | null> => {
     })
 
     return customer
-  } catch (error) {
-    console.log('[CUSTOMER_GET]', error)
+  } catch (error: any) {
+    console.log('[GET_CUSTOMER]', error.message)
     return null
   }
 }

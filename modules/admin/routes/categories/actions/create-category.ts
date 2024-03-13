@@ -12,8 +12,8 @@ export const createCategory = async (data: Pick<Category, 'name'>) => {
     })
 
     return category
-  } catch (error) {
-    console.log('[CATEGORY_CREATE]', error)
+  } catch (error: any) {
+    console.log('[CREATE_CATEGORY]', error.message)
     return null
   }
 }

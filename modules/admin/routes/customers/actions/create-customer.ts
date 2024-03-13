@@ -24,8 +24,8 @@ export const createCustomer = async (
     })
 
     return customer
-  } catch (error) {
-    console.log('[CUSTOMER_CREATE]', error)
+  } catch (error: any) {
+    console.log('[CREATE_CUSTOMER]', error.message)
     return null
   }
 }

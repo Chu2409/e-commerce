@@ -26,7 +26,6 @@ export const OrdersClient = ({ customers }: { customers: Customer[] }) => {
     const fetchData = async () => {
       const data = await getOrders(filters)
       setData(data)
-      console.log(filters)
     }
 
     fetchData()

@@ -12,8 +12,8 @@ export const getColor = async (id: string): Promise<Color | null> => {
     })
 
     return color
-  } catch (error) {
-    console.log('[COLOR_GET]', error)
+  } catch (error: any) {
+    console.log('[GET_COLOR]', error.message)
     return null
   }
 }

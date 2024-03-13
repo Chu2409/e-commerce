@@ -11,8 +11,8 @@ export const deleteOrder = async (id: string) => {
     })
 
     return !!order
-  } catch (error) {
-    console.log('[ORDER_DELETE]', error)
+  } catch (error: any) {
+    console.log('[DELETE_ORDER]', error.message)
     return false
   }
 }

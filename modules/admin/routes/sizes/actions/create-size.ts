@@ -55,8 +55,8 @@ export const createSize = async (
     })
 
     return sizeByCategory
-  } catch (error) {
-    console.log('[SIZE_CREATE]', error)
+  } catch (error: any) {
+    console.log('[CREATE_SIZE]', error.message)
     return null
   }
 }

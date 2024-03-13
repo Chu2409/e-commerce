@@ -12,8 +12,8 @@ export const getCategory = async (id: string): Promise<Category | null> => {
     })
 
     return category
-  } catch (error) {
-    console.log('[CATEGORY_GET]', error)
+  } catch (error: any) {
+    console.log('[GET_CATEGORY]', error.message)
     return null
   }
 }
