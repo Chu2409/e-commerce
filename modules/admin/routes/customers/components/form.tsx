@@ -29,6 +29,7 @@ import { deleteCustomer } from '../actions/delete-customer'
 const formSchema = z.object({
   dni: z
     .string()
+    .regex(/^\d+$/, { message: 'Solo números' })
     .min(10, { message: 'Mínimo 9 caracteres' })
     .max(10, { message: 'Máximo 10 caracteres' }),
   firstName: z

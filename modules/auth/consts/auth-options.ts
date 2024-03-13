@@ -1,0 +1,41 @@
+import prismadb from '@/lib/prismadb'
+import { NextAuthOptions } from 'next-auth'
+import Credentials from 'next-auth/providers/credentials'
+import bcrypt from 'bcrypt'
+
+export const authOptions = {
+  providers: [
+    Credentials({
+      name: 'Credentials',
+      credentials: {
+        dni: { label: 'Cédula', type: 'text' },
+        password: { label: 'Contraseña', type: 'password' },
+      },
+      async authorize(credentials, req) {
+        const adminFound = await prismadb.user.findUnique({
+          where: {
+            dni: credentials?.dni,
+          },
+        })
+        if (!adminFound) throw new Error('No se encontró el usuario')
+
+        const passwordMatch = bcrypt.compareSync(
+          credentials?.password || '',
+          adminFound.password,
+        )
+
+        if (!passwordMatch) throw new Error('Contraseña incorrecta')
+
+        return {
+          id: adminFound.id,
+          email: adminFound.email,
+          name: adminFound.firstName + ' ' + adminFound.lastName,
+          image: 'admin',
+        }
+      },
+    }),
+  ],
+  pages: {
+    signIn: '/auth/login',
+  },
+} satisfies NextAuthOptions
