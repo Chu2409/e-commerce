@@ -1,9 +1,11 @@
-import { getCustomers } from '@/modules/admin/routes/customers/actions/get-customers'
-import { getOrder } from '@/modules/admin/routes/orders/actions/get-order'
-import { OrderForm } from '@/modules/admin/routes/orders/components/form'
-import { ProductsSelector } from '@/modules/admin/routes/orders/components/products-selector'
-import { getAllProductsAvailable } from '@/modules/admin/routes/products/actions/get-products-available'
 import { ORDER_STATE } from '@prisma/client'
+
+import { OrderForm } from '@/modules/orders/admin/components/form'
+import { ProductsSelector } from '@/modules/orders/admin/components/products-selector'
+
+import { getOrder } from '@/modules/orders/shared/actions/get-order'
+import { getCustomers } from '@/modules/customers/shared/actions/get-customers'
+import { getAllProductsAvailable } from '@/modules/products/shared/actions/get-products-available'
 
 export const revalidate = 0
 

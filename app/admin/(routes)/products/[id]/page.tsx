@@ -1,11 +1,12 @@
+import ProductCard from '@/modules/products/admin/components/product-card'
+import { FullProductForm } from '@/modules/products/admin/components/form'
 import { Separator } from '@/components/ui/separator'
-import { getBrands } from '@/modules/admin/routes/brands/actions/get-brands'
-import { getCategories } from '@/modules/admin/routes/categories/actions/get-categories'
-import { getColors } from '@/modules/admin/routes/colors/actions/get-colors'
-import { getMasterByProduct } from '@/modules/admin/routes/products/actions/get-master-by-product'
-import { FullProductForm } from '@/modules/admin/routes/products/components/form'
-import ProductCard from '@/modules/admin/routes/products/components/product-card'
-import { getSizesByCategory } from '@/modules/admin/routes/sizes/actions/get-sizes-by-category'
+
+import { getBrands } from '@/modules/brands/shared/actions/get-brands'
+import { getCategories } from '@/modules/categories/shared/actions/get-categories'
+import { getColors } from '@/modules/colors/shared/actions/get-colors'
+import { getMasterByProduct } from '@/modules/products/shared/actions/get-master-by-product'
+import { getSizesByCategory } from '@/modules/sizes/shared/actions/get-sizes-by-category'
 
 export const revalidate = 0
 

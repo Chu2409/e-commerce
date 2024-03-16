@@ -1,5 +1,6 @@
-import { getBrands } from '@/modules/admin/routes/brands/actions/get-brands'
-import { BrandsClient } from '@/modules/admin/routes/brands/components/client'
+import { BrandsClient } from '@/modules/brands/admin/components/client'
+
+import { getBrands } from '@/modules/brands/shared/actions/get-brands'
 
 export const revalidate = 0
 

@@ -1,5 +1,6 @@
-import { getColors } from '@/modules/admin/routes/colors/actions/get-colors'
-import { ColorsClient } from '@/modules/admin/routes/colors/components/client'
+import { ColorsClient } from '@/modules/colors/admin/components/client'
+
+import { getColors } from '@/modules/colors/shared/actions/get-colors'
 
 export const revalidate = 0
 

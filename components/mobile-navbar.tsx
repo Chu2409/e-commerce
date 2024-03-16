@@ -1,10 +1,11 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { LayoutPanelTop, Menu } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { Dialog, DialogContent, DialogHeader } from './ui/dialog'
 import { DialogTitle } from '@radix-ui/react-dialog'
+import { LayoutPanelTop, Menu } from 'lucide-react'
+
+import { Button } from '@/components/ui/button'
+import { Dialog, DialogContent, DialogHeader } from '@/components/ui/dialog'
 
 export const MobileNavbar = ({ children }: { children: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false)

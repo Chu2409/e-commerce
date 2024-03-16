@@ -1,5 +1,6 @@
-import { getCustomer } from '@/modules/admin/routes/customers/actions/get-customer'
-import { CustomerForm } from '@/modules/admin/routes/customers/components/form'
+import { CustomerForm } from '@/modules/customers/admin/components/form'
+
+import { getCustomer } from '@/modules/customers/shared/actions/get-customer'
 
 const CustomerPage = async ({
   params,

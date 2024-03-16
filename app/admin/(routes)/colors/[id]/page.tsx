@@ -1,5 +1,6 @@
-import { getColor } from '@/modules/admin/routes/colors/actions/get-color'
-import { ColorForm } from '@/modules/admin/routes/colors/components/form'
+import { ColorForm } from '@/modules/colors/admin/components/form'
+
+import { getColor } from '@/modules/colors/shared/actions/get-color'
 
 const ColorPage = async ({
   params,

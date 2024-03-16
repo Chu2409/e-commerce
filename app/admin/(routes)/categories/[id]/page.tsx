@@ -1,5 +1,6 @@
-import { getCategory } from '@/modules/admin/routes/categories/actions/get-category'
-import { CategoryForm } from '@/modules/admin/routes/categories/components/form'
+import { CategoryForm } from '@/modules/categories/admin/components/form'
+
+import { getCategory } from '@/modules/categories/shared/actions/get-category'
 
 const CategoryPage = async ({
   params,

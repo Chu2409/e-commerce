@@ -1,5 +1,9 @@
 'use client'
 
+import { useState } from 'react'
+
+import { cn } from '@/lib/utils'
+
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -12,7 +16,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-
 import {
   Table,
   TableBody,
@@ -21,7 +24,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -29,10 +31,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { cn } from '@/lib/utils'
 import { Input } from '@/components/ui/input'
-
-export const revalidate = 0
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]

@@ -1,7 +1,8 @@
-import { getCategories } from '@/modules/admin/routes/categories/actions/get-categories'
-import { getSizeCategory } from '@/modules/admin/routes/sizes/actions/get-size-category'
-import { getSizes } from '@/modules/admin/routes/sizes/actions/get-sizes'
-import { SizeForm } from '@/modules/admin/routes/sizes/components/form'
+import { SizeForm } from '@/modules/sizes/admin/components/form'
+
+import { getCategories } from '@/modules/categories/shared/actions/get-categories'
+import { getSizeCategory } from '@/modules/sizes/shared/actions/get-size-category'
+import { getSizes } from '@/modules/sizes/shared/actions/get-sizes'
 
 export const revalidate = 0
 

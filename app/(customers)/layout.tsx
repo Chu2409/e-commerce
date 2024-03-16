@@ -1,12 +1,13 @@
-import { MainNav } from '@/components/main-nav'
+import { MainNav } from '@/modules/admin/components/main-nav'
 import { NavBar } from '@/components/navbar'
-import { customerRoutes } from '@/modules/customers/consts/customers-routes'
+
+export const revalidate = 0
 
 const CustomerLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <NavBar>
-        <MainNav routes={customerRoutes} />
+        <MainNav routes={[]} />
       </NavBar>
       {children}
     </>
