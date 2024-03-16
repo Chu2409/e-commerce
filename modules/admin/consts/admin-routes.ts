@@ -1,4 +1,4 @@
-import { IRoute } from '@/shared/interfaces/route'
+import { IRoute } from '@/modules/shared/interfaces/route'
 
 export const adminRoutes: IRoute[] = [
   {

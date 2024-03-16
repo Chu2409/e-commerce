@@ -1,5 +1,6 @@
-import { getCategories } from '@/modules/admin/routes/categories/actions/get-categories'
-import { SizesClient } from '@/modules/admin/routes/sizes/components/client'
+import { SizesClient } from '@/modules/sizes/admin/components/client'
+
+import { getCategories } from '@/modules/categories/shared/actions/get-categories'
 
 export const revalidate = 0
 

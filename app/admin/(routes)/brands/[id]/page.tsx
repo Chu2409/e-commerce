@@ -1,5 +1,6 @@
-import { BrandForm } from '@/modules/admin/routes/brands/components/form'
-import { getBrand } from '@/modules/admin/routes/brands/actions/get-brand'
+import { BrandForm } from '@/modules/brands/admin/components/form'
+
+import { getBrand } from '@/modules/brands/shared/actions/get-brand'
 
 const BrandPage = async ({
   params,

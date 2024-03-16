@@ -1,11 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import { Button } from '@/components/ui/button'
-import { Edit, Trash } from 'lucide-react'
-import toast from 'react-hot-toast'
 import { usePathname, useRouter } from 'next/navigation'
+
+import toast from 'react-hot-toast'
+
+import { Button } from '@/components/ui/button'
 import { AlertModal } from '@/components/alert-modal'
+import { Edit, Trash } from 'lucide-react'
 
 interface CellActionsProps {
   id: string

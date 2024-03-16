@@ -1,5 +1,6 @@
-import { getCustomers } from '@/modules/admin/routes/customers/actions/get-customers'
-import { CustomersClient } from '@/modules/admin/routes/customers/components/client'
+import { CustomersClient } from '@/modules/customers/admin/components/client'
+
+import { getCustomers } from '@/modules/customers/shared/actions/get-customers'
 
 export const revalidate = 0
 

@@ -1,9 +1,11 @@
-import { MainNav } from '@/components/main-nav'
-import { NavBar } from '@/components/navbar'
 import { adminRoutes } from '@/modules/admin/consts/admin-routes'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/modules/auth/consts/auth-options'
+
 import { redirect } from 'next/navigation'
+import { getServerSession } from 'next-auth'
+
+import { MainNav } from '@/modules/admin/components/main-nav'
+import { authOptions } from '@/modules/auth/consts/auth-options'
+import { NavBar } from '@/components/navbar'
 
 const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
   const session = await getServerSession(authOptions)

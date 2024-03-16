@@ -1,9 +1,10 @@
 'use client'
 
-import { Heading } from '@/components/heading'
+import { usePathname, useRouter } from 'next/navigation'
+
+import { Heading } from '@/modules/admin/components/heading'
 import { Button } from '@/components/ui/button'
 import { Plus } from 'lucide-react'
-import { usePathname, useRouter } from 'next/navigation'
 
 interface HeaderProps {
   title: string

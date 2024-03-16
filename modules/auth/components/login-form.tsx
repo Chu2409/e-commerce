@@ -1,8 +1,13 @@
 'use client'
 
-import { zodResolver } from '@hookform/resolvers/zod'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useRouter } from 'next/navigation'
 import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { signIn } from 'next-auth/react'
+
+import toast from 'react-hot-toast'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -15,11 +20,6 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { LogIn } from 'lucide-react'
-
-import { signIn } from 'next-auth/react'
-import { useState } from 'react'
-import toast from 'react-hot-toast'
-import { useRouter } from 'next/navigation'
 
 const formSchema = z.object({
   dni: z

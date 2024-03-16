@@ -1,7 +1,8 @@
-import { getBrands } from '@/modules/admin/routes/brands/actions/get-brands'
-import { getCategories } from '@/modules/admin/routes/categories/actions/get-categories'
-import { getColors } from '@/modules/admin/routes/colors/actions/get-colors'
-import { ProductsClient } from '@/modules/admin/routes/products/components/client'
+import { ProductsClient } from '@/modules/products/admin/components/client'
+
+import { getBrands } from '@/modules/brands/shared/actions/get-brands'
+import { getCategories } from '@/modules/categories/shared/actions/get-categories'
+import { getColors } from '@/modules/colors/shared/actions/get-colors'
 
 export const revalidate = 0
 
