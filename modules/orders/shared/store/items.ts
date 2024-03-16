@@ -11,6 +11,8 @@ interface ProductItemsState {
 
   modifyQuantity: (id: string, quantity: number) => void
 
+  setDelivered: (id: string, delivered: boolean) => void
+
   addProductItem: (item: ProductItemsInterface) => void
 
   removeProductItem: (id: string) => void
@@ -28,10 +30,18 @@ export const useItems = create<ProductItemsState>((set) => {
       }))
     },
 
+    setDelivered: (id, delivered) => {
+      set((state) => ({
+        productItems: state.productItems.map((item) =>
+          item.product.id === id ? { ...item, delivered } : item,
+        ),
+      }))
+    },
+
     modifyQuantity: (id, quantity) => {
       set((state) => ({
         productItems: state.productItems.map((item) =>
-          item.product.id === id ? { ...item, quantity: +quantity } : item,
+          item.product.id === id ? { ...item, quantity } : item,
         ),
       }))
     },

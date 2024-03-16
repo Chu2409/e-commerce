@@ -9,6 +9,7 @@ interface CreateOrderProps
   items: {
     productId: string
     quantity: number
+    delivered?: boolean
   }[]
 }
 
@@ -38,7 +39,7 @@ export const createOrderWithItems = async (data: CreateOrderProps) => {
           })
         }
       } else {
-        for (const { productId, quantity } of items) {
+        for (const { productId, quantity, delivered } of items) {
           const product = await prisma.product.findUnique({
             where: { id: productId },
           })
@@ -49,6 +50,8 @@ export const createOrderWithItems = async (data: CreateOrderProps) => {
               productId,
               quantity,
               state: product?.state,
+              delivered:
+                order.state === ORDER_STATE.FINALIZADO ? true : delivered,
             },
           })
 
