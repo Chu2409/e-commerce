@@ -69,6 +69,7 @@ const formSchema = z.object({
       z.object({
         productId: z.string(),
         quantity: z.number(),
+        delivered: z.boolean().optional(),
       }),
     )
     .min(1, { message: 'Ingrese al menos un producto' }),
@@ -93,6 +94,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({
           items: initialData.items.map((item) => ({
             id: item.product.id,
             quantity: item.quantity,
+            delivered: item.delivered,
           })),
         }
       : {
@@ -107,6 +109,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({
   const setItems = useItems((state) => state.setProductItems)
   const removeItem = useItems((state) => state.removeProductItem)
   const modifyQuantity = useItems((state) => state.modifyQuantity)
+  const setDelivered = useItems((state) => state.setDelivered)
 
   const [total, setTotal] = useState(0)
 
@@ -131,6 +134,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({
       items.map((item) => ({
         productId: item.product.id,
         quantity: item.quantity,
+        delivered: item.delivered,
       })),
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -620,6 +624,29 @@ export const OrderForm: React.FC<OrderFormProps> = ({
                             </div>
 
                             <div className='flex items-center gap-4'>
+                              <div
+                                className={cn(
+                                  'flex flex-col items-center gap-y-2 text-xs ',
+
+                                  form.getValues('state') ===
+                                    ORDER_STATE.GENERADO && 'hidden',
+                                )}
+                              >
+                                Entregado
+                                <Input
+                                  type='checkbox'
+                                  checked={item.delivered}
+                                  disabled={isLoading}
+                                  onChange={(e) => {
+                                    setDelivered(
+                                      item.product.id,
+                                      e.target.checked,
+                                    )
+                                  }}
+                                  className='w-[15px] h-[15px] rounded-md cursor-pointer'
+                                />
+                              </div>
+
                               <Input
                                 type='number'
                                 value={item.quantity}

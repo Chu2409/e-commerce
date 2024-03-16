@@ -29,7 +29,6 @@ export const OrdersClient = ({ customers }: { customers: Customer[] }) => {
       const data = await getOrders(filters)
       setData(data)
     }
-
     fetchData()
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

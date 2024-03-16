@@ -9,6 +9,7 @@ interface UpdateOrderProps
   items: {
     productId: string
     quantity: number
+    delivered?: boolean
   }[]
 }
 
@@ -70,10 +71,23 @@ export const updateOrderWithItems = async (
         if (
           order?.state === ORDER_STATE.PENDIENTE ||
           order?.state === ORDER_STATE.FINALIZADO
-        )
+        ) {
+          for (const { productId, delivered } of items) {
+            await prisma.item.updateMany({
+              where: {
+                productId,
+                orderId: id,
+              },
+              data: {
+                delivered:
+                  orderData.state === ORDER_STATE.FINALIZADO ? true : delivered,
+              },
+            })
+          }
           return orderUpdated
+        }
 
-        for (const { productId, quantity } of items) {
+        for (const { productId, quantity, delivered } of items) {
           const product = await prisma.product.findUnique({
             where: { id: productId },
           })
@@ -85,6 +99,8 @@ export const updateOrderWithItems = async (
             },
             data: {
               state: product?.state,
+              delivered:
+                orderData.state === ORDER_STATE.FINALIZADO ? true : delivered,
             },
           })
 
