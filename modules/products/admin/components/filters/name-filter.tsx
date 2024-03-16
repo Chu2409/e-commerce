@@ -34,7 +34,7 @@ export const NameFilter = () => {
   return (
     <Input
       placeholder='Filtrar Nombre...'
-      className='w-[300px]'
+      className='w-[290px]'
       onChange={handleChange}
       value={value}
     />

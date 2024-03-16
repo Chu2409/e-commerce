@@ -54,7 +54,7 @@ export const SizeFilter = () => {
           variant='outline'
           role='combobox'
           aria-expanded={open}
-          className='w-[300px] justify-between font-light'
+          className='w-[290px] justify-between font-light'
         >
           {value
             ? data.find((sizeByCategory) => sizeByCategory.id === value)?.size
@@ -64,7 +64,7 @@ export const SizeFilter = () => {
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className='w-[300px] p-0'>
+      <PopoverContent className='w-[290px] p-0'>
         <Command>
           <CommandInput
             placeholder='Selecciona una talla/tamaño...'
@@ -87,7 +87,7 @@ export const SizeFilter = () => {
                   }
                 }}
               >
-                {sizeByCategory.size.name}
+                {sizeByCategory.size.name} - {sizeByCategory.size.value}
                 <CheckIcon
                   className={cn(
                     'ml-auto h-4 w-4',

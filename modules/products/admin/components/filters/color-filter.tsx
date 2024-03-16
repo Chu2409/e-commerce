@@ -36,7 +36,7 @@ export const ColorFilter = ({ colors }: { colors: Color[] }) => {
           variant='outline'
           role='combobox'
           aria-expanded={open}
-          className='w-[300px] justify-between font-light'
+          className='w-[290px] justify-between font-light'
         >
           {color ? (
             <div className='flex items-center gap-x-2'>
@@ -53,7 +53,7 @@ export const ColorFilter = ({ colors }: { colors: Color[] }) => {
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className='w-[300px] p-0'>
+      <PopoverContent className='w-[290px] p-0'>
         <Command>
           <CommandInput placeholder='Selecciona un color...' className='h-9' />
 

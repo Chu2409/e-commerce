@@ -748,7 +748,7 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
                           value={sizeCategory.id}
                           className='cursor-pointer'
                         >
-                          {sizeCategory.size.name}
+                          {sizeCategory.size.name} - {sizeCategory.size.value}
                         </SelectItem>
                       ))}
                       {initialProductMaster && mainProduct !== null && (

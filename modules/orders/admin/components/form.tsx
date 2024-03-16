@@ -545,22 +545,24 @@ export const OrderForm: React.FC<OrderFormProps> = ({
                                   }
                                 }}
                               >
-                                <CldImage
-                                  src={
-                                    item.product.productColor.images?.[0]?.url
-                                  }
-                                  crop='fill'
-                                  width={90}
-                                  height={90}
-                                  alt='Image'
-                                  className={cn(
-                                    'aspect-square object-cover rounded-md w-full h-auto',
-                                    (initialData == null ||
-                                      initialData.state ===
-                                        ORDER_STATE.GENERADO) &&
-                                      ' transition duration-300 ease-in-out group-hover:opacity-50',
-                                  )}
-                                />
+                                <div className='w-[100px]'>
+                                  <CldImage
+                                    src={
+                                      item.product.productColor.images?.[0]?.url
+                                    }
+                                    crop='fill'
+                                    width={100}
+                                    height={100}
+                                    alt='Image'
+                                    className={cn(
+                                      'aspect-square object-cover rounded-md',
+                                      (initialData == null ||
+                                        initialData.state ===
+                                          ORDER_STATE.GENERADO) &&
+                                        ' transition duration-300 ease-in-out group-hover:opacity-50',
+                                    )}
+                                  />
+                                </div>
 
                                 <div
                                   className={cn(

@@ -34,7 +34,7 @@ export const BrandFilter = ({ brands }: { brands: Brand[] }) => {
           variant='outline'
           role='combobox'
           aria-expanded={open}
-          className='w-[300px] justify-between font-light'
+          className='w-[290px] justify-between font-light'
         >
           {value
             ? brands.find((brand) => brand.id === value)?.name
@@ -43,7 +43,7 @@ export const BrandFilter = ({ brands }: { brands: Brand[] }) => {
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className='w-[300px] p-0'>
+      <PopoverContent className='w-[290px] p-0'>
         <Command>
           <CommandInput placeholder='Selecciona una marca...' className='h-9' />
 

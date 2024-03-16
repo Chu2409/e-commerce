@@ -15,12 +15,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ productColor }) => {
   const products = productColor.products
 
   return (
-    <div className='bg-[#f6f6f6] w-[300px] rounded-xl border p-3 space-y-4'>
+    <div className='bg-[#f6f6f6] w-[290px] rounded-xl border p-3 space-y-4'>
       <CldImage
         src={productColor.images?.[0]?.url}
         crop='fill'
-        width={300}
-        height={300}
+        width={290}
+        height={290}
         alt='Image'
         className='aspect-square object-cover rounded-md'
       />

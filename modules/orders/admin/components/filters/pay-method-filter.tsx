@@ -36,7 +36,7 @@ export const PayMethodFilter = () => {
           variant='outline'
           role='combobox'
           aria-expanded={open}
-          className='w-[300px] justify-between font-light'
+          className='w-[290px] justify-between font-light'
         >
           {value
             ? payMethods.find((state) => state === value.toUpperCase())
@@ -45,7 +45,7 @@ export const PayMethodFilter = () => {
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className='w-[300px] p-0'>
+      <PopoverContent className='w-[290px] p-0'>
         <Command>
           <CommandInput placeholder='Selecciona un estado...' className='h-9' />
 

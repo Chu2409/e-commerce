@@ -85,7 +85,7 @@ export const DataTable = <TData, TValue>({
               onChange={(event) => {
                 table.getColumn(keySearch)?.setFilterValue(event.target.value)
               }}
-              className='w-[300px]'
+              className='w-[290px]'
             />
           </div>
         ) : null}

@@ -56,12 +56,12 @@ const GroupProductCard: React.FC<GroupProductCardProps> = ({
   }
 
   return (
-    <div className='bg-[#f6f6f6] w-[300px] rounded-xl border p-3 space-y-4'>
+    <div className='bg-[#f6f6f6] w-[290px] rounded-xl border p-3 space-y-4'>
       <CldImage
         src={mainProductColor.images?.[0]?.url}
         crop='fill'
-        width={300}
-        height={300}
+        width={290}
+        height={290}
         alt='Image'
         className='aspect-square object-cover rounded-md cursor-pointer hover:scale-110 transition duration-300 hover:drop-shadow-md'
         onClick={handleClick}
