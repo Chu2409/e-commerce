@@ -1,4 +1,4 @@
-import GroupProductCard from './group-product-card'
+import GroupProductCard from '../../shared/components/group-product-card'
 import { Button } from '@/components/ui/button'
 
 import { IFullProductMaster } from '../../shared/interfaces/product'
@@ -19,7 +19,7 @@ export const ProductsList = ({
     <div className='mt-2'>
       {productsMasters.length === 0 && (
         <div className='flex items-center justify-center h-full w-full text-neutral-500 mt-10'>
-          No results
+          <p>No hay productos disponibles</p>
         </div>
       )}
 
@@ -28,6 +28,7 @@ export const ProductsList = ({
           <GroupProductCard
             key={productMaster.id}
             productMaster={productMaster}
+            link='/admin/products/'
           />
         ))}
       </div>

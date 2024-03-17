@@ -5,14 +5,16 @@ import { useRouter } from 'next/navigation'
 import { cn, formatMoney } from '@/lib/utils'
 import { CldImage } from 'next-cloudinary'
 
-import { IFullProductMaster } from '../../shared/interfaces/product'
+import { IFullProductMaster } from '../interfaces/product'
 
 interface GroupProductCardProps {
   productMaster: IFullProductMaster
+  link: string
 }
 
 const GroupProductCard: React.FC<GroupProductCardProps> = ({
   productMaster,
+  link,
 }) => {
   const [mainProductColor, setMainProductColor] = useState(
     productMaster.productsColors[0],
@@ -33,7 +35,7 @@ const GroupProductCard: React.FC<GroupProductCardProps> = ({
 
   const router = useRouter()
   const handleClick = () => {
-    router.push(`/admin/products/${mainProduct.id}`)
+    router.push(`${link}${mainProduct.id}`)
   }
 
   const handleColorChange = (colorId: string) => {

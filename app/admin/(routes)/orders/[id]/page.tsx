@@ -5,7 +5,7 @@ import { ProductsSelector } from '@/modules/orders/admin/components/products-sel
 
 import { getOrder } from '@/modules/orders/shared/actions/get-order'
 import { getCustomers } from '@/modules/customers/shared/actions/get-customers'
-import { getAllProductsAvailable } from '@/modules/products/shared/actions/get-products-available'
+import { getProductsAvailable } from '@/modules/products/shared/actions/get-products-available'
 
 export const revalidate = 0
 
@@ -18,7 +18,7 @@ const OrderPage = async ({
 }) => {
   const order = await getOrder(params.id)
   const customers = await getCustomers()
-  const products = await getAllProductsAvailable()
+  const products = await getProductsAvailable()
 
   return (
     <div className='flex flex-col p-8 pt-6'>
