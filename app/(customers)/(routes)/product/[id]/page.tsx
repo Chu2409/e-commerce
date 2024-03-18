@@ -9,7 +9,7 @@ const ProductPage = async ({
     id: string
   }
 }) => {
-  const productMaster = await getMasterByProduct(params.id)
+  const productMaster = await getMasterByProduct(params.id, true)
 
   const relatedProducts = await getProductsRelated(
     productMaster?.categoryId || '',
