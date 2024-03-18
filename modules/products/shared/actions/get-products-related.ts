@@ -2,6 +2,7 @@
 
 import prismadb from '@/lib/prismadb'
 import { IFullProductMaster } from '../interfaces/product'
+import { PRODUCT_STATE } from '@prisma/client'
 
 export const getProductsRelated = async (
   categoryId: string,
@@ -10,6 +11,17 @@ export const getProductsRelated = async (
     const productsMasters = await prismadb.productMaster.findMany({
       where: {
         categoryId,
+        productsColors: {
+          some: {
+            products: {
+              some: {
+                state: {
+                  not: PRODUCT_STATE.NO_DISPONIBLE,
+                },
+              },
+            },
+          },
+        },
       },
       include: {
         brand: true,
@@ -24,6 +36,20 @@ export const getProductsRelated = async (
                   include: {
                     size: true,
                   },
+                },
+              },
+              where: {
+                state: {
+                  not: PRODUCT_STATE.NO_DISPONIBLE,
+                },
+              },
+            },
+          },
+          where: {
+            products: {
+              some: {
+                state: {
+                  not: PRODUCT_STATE.NO_DISPONIBLE,
                 },
               },
             },
