@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { cn, formatMoney } from '@/lib/utils'
 import { CldImage } from 'next-cloudinary'
@@ -19,7 +19,9 @@ const GroupProductCard: React.FC<GroupProductCardProps> = ({
   const [mainProductColor, setMainProductColor] = useState(
     productMaster.productsColors[0],
   )
-  const [mainProduct, setMainProduct] = useState(mainProductColor.products[0])
+  const [mainProduct, setMainProduct] = useState(
+    productMaster.productsColors[0].products[0],
+  )
 
   const sizes = mainProductColor.products.map(
     (product) => product.sizeCategory.size,
@@ -28,10 +30,10 @@ const GroupProductCard: React.FC<GroupProductCardProps> = ({
     (productColor) => productColor.color,
   )
 
-  useEffect(() => {
-    setMainProductColor(productMaster.productsColors[0])
-    setMainProduct(productMaster.productsColors[0].products[0])
-  }, [productMaster])
+  // useEffect(() => {
+  //   setMainProductColor(productMaster.productsColors[0])
+  //   setMainProduct(productMaster.productsColors[0].products[0])
+  // }, [productMaster])
 
   const router = useRouter()
   const handleClick = () => {

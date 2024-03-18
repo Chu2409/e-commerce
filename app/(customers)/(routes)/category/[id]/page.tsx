@@ -2,7 +2,7 @@ import { getProductsByCategory } from '@/modules/products/shared/actions/get-pro
 import { getSizesByCategory } from '@/modules/sizes/shared/actions/get-sizes-by-category'
 import { getBrands } from '@/modules/brands/shared/actions/get-brands'
 import { getColors } from '@/modules/colors/shared/actions/get-colors'
-import { ProductsByCategoryClient } from '@/modules/products/customer/components/client'
+import { ProductsByCategoryClient } from '@/modules/products/customer/components/products-client'
 
 const CategoryPage = async ({
   params,
