@@ -31,7 +31,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { AlertModal } from '@/components/alert-modal'
+import { AlertModal } from '@/modules/shared/components/alert-modal'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Input } from '@/components/ui/input'
@@ -628,8 +628,11 @@ export const OrderForm: React.FC<OrderFormProps> = ({
                                 className={cn(
                                   'flex flex-col items-center gap-y-2 text-xs ',
 
-                                  form.getValues('state') ===
-                                    ORDER_STATE.GENERADO && 'hidden',
+                                  (form.getValues('state') ===
+                                    ORDER_STATE.GENERADO ||
+                                    form.getValues('state') ===
+                                      ORDER_STATE.FINALIZADO) &&
+                                    'hidden',
                                 )}
                               >
                                 Entregado

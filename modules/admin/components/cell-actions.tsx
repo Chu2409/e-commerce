@@ -6,7 +6,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 
 import { Button } from '@/components/ui/button'
-import { AlertModal } from '@/components/alert-modal'
+import { AlertModal } from '@/modules/shared/components/alert-modal'
 import { Edit, Trash } from 'lucide-react'
 
 interface CellActionsProps {

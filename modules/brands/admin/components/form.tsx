@@ -16,7 +16,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { AlertModal } from '@/components/alert-modal'
+import { AlertModal } from '@/modules/shared/components/alert-modal'
 import { Heading } from '@/modules/admin/components/heading'
 import { Button } from '@/components/ui/button'
 import { Trash } from 'lucide-react'

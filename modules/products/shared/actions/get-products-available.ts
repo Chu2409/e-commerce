@@ -4,9 +4,7 @@ import prismadb from '@/lib/prismadb'
 import { IFullProductOrder } from '@/modules/orders/shared/interfaces/order'
 import { PRODUCT_STATE } from '@prisma/client'
 
-export const getAllProductsAvailable = async (): Promise<
-  IFullProductOrder[]
-> => {
+export const getProductsAvailable = async (): Promise<IFullProductOrder[]> => {
   try {
     const products = await prismadb.product.findMany({
       where: {
