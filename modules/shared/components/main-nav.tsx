@@ -26,6 +26,20 @@ export const MainNav: React.FC<MainNavProps> = ({ routes, session }) => {
         !session && 'justify-start',
       )}
     >
+      {session && (
+        <Link
+          href='/'
+          className={cn(
+            'text-sm font-bold transition-colors hover:text-primary',
+            pathname === '/'
+              ? 'text-black font-bold dark:text-white '
+              : 'text-muted-foreground',
+          )}
+        >
+          ZHU-STORE
+        </Link>
+      )}
+
       {routes.map((route) => (
         <Link
           key={route.href}
