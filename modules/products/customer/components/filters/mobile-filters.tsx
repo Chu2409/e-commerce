@@ -8,7 +8,7 @@ import SizeFilter from './size-filter'
 import StateFilter from './state-filter'
 import ColorFilter from './color-filter'
 import IconButton from '@/modules/admin/components/icon-button'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
 
 interface MovileFiltersProps {
@@ -26,6 +26,12 @@ const MobileFilters: React.FC<MovileFiltersProps> = ({
 
   const onOpen = () => setIsOpen(true)
   const onClose = () => setIsOpen(false)
+
+  useEffect(() => {
+    isOpen
+      ? (document.body.style.overflow = 'hidden')
+      : (document.body.style.overflow = 'auto')
+  }, [isOpen])
 
   return (
     <div className='lg:hidden'>

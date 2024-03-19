@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Menu, X } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
@@ -12,6 +12,12 @@ export const MobileNavbar = ({ children }: { children: React.ReactNode }) => {
 
   const onOpen = () => setIsOpen(true)
   const onClose = () => setIsOpen(false)
+
+  useEffect(() => {
+    isOpen
+      ? (document.body.style.overflow = 'hidden')
+      : (document.body.style.overflow = 'auto')
+  }, [isOpen])
 
   return (
     <div className='lg:hidden h-full'>
