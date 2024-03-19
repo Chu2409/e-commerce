@@ -14,7 +14,7 @@ export const OrdersFilters = ({ customers }: { customers: Customer[] }) => {
 
   return (
     <div className='flex items-center justify-between'>
-      <div className='grid grid-cols-5 max-2xl:grid-cols-4 max-xl:grid-cols-3 gap-x-4 max-lg:grid max-lg:grid-cols-2 max-sm:grid-cols-1 gap-y-4 mb-4'>
+      <div className='w-full gap-y-4 gap-x-4 mb-4 grid grid-cols-1 max-[700px]:justify-items-center min-[700px]:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'>
         <DateFilter />
         <StateFilter />
         <PayMethodFilter />

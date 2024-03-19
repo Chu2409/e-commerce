@@ -30,7 +30,7 @@ export const MainNav: React.FC<MainNavProps> = ({ routes, session }) => {
         <Link
           href='/'
           className={cn(
-            'text-sm font-bold transition-colors hover:text-primary',
+            'text-base font-extrabold transition-colors hover:text-primary',
             pathname === '/'
               ? 'text-black font-bold dark:text-white '
               : 'text-muted-foreground',

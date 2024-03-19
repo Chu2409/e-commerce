@@ -1,54 +1,53 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { DialogTitle } from '@radix-ui/react-dialog'
-import { LayoutPanelTop, Menu } from 'lucide-react'
+import { Menu, X } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent, DialogHeader } from '@/components/ui/dialog'
+import { cn } from '@/lib/utils'
+import IconButton from '@/modules/admin/components/icon-button'
 
 export const MobileNavbar = ({ children }: { children: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false)
 
+  const onOpen = () => setIsOpen(true)
+  const onClose = () => setIsOpen(false)
+
   useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 1023) {
-        // Change 768 to your desired breakpoint
-        setIsOpen(false)
-      }
-    }
-
-    window.addEventListener('resize', handleResize)
-
-    return () => {
-      window.removeEventListener('resize', handleResize)
-    }
-  }, [])
-
-  const onClick = () => setIsOpen(!isOpen)
+    isOpen
+      ? (document.body.style.overflow = 'hidden')
+      : (document.body.style.overflow = 'auto')
+  }, [isOpen])
 
   return (
-    <>
-      <Button
-        onClick={onClick}
-        className='lg:hidden flex h-full ml-auto mr-2'
-        variant='ghost'
+    <div className='lg:hidden h-full'>
+      <div className='w-full h-full flex justify-end items-center'>
+        <Button onClick={onOpen} variant='ghost'>
+          <Menu />
+        </Button>
+      </div>
+
+      <div
+        className={cn(
+          'absolute inset-0 bg-black bg-opacity-50 z-40',
+          isOpen ? 'block' : 'hidden',
+        )}
+        onClick={onClose}
+      />
+
+      <div
+        className={cn(
+          'absolute bg-white right-0 z-50 top-0 bottom-0 max-w-sm w-full flex-col p-4',
+          isOpen ? 'block' : 'hidden',
+        )}
       >
-        <Menu />
-      </Button>
+        <div className='flex items-center justify-end px-2'>
+          <IconButton icon={<X size={15} />} onClick={onClose} />
+        </div>
 
-      <Dialog open={isOpen} onOpenChange={onClick}>
-        <DialogContent className=' h-full w-full max-w-md ml-auto mr-2 fixed transform-none top-0 right-0 flex flex-col'>
-          <DialogHeader>
-            <DialogTitle className='flex items-center justify-start  text-gray-900 '>
-              <span className='mr-2'>Secciones Disponibles</span>
-              <LayoutPanelTop />
-            </DialogTitle>
-          </DialogHeader>
-
-          <div onClick={() => setIsOpen(false)}>{children}</div>
-        </DialogContent>
-      </Dialog>
-    </>
+        <h2 className='text-base pb-5 font-semibold'>Secciones disponibles</h2>
+        <div onClick={() => setIsOpen(false)}>{children}</div>
+      </div>
+    </div>
   )
 }
