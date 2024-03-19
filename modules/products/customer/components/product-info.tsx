@@ -131,7 +131,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ productMaster }) => {
                 <div
                   key={color.id}
                   className={cn(
-                    'w-6 h-6 rounded-full border cursor-pointer hover:scale-125 duration-300  hover:opacity-70',
+                    'w-6 h-6 rounded-full border cursor-pointer hover:scale-125 duration-300 hover:opacity-70 border-black border-opacity-30',
                     {
                       'border-gray-300 border-2':
                         color.id === mainProductColor.colorId,

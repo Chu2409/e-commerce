@@ -53,7 +53,7 @@ const ColorFilter: React.FC<ColorFilterProps> = ({ data, name, valueKey }) => {
             <Button
               variant='outline'
               className={cn(
-                'rounded-md text-sm text-gray-800 p-2 bg-white border border-gray-300',
+                'rounded-md text-sm text-gray-800 p-2 bg-white border border-gray-300 ',
                 selectedValue === filter.id && 'bg-black text-white',
               )}
               onClick={() => onClick(filter.id)}
@@ -61,7 +61,7 @@ const ColorFilter: React.FC<ColorFilterProps> = ({ data, name, valueKey }) => {
               <div className='flex items-center gap-x-2'>
                 {filter.name}
                 <div
-                  className='w-6 h-6 rounded-full border'
+                  className='w-6 h-6 rounded-full border border-black border-opacity-30'
                   style={{ backgroundColor: filter.value }}
                 />
               </div>
