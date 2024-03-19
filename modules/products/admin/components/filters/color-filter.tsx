@@ -42,7 +42,7 @@ export const ColorFilter = ({ colors }: { colors: Color[] }) => {
             <div className='flex items-center gap-x-2'>
               {color.name}
               <div
-                className='w-6 h-6 rounded-full border'
+                className='w-6 h-6 rounded-full border border-black border-opacity-30'
                 style={{ backgroundColor: color.value }}
               />
             </div>
@@ -76,7 +76,7 @@ export const ColorFilter = ({ colors }: { colors: Color[] }) => {
                 <div className='flex items-center gap-x-2'>
                   {color.name}
                   <div
-                    className='w-6 h-6 rounded-full border'
+                    className='w-6 h-6 rounded-full border border-black border-opacity-30'
                     style={{ backgroundColor: color.value }}
                   />
                 </div>
