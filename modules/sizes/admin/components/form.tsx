@@ -48,8 +48,8 @@ const formSchema = z.object({
     .string()
     .min(3, { message: 'Mínimo 3 caracteres' })
     .max(100, { message: 'Máximo 100 caracteres' }),
-  value: z.string().min(1, { message: 'Mínimo 1 caracter' }).max(3, {
-    message: 'Máximo 3 caracteres',
+  value: z.string().min(1, { message: 'Mínimo 1 caracter' }).max(5, {
+    message: 'Máximo 5 caracteres',
   }),
   categoryId: z.string().min(1, { message: 'Selecciona una categoría' }),
 })
