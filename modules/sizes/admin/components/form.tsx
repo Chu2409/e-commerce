@@ -34,7 +34,6 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
-  CommandList,
 } from '@/components/ui/command'
 import { Trash } from 'lucide-react'
 
@@ -272,28 +271,26 @@ export const SizeForm: React.FC<SizeFormProps> = ({
           }}
         >
           <CommandInput placeholder='Buscar talla/tamaño...' />
-          <CommandList className='min-h-[200px] overflow-y-auto'>
-            <CommandEmpty>Talla/Tamaño no encontrado</CommandEmpty>
+          <CommandEmpty>Talla/Tamaño no encontrado</CommandEmpty>
 
-            <CommandGroup>
-              {sizes.map((size) => (
-                <CommandItem
-                  key={size.id}
-                  value={size.name + '_' + size.value}
-                  className='cursor-pointer'
-                  onSelect={() => {
-                    form.setValue('name', size.name)
-                    form.setValue('value', size.value)
-                  }}
-                >
-                  <div className='flex items-center gap-x-2'>
-                    <h3 className='text-sm font-medium'>{size.name}</h3>
-                    <p className='text-sm text-gray-500'>{size.value}</p>
-                  </div>
-                </CommandItem>
-              ))}
-            </CommandGroup>
-          </CommandList>
+          <CommandGroup className='overflow-y-auto max-h-[300px]'>
+            {sizes.map((size) => (
+              <CommandItem
+                key={size.id}
+                value={size.name + '_' + size.value}
+                className='cursor-pointer'
+                onSelect={() => {
+                  form.setValue('name', size.name)
+                  form.setValue('value', size.value)
+                }}
+              >
+                <div className='flex items-center gap-x-2'>
+                  <h3 className='text-sm font-medium'>{size.name}</h3>
+                  <p className='text-sm text-gray-500'>{size.value}</p>
+                </div>
+              </CommandItem>
+            ))}
+          </CommandGroup>
         </Command>
       </div>
     </>

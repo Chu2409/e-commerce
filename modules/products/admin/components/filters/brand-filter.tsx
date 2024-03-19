@@ -49,7 +49,7 @@ export const BrandFilter = ({ brands }: { brands: Brand[] }) => {
 
           <CommandEmpty>Marca no encontrado</CommandEmpty>
 
-          <CommandGroup>
+          <CommandGroup className='overflow-y-auto max-h-[300px]'>
             {brands.map((brand) => (
               <CommandItem
                 className='cursor-pointer'

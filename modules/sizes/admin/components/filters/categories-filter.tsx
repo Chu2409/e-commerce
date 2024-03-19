@@ -64,7 +64,7 @@ export const CategoriesFilter = ({
 
           <CommandEmpty>Categoría no encontrado</CommandEmpty>
 
-          <CommandGroup>
+          <CommandGroup className='overflow-y-auto max-h-[300px]'>
             {categories.map((category) => (
               <CommandItem
                 className='cursor-pointer'

@@ -172,7 +172,7 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
                   <Popover>
                     <PopoverTrigger asChild>
                       <div
-                        className='rounded-md border p-5 w-[200px] cursor-pointer'
+                        className='rounded-md border p-5 w-[200px] cursor-pointer border border-black border-opacity-30'
                         style={{ backgroundColor: field.value }}
                       />
                     </PopoverTrigger>

@@ -35,7 +35,7 @@ export const colorsColumns: ColumnDef<Color>[] = [
     cell: ({ row }) => {
       return (
         <div
-          className='w-full h-8 rounded-md'
+          className='w-full h-8 rounded-md border border-black border-opacity-30'
           style={{ backgroundColor: row.original.value }}
         />
       )

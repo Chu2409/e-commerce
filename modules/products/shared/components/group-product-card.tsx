@@ -114,10 +114,10 @@ const GroupProductCard: React.FC<GroupProductCardProps> = ({
               key={color.id}
               className={cn(
                 'w-4 h-4 rounded-full border cursor-pointer hover:scale-125 duration-300 hover:opacity-70 border-black border-opacity-30 ',
-                {
-                  'border-gray-300 border-2':
-                    color.id === mainProductColor.colorId,
-                },
+
+                color.id === mainProductColor.colorId
+                  ? 'border-opacity-50'
+                  : 'opacity-40 scale-75',
               )}
               onClick={() => handleColorChange(color.id)}
               style={{ backgroundColor: color.value }}

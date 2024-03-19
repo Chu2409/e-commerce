@@ -51,7 +51,7 @@ export const PayMethodFilter = () => {
 
           <CommandEmpty>Método de pago no encontrado</CommandEmpty>
 
-          <CommandGroup>
+          <CommandGroup className='overflow-y-auto max-h-[300px]'>
             {payMethods.map((state) => (
               <CommandItem
                 className='cursor-pointer'
