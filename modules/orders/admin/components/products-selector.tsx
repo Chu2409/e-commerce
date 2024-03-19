@@ -10,7 +10,6 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
-  CommandList,
 } from '@/components/ui/command'
 import { ShoppingCart } from 'lucide-react'
 
@@ -58,72 +57,68 @@ export const ProductsSelector: React.FC<ProductsSelectorProps> = ({
         }}
       >
         <CommandInput placeholder='Buscar producto......' />
-        <CommandList className='min-h-[500px] overflow-y-auto'>
-          <CommandEmpty>Producto no encontrado</CommandEmpty>
-          <CommandGroup>
-            {filteredProducts.map((product) => (
-              <CommandItem
-                key={product.id}
-                value={
-                  product.id + '_' + product.productColor.productMaster.name
-                }
-                onSelect={() => {
-                  addItem({
-                    product,
-                    quantity: 1,
-                    delivered: false,
-                    state: product.state,
-                  })
-                }}
-                className='cursor-pointer'
-              >
-                <div className='flex items-center justify-between w-full'>
-                  <div className='flex items-center'>
-                    <CldImage
-                      src={product.productColor.images?.[0]?.url}
-                      crop='fill'
-                      width={80}
-                      height={80}
-                      alt='Image'
-                      className='aspect-square object-cover rounded-md'
-                    />
-                    <div className='ml-2'>
-                      <h3 className='text-base font-semibold'>
-                        {product.productColor.productMaster.name}
-                      </h3>
+        <CommandEmpty>Producto no encontrado</CommandEmpty>
+        <CommandGroup className='overflow-y-auto max-h-[500px]'>
+          {filteredProducts.map((product) => (
+            <CommandItem
+              key={product.id}
+              value={product.id + '_' + product.productColor.productMaster.name}
+              onSelect={() => {
+                addItem({
+                  product,
+                  quantity: 1,
+                  delivered: false,
+                  state: product.state,
+                })
+              }}
+              className='cursor-pointer'
+            >
+              <div className='flex items-center justify-between w-full'>
+                <div className='flex items-center'>
+                  <CldImage
+                    src={product.productColor.images?.[0]?.url}
+                    crop='fill'
+                    width={80}
+                    height={80}
+                    alt='Image'
+                    className='aspect-square object-cover rounded-md'
+                  />
+                  <div className='ml-2'>
+                    <h3 className='text-base font-semibold'>
+                      {product.productColor.productMaster.name}
+                    </h3>
 
-                      <p className='text-sm text-gray-600'>
-                        Talla:{' '}
-                        <span className='font-medium'>
-                          {product.sizeCategory.size.value}
-                        </span>
-                      </p>
-
-                      <p className='text-sm text-gray-600'>
-                        Stock:{' '}
-                        <span className='font-medium'>{product.stock}</span>
-                      </p>
-
-                      <p className='text-sm text-gray-600'>
-                        Estado:{' '}
-                        <span className='capitalize font-medium'>
-                          {product.state.replace('_', ' ').toLowerCase()}
-                        </span>
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className='flex items-center'>
-                    <p className='text-sm font-semibold'>
-                      {formatMoney(product.price)}
+                    <p className='text-sm text-gray-600'>
+                      Talla:{' '}
+                      <span className='font-medium'>
+                        {product.sizeCategory.size.value}
+                      </span>
                     </p>
-                    <ShoppingCart className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+
+                    <p className='text-sm text-gray-600'>
+                      Stock:{' '}
+                      <span className='font-medium'>{product.stock}</span>
+                    </p>
+
+                    <p className='text-sm text-gray-600'>
+                      Estado:{' '}
+                      <span className='capitalize font-medium'>
+                        {product.state.replace('_', ' ').toLowerCase()}
+                      </span>
+                    </p>
                   </div>
                 </div>
-              </CommandItem>
-            ))}
-          </CommandGroup>
-        </CommandList>
+
+                <div className='flex items-center'>
+                  <p className='text-sm font-semibold'>
+                    {formatMoney(product.price)}
+                  </p>
+                  <ShoppingCart className='ml-2 h-4 w-4 shrink-0 opacity-50' />
+                </div>
+              </div>
+            </CommandItem>
+          ))}
+        </CommandGroup>
       </Command>
     </div>
   )

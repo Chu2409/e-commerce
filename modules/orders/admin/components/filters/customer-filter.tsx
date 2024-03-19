@@ -54,7 +54,7 @@ export const CustomerFilter = ({ customers }: { customers: Customer[] }) => {
 
           <CommandEmpty>Cliente no encontrado</CommandEmpty>
 
-          <CommandGroup>
+          <CommandGroup className='overflow-y-auto max-h-[300px]'>
             {customers.map((customer) => (
               <CommandItem
                 className='cursor-pointer'

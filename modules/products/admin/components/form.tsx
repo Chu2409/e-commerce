@@ -643,7 +643,7 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
                           <div className='flex items-center gap-x-2'>
                             {mainProductColor.color.name}
                             <div
-                              className='w-6 h-6 rounded-full border'
+                              className='w-6 h-6 rounded-full border border-black border-opacity-30'
                               style={{
                                 backgroundColor: mainProductColor.color.value,
                               }}

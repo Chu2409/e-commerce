@@ -53,7 +53,7 @@ export const StateFilter = () => {
 
           <CommandEmpty>Estado no encontrado</CommandEmpty>
 
-          <CommandGroup>
+          <CommandGroup className='overflow-y-auto max-h-[300px]'>
             {states.map((state) => (
               <CommandItem
                 key={state}

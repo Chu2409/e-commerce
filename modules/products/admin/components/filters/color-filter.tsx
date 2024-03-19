@@ -53,18 +53,26 @@ export const ColorFilter = ({ colors }: { colors: Color[] }) => {
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className='w-[290px] p-0'>
-        <Command>
+      <PopoverContent className='w-[290px] p-0 '>
+        <Command
+          filter={(value, search) => {
+            const name = value.split('_')[1]
+
+            if (name.toLowerCase().includes(search.toLowerCase())) return 1
+
+            return 0
+          }}
+        >
           <CommandInput placeholder='Selecciona un color...' className='h-9' />
 
           <CommandEmpty>Color no encontrado</CommandEmpty>
 
-          <CommandGroup>
+          <CommandGroup className='overflow-y-auto max-h-[300px]'>
             {colors.map((color) => (
               <CommandItem
                 className='cursor-pointer'
                 key={color.id}
-                value={color.id}
+                value={color.id + '_' + color.name}
                 onSelect={() => {
                   if (color.id === value) {
                     setValue({ key: 'colorId', value: undefined })

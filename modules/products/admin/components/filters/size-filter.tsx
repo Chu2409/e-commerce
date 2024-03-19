@@ -73,7 +73,7 @@ export const SizeFilter = () => {
 
           <CommandEmpty>Talla/Tamaño no encontrada</CommandEmpty>
 
-          <CommandGroup>
+          <CommandGroup className='overflow-y-auto max-h-[300px]'>
             {data.map((sizeByCategory) => (
               <CommandItem
                 className='cursor-pointer'
