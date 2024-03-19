@@ -22,7 +22,7 @@ const initialFilters: IProductsFilters = {
   categoryId: undefined,
   sizeId: undefined,
   colorId: undefined,
-  take: 16,
+  take: 11,
   skip: 0,
 }
 
