@@ -32,7 +32,7 @@ export const getProducts = async (
         brand: true,
         category: true,
       },
-      take: filters?.take || 16,
+      take: filters?.take || 11,
       skip: filters?.skip || 0,
     })
 
