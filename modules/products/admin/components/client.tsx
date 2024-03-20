@@ -10,7 +10,7 @@ import { Separator } from '@/components/ui/separator'
 
 import { IFullProductMaster } from '../../shared/interfaces/product'
 import { useProductsFilters } from '../../shared/store/filters'
-import { getProducts } from '../../shared/actions/get-products-si'
+import { getProducts } from '../../shared/actions/get-products'
 
 export const ProductsClient = ({
   brands,

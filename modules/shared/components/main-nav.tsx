@@ -22,7 +22,7 @@ export const MainNav: React.FC<MainNavProps> = ({ routes, session }) => {
   return (
     <nav
       className={cn(
-        'h-14 px-6 w-full justify-between max-lg:flex-col max-lg:gap-y-8 flex items-center gap-x-14',
+        'h-full text-center min-h-[3.5rem] px-6 w-full justify-between max-lg:flex-col gap-y-6 flex items-center gap-x-10',
         !session && 'justify-start',
       )}
     >
@@ -36,7 +36,7 @@ export const MainNav: React.FC<MainNavProps> = ({ routes, session }) => {
               : 'text-muted-foreground',
           )}
         >
-          ZHU-STORE
+          D&L American Outlet
         </Link>
       )}
 
