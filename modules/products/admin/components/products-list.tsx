@@ -24,7 +24,7 @@ export const ProductsList = ({
       )}
 
       <div className='gap-y-8 gap-x-6 grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 max-md:justify-items-center'>
-        {productsMasters.map((productMaster) => (
+        {productsMasters.slice(0, 10).map((productMaster) => (
           <GroupProductCard
             key={productMaster.id}
             productMaster={productMaster}
@@ -37,7 +37,7 @@ export const ProductsList = ({
         <Button
           variant='outline'
           size='sm'
-          onClick={() => {}}
+          onClick={() => filters.setSkip(filters.skip - 10)}
           disabled={filters.skip === 0}
         >
           Anterior
@@ -45,9 +45,7 @@ export const ProductsList = ({
         <Button
           variant='outline'
           size='sm'
-          onClick={() => {
-            filters.setSkip(filters.skip + 10)
-          }}
+          onClick={() => filters.setSkip(filters.skip + 10)}
           // disabled={data.length !== 11}
           disabled={productsMasters.length !== 11}
         >

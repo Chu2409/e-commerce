@@ -3,10 +3,9 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { cn, formatMoney } from '@/lib/utils'
-// import { CldImage } from 'next-cloudinary'
+import { CldImage } from 'next-cloudinary'
 
 import { IFullProductMaster } from '../interfaces/product'
-import Image from 'next/image'
 
 interface GroupProductCardProps {
   productMaster: IFullProductMaster
@@ -62,8 +61,9 @@ const GroupProductCard: React.FC<GroupProductCardProps> = ({
 
   return (
     <div className='bg-[#f6f6f6] w-[290px] rounded-xl border p-3 space-y-4'>
-      <Image
+      <CldImage
         src={mainProductColor.images?.[0]?.url}
+        crop='fill'
         width={290}
         height={290}
         alt='Image'
