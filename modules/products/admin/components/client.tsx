@@ -10,7 +10,7 @@ import { Separator } from '@/components/ui/separator'
 
 import { IFullProductMaster } from '../../shared/interfaces/product'
 import { useProductsFilters } from '../../shared/store/filters'
-import { getProducts } from '../../shared/actions/get-products'
+import { getProducts } from '../../shared/actions/get-products-si'
 
 export const ProductsClient = ({
   brands,
@@ -37,7 +37,7 @@ export const ProductsClient = ({
       setData(data)
     }
 
-    fetchData()
+    fetchData().catch(console.error)
   }, [filters])
 
   return (
