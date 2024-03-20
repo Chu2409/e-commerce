@@ -61,6 +61,7 @@ export const BrandFilter = ({ brands }: { brands: Brand[] }) => {
                   } else {
                     setValue({ key: 'brandId', value: brand.id })
                   }
+                  setValue({ key: 'skip', value: 0 })
                 }}
               >
                 {brand.name}

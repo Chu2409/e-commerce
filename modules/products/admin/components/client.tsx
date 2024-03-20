@@ -34,6 +34,8 @@ export const ProductsClient = ({
   useEffect(() => {
     const fetchData = async () => {
       const data = await getProducts(filters)
+      // console.log(data)
+
       setData(data)
     }
 

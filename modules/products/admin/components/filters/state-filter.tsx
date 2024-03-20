@@ -68,6 +68,7 @@ export const StateFilter = () => {
                       value: state,
                     })
                   }
+                  setValue({ key: 'skip', value: 0 })
                   setOpen(false)
                 }}
               >

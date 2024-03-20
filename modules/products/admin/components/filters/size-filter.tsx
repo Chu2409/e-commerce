@@ -85,6 +85,7 @@ export const SizeFilter = () => {
                   } else {
                     setValue({ key: 'sizeId', value: sizeByCategory.id })
                   }
+                  setValue({ key: 'skip', value: 0 })
                 }}
               >
                 {sizeByCategory.size.name} - {sizeByCategory.size.value}
