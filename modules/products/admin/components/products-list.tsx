@@ -46,7 +46,6 @@ export const ProductsList = ({
           variant='outline'
           size='sm'
           onClick={() => filters.setSkip(filters.skip + 10)}
-          // disabled={data.length !== 11}
           disabled={productsMasters.length !== 11}
         >
           Siguiente

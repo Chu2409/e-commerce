@@ -79,6 +79,7 @@ export const ColorFilter = ({ colors }: { colors: Color[] }) => {
                   } else {
                     setValue({ key: 'colorId', value: color.id })
                   }
+                  setValue({ key: 'skip', value: 0 })
                 }}
               >
                 <div className='flex items-center gap-x-2'>

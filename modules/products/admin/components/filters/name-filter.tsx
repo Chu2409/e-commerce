@@ -21,6 +21,7 @@ export const NameFilter = () => {
   const debouncedGetMovies = useCallback(
     debounce((search: string) => {
       setFilter({ key: 'name', value: search === '' ? undefined : search })
+      setFilter({ key: 'skip', value: 0 })
     }, 300),
     [],
   )

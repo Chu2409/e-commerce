@@ -11,18 +11,20 @@ export const getProducts = async (
   try {
     const productsMasters = await prismadb.productMaster.findMany({
       where: {
+        categoryId: filters?.categoryId,
         name: {
           contains: filters?.name,
         },
         brandId: filters?.brandId,
-        categoryId: filters?.categoryId,
         productsColors: {
           some: {
             colorId: filters?.colorId,
             products: {
               some: {
                 sizeCategoryId: filters?.sizeId,
-                state: filters?.state?.replace(' ', '_') as PRODUCT_STATE,
+                AND: {
+                  state: filters?.state?.replace(' ', '_') as PRODUCT_STATE,
+                },
               },
             },
           },
@@ -37,7 +39,9 @@ export const getProducts = async (
             products: {
               some: {
                 sizeCategoryId: filters?.sizeId,
-                state: filters?.state?.replace(' ', '_') as PRODUCT_STATE,
+                AND: {
+                  state: filters?.state?.replace(' ', '_') as PRODUCT_STATE,
+                },
               },
             },
           },
@@ -45,7 +49,9 @@ export const getProducts = async (
             products: {
               where: {
                 sizeCategoryId: filters?.sizeId,
-                state: filters?.state?.replace(' ', '_') as PRODUCT_STATE,
+                AND: {
+                  state: filters?.state?.replace(' ', '_') as PRODUCT_STATE,
+                },
               },
               include: {
                 sizeCategory: {

@@ -64,6 +64,7 @@ export const CategoryFilter = ({ categories }: { categories: Category[] }) => {
                   } else {
                     setValue({ key: 'categoryId', value: category.id })
                   }
+                  setValue({ key: 'skip', value: 0 })
                 }}
               >
                 {category.name}
