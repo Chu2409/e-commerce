@@ -1,12 +1,20 @@
 'use client'
 
-// import toast from 'react-hot-toast'
+import toast from 'react-hot-toast'
 import { useCart } from '../store/cart'
-import { Button } from '@/components/ui/button'
 import { formatMoney } from '@/lib/utils'
+
+const phone = process.env.NEXT_PUBLIC_PHONE_NUMBER!
 
 const Summary = () => {
   const items = useCart((state) => state.productItems)
+
+  const message = items.reduce((acc, item) => {
+    return (
+      acc +
+      `|${item.product.productColor.productMaster.name} ~ ${item.product.productColor.color.name} ~ ${item.quantity}|`
+    )
+  }, '')
 
   const totalPrice = items.reduce((acc, item) => {
     return acc + item.product.price * item.quantity
@@ -24,9 +32,16 @@ const Summary = () => {
         </div>
       </div>
 
-      <Button disabled={items.length === 0} className='w-full mt-6'>
-        Comprar
-      </Button>
+      <a
+        className='w-full mt-6 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:opacity-70 cursor-pointer'
+        href={`https://api.whatsapp.com/send/?phone=${phone}&text=Hola, me gustaría comprar los siguientes productos: ${message}`}
+        target='_blank'
+        onClick={() => {
+          toast.success('¡Pedido realizado con éxito!')
+        }}
+      >
+        Realizar pedido
+      </a>
     </div>
   )
 }
