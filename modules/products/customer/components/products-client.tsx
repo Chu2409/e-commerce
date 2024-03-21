@@ -8,6 +8,7 @@ import SizeFilter from '@/modules/products/customer/components/filters/size-filt
 import BrandFilter from '@/modules/products/customer/components/filters/brand-filter'
 import StateFilter from './filters/state-filter'
 import MobileFilters from './filters/mobile-filters'
+import GenderFilter from './filters/gender-filter'
 
 interface ProductsByCategoryClientProps {
   productsMasters: IFullProductMaster[]
@@ -25,6 +26,8 @@ export const ProductsByCategoryClient: React.FC<
         <MobileFilters sizes={sizes} colors={colors} brands={brands} />
 
         <div className='max-lg:hidden'>
+          <GenderFilter valueKey='gender' name='Género' />
+
           <BrandFilter valueKey='brandId' name='Marcas' data={brands} />
 
           <SizeFilter valueKey='sizeId' name='Tallas/Tamaños' data={sizes} />

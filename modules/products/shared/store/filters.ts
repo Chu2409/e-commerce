@@ -18,6 +18,7 @@ interface FiltersState {
 const initialFilters: IProductsFilters = {
   name: undefined,
   state: undefined,
+  gender: undefined,
   brandId: undefined,
   categoryId: undefined,
   sizeId: undefined,

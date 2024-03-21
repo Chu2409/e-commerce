@@ -2,11 +2,12 @@
 
 import prismadb from '@/lib/prismadb'
 import { IFullProductMaster } from '../interfaces/product'
-import { PRODUCT_STATE } from '@prisma/client'
+import { PRODUCT_GENDER, PRODUCT_STATE } from '@prisma/client'
 
 export const getProductsByCategory = async (
   categoryId: string,
   filters?: {
+    gender?: string
     brandId?: string
     sizeId?: string
     state?: string
@@ -18,6 +19,7 @@ export const getProductsByCategory = async (
       where: {
         categoryId,
         brandId: filters?.brandId,
+        gender: filters?.gender as PRODUCT_GENDER,
         productsColors: {
           some: {
             colorId: filters?.colorId,

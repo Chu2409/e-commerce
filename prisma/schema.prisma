@@ -163,9 +163,10 @@ model SizeCategory {
 }
 
 model ProductMaster {
-  id          String  @id @default(uuid()) @map("id")
-  name        String  @map("name")
-  description String? @map("description")
+  id          String          @id @default(uuid()) @map("id")
+  name        String          @map("name")
+  description String?         @map("description")
+  gender      PRODUCT_GENDER? @default(UNISEX) @map("gender")
 
   brandId    String   @map("brand_id")
   brand      Brand    @relation(fields: [brandId], references: [id])
@@ -178,6 +179,12 @@ model ProductMaster {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("products_master")
+}
+
+enum PRODUCT_GENDER {
+  HOMBRE
+  MUJER
+  UNISEX
 }
 
 model Size {

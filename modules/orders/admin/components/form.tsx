@@ -592,6 +592,13 @@ export const OrderForm: React.FC<OrderFormProps> = ({
                                   </span>
                                 </p>
 
+                                <p className='text-sm text-gray-600'>
+                                  Género:{' '}
+                                  <span className='font-medium capitalize'>
+                                    {item.product.productColor.productMaster.gender?.toLowerCase()}
+                                  </span>
+                                </p>
+
                                 {initialData != null &&
                                 initialData.state !== ORDER_STATE.GENERADO ? (
                                   <p className='text-sm text-gray-600'>

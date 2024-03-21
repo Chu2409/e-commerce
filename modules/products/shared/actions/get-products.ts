@@ -2,7 +2,7 @@
 
 import prismadb from '@/lib/prismadb'
 import { IProductsFilters } from '../interfaces/products-filters'
-import { PRODUCT_STATE } from '@prisma/client'
+import { PRODUCT_GENDER, PRODUCT_STATE } from '@prisma/client'
 import { IFullProductMaster } from '../interfaces/product'
 
 export const getProducts = async (
@@ -15,6 +15,7 @@ export const getProducts = async (
         name: {
           contains: filters?.name,
         },
+        gender: filters?.gender as PRODUCT_GENDER,
         brandId: filters?.brandId,
         productsColors: {
           some: {

@@ -3,7 +3,13 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
-import { Brand, Category, Color, PRODUCT_STATE } from '@prisma/client'
+import {
+  Brand,
+  Category,
+  Color,
+  PRODUCT_GENDER,
+  PRODUCT_STATE,
+} from '@prisma/client'
 import toast from 'react-hot-toast'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -41,6 +47,10 @@ import { createProductColor } from '../../shared/actions/create-product-color'
 import { createProduct } from '../../shared/actions/create-product'
 import { updateProduct } from '../../shared/actions/update-product'
 
+const productGenders = Object.values(PRODUCT_GENDER).map((state) =>
+  state.replace('_', ' '),
+)
+
 const productMasterFormSchema = z.object({
   name: z
     .string()
@@ -49,6 +59,7 @@ const productMasterFormSchema = z.object({
   description: z.string().optional(),
   brandId: z.string().min(1, { message: 'Selecciona una marca' }),
   categoryId: z.string().min(1, { message: 'Selecciona una categoría' }),
+  gender: z.enum(productGenders as any),
 })
 
 const productStates = Object.values(PRODUCT_STATE).map((state) =>
@@ -107,6 +118,7 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
           description: '',
           brandId: '',
           categoryId: '',
+          gender: PRODUCT_GENDER.UNISEX,
         },
   })
 
@@ -220,6 +232,7 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
         {
           ...data,
           description: data.description || null,
+          gender: data.gender as PRODUCT_GENDER,
         },
       )
       if (!productMaster) {
@@ -338,6 +351,7 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
       const productMaster = await createProductMaster({
         ...productMasterData,
         description: productMasterData.description || null,
+        gender: productMasterData?.gender as PRODUCT_GENDER,
       })
 
       const productColor = await createProductColor({
@@ -511,6 +525,45 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
                           className='cursor-pointer'
                         >
                           {category.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={productMasterForm.control}
+              name='gender'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Género</FormLabel>
+                  <Select
+                    disabled={isLoading}
+                    // eslint-disable-next-line react/jsx-handler-names
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          defaultValue={field.value}
+                          placeholder='Selecciona una género'
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+
+                    <SelectContent>
+                      {productGenders.map((gender) => (
+                        <SelectItem
+                          key={gender}
+                          value={gender}
+                          className='cursor-pointer'
+                        >
+                          {gender}
                         </SelectItem>
                       ))}
                     </SelectContent>

@@ -103,6 +103,13 @@ const GroupProductCard: React.FC<GroupProductCardProps> = ({
             {mainProduct.state.replace('_', ' ').toLowerCase()}
           </span>
         </p>
+
+        <p className='text-sm text-gray-600'>
+          Género:{' '}
+          <span className='capitalize font-medium'>
+            {productMaster.gender?.replace('_', ' ').toLowerCase()}
+          </span>
+        </p>
       </div>
 
       <div className='flex items-center justify-between font-semibold'>

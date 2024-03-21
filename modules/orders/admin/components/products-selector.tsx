@@ -78,8 +78,8 @@ export const ProductsSelector: React.FC<ProductsSelectorProps> = ({
                   <CldImage
                     src={product.productColor.images?.[0]?.url}
                     crop='fill'
-                    width={80}
-                    height={80}
+                    width={100}
+                    height={100}
                     alt='Image'
                     className='aspect-square object-cover rounded-md'
                   />
@@ -98,6 +98,13 @@ export const ProductsSelector: React.FC<ProductsSelectorProps> = ({
                     <p className='text-sm text-gray-600'>
                       Stock:{' '}
                       <span className='font-medium'>{product.stock}</span>
+                    </p>
+
+                    <p className='text-sm text-gray-600'>
+                      Género:{' '}
+                      <span className='font-medium capitalize'>
+                        {product.productColor.productMaster.gender?.toLowerCase()}
+                      </span>
                     </p>
 
                     <p className='text-sm text-gray-600'>
