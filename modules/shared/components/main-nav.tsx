@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { signOut } from 'next-auth/react'
 
 import { cn } from '@/lib/utils'
@@ -9,7 +9,8 @@ import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { IRoute } from '@/modules/shared/interfaces/route'
-import { LogOut } from 'lucide-react'
+import { LogOut, ShoppingBag } from 'lucide-react'
+import { useCart } from '@/modules/cart/store/cart'
 
 interface MainNavProps {
   routes: IRoute[]
@@ -18,6 +19,9 @@ interface MainNavProps {
 
 export const MainNav: React.FC<MainNavProps> = ({ routes, session }) => {
   const pathname = usePathname()
+  const router = useRouter()
+
+  const items = useCart((state) => state.productItems)
 
   return (
     <nav
@@ -64,6 +68,20 @@ export const MainNav: React.FC<MainNavProps> = ({ routes, session }) => {
           >
             Cerrar sesión
             <LogOut className='w-4 h-4' />
+          </Button>
+        </div>
+      )}
+
+      {!session && (
+        <div className='ml-auto flex items-center gap-x-4'>
+          <Button
+            onClick={() => router.push('/cart')}
+            className='flex items-center rounded-full bg-black px-4 py-2'
+          >
+            <ShoppingBag size={20} color='white' />
+            <span className='ml-2 text-sm font-medium text-white'>
+              {items.length}
+            </span>
           </Button>
         </div>
       )}

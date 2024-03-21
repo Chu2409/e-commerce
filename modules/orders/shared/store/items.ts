@@ -1,8 +1,11 @@
 import { create } from 'zustand'
-import { IFullItem } from '../interfaces/order'
+import { IFullItemOrder } from '../interfaces/order'
 
 interface ProductItemsInterface
-  extends Pick<IFullItem, 'product' | 'quantity' | 'state' | 'delivered'> {}
+  extends Pick<
+    IFullItemOrder,
+    'product' | 'quantity' | 'state' | 'delivered'
+  > {}
 
 interface ProductItemsState {
   productItems: ProductItemsInterface[]
@@ -18,7 +21,7 @@ interface ProductItemsState {
   removeProductItem: (id: string) => void
 }
 
-const initialItems: IFullItem[] = []
+const initialItems: IFullItemOrder[] = []
 
 export const useItems = create<ProductItemsState>((set) => {
   return {
