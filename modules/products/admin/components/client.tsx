@@ -21,6 +21,12 @@ export const ProductsClient = ({
   categories: Category[]
   colors: Color[]
 }) => {
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
   const [data, setData] = useState<IFullProductMaster[]>([])
 
   const filters = useProductsFilters((state) => state.filters)
@@ -41,6 +47,8 @@ export const ProductsClient = ({
 
     fetchData().catch(console.error)
   }, [filters])
+
+  if (!isMounted) return null
 
   return (
     <div>

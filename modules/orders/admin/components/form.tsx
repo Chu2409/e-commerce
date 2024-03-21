@@ -563,7 +563,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({
                                       (initialData == null ||
                                         initialData.state ===
                                           ORDER_STATE.GENERADO) &&
-                                        ' transition duration-300 ease-in-out group-hover:opacity-50',
+                                        'transition duration-300 ease-in-out group-hover:opacity-50',
                                     )}
                                   />
                                 </div>
@@ -665,6 +665,9 @@ export const OrderForm: React.FC<OrderFormProps> = ({
                                     : item.product.stock
                                 }
                                 onChange={(e) => {
+                                  if (+e.target.value > item.product.stock) {
+                                    return
+                                  }
                                   modifyQuantity(
                                     item.product.id,
                                     +e.target.value,

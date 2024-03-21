@@ -6,6 +6,9 @@ import { cn, formatMoney } from '@/lib/utils'
 import { CldImage } from 'next-cloudinary'
 import { Image } from '@prisma/client'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
+import { Button } from '@/components/ui/button'
+import { ShoppingCart } from 'lucide-react'
+import { useCart } from '@/modules/cart/store/cart'
 
 interface ProductInfoProps {
   productMaster: IFullProductMaster
@@ -46,6 +49,8 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ productMaster }) => {
       setMainProduct(newProduct)
     }
   }
+
+  const addItemToCart = useCart((state) => state.addProductItem)
 
   return (
     <div className='grid lg:grid-cols-2 lg:gap-6 gap-10'>
@@ -153,6 +158,28 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ productMaster }) => {
             <div className='flex gap-1 capitalize'>
               {mainProduct.state.replace('_', ' ').toLowerCase()}
             </div>
+          </div>
+
+          <div className='mt-6 flex items-center gap-x-3 self-end '>
+            <Button
+              onClick={() => {
+                addItemToCart({
+                  product: {
+                    ...mainProduct,
+                    productColor: {
+                      ...mainProductColor,
+                      productMaster,
+                    },
+                  },
+                  quantity: 1,
+                  state: mainProduct.state,
+                })
+              }}
+              className='flex items-center gap-x-2'
+            >
+              Agregar al carrito
+              <ShoppingCart />
+            </Button>
           </div>
         </div>
       </div>

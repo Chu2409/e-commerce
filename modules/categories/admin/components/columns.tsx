@@ -33,7 +33,7 @@ export const categoriesColumns: ColumnDef<Brand>[] = [
         id={row.original.id}
         message='Marca eliminada'
         onDelete={deleteCategory}
-        errorMessage='Elimine los productos asociados a esta marca primero'
+        errorMessage='Elimine los productos o tallas asociados a esta categoría primero'
       />
     ),
   },

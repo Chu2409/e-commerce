@@ -41,7 +41,7 @@ export const ProductsByCategoryClient: React.FC<
             </div>
           )}
 
-          <div className='grid gap-4 max-[700px]:justify-items-center min-[700px]:grid-cols-2 min-[1340px]:grid-cols-3 min-[1660px]:grid-cols-4 '>
+          <div className='grid gap-4 max-[1340px]:justify-items-center min-[700px]:grid-cols-2 min-[1340px]:grid-cols-3 min-[1660px]:grid-cols-4 '>
             {productsMasters.map((productMaster) => (
               <GroupProductCard
                 key={productMaster.id}

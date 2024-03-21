@@ -25,10 +25,10 @@ export interface IFullProductOrder extends Product {
   productColor: IFullProductColorOrder
 }
 
-interface IFullItem extends Item {
+interface IFullItemOrder extends Item {
   product: IFullProductOrder
 }
 export interface IFullOrder extends Order {
   customer: Customer
-  items: IFullItem[]
+  items: IFullItemOrder[]
 }
