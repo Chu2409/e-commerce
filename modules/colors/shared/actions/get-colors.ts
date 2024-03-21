@@ -5,7 +5,11 @@ import { Color } from '@prisma/client'
 
 export const getColors = async (): Promise<Color[]> => {
   try {
-    const colors = await prismadb.color.findMany()
+    const colors = await prismadb.color.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+    })
 
     return colors
   } catch (error: any) {
