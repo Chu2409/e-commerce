@@ -5,7 +5,11 @@ import { Size } from '@prisma/client'
 
 export const getSizes = async (): Promise<Size[]> => {
   try {
-    const sizes = await prismadb.size.findMany()
+    const sizes = await prismadb.size.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+    })
 
     return sizes
   } catch (error: any) {

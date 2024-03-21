@@ -68,6 +68,9 @@ export const getProducts = async (
       },
       take: filters?.take || 11,
       skip: filters?.skip || 0,
+      orderBy: {
+        createdAt: 'desc',
+      },
     })
 
     return productsMasters
