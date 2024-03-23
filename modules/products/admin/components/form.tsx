@@ -133,9 +133,11 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
 
   const colorsAvailable = colors.filter(
     (color) =>
-      !initialProductMaster?.productsColors.some(
-        (productColor) => productColor.colorId === color.id,
-      ),
+      !initialProductMaster?.productsColors.some((productColor) => {
+        if (mainProductColor && productColor.id === mainProductColor.id)
+          return false
+        return productColor.colorId === color.id
+      }),
   )
 
   const [sizesAvailable, setSizesAvailable] = useState<
@@ -202,9 +204,10 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
       setSizesAvailable(
         sizesCategories.filter(
           (sizeCategory) =>
-            !mainProductColor.products.some(
-              (product) => product.sizeCategory?.id === sizeCategory.id,
-            ),
+            !mainProductColor.products.some((product) => {
+              if (mainProduct && product.id === mainProduct.id) return false
+              return product.sizeCategoryId === sizeCategory.id
+            }),
         ),
       )
     }
@@ -264,6 +267,7 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
       const productColor = await updateProductColor(mainProductColor?.id!, {
         ...data,
       })
+
       if (!productColor) throw new Error()
 
       router.refresh()
@@ -580,7 +584,7 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
         </form>
       </Form>
 
-      <Separator className='mt-4' />
+      <Separator className='my-4' />
 
       <Form {...productColorForm}>
         <form
@@ -682,25 +686,6 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
                             </div>
                           </SelectItem>
                         ))}
-                        {initialProductMaster &&
-                          mainProductColor?.colorId != null && (
-                            <SelectItem
-                              key={mainProductColor?.colorId!}
-                              value={mainProductColor?.colorId!}
-                              className='cursor-pointer'
-                            >
-                              <div className='flex items-center gap-x-2'>
-                                {mainProductColor?.color?.name}
-                                <div
-                                  className='w-6 h-6 rounded-full border border-black border-opacity-30'
-                                  style={{
-                                    backgroundColor:
-                                      mainProductColor?.color?.value,
-                                  }}
-                                />
-                              </div>
-                            </SelectItem>
-                          )}
                       </SelectContent>
                     </Select>
                   </FormControl>
@@ -724,7 +709,7 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
         </form>
       </Form>
 
-      <Separator className='mt-4' />
+      <Separator className='my-4' />
 
       <Form {...productForm}>
         <form
@@ -765,59 +750,6 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
           </div>
 
           <FormGrid>
-            {/* <FormField
-              control={productForm.control}
-              name='sizeCategoryId'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Talla/Tamaño</FormLabel>
-                  <Select
-                    disabled={isLoading}
-                    // eslint-disable-next-line react/jsx-handler-names
-                    onValueChange={(value) => {
-                      field.onChange(value)
-                      console.log(value)
-                    }}
-                    value={field.value || undefined}
-                    defaultValue={field.value || undefined}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue
-                          defaultValue={field.value || undefined}
-                          placeholder='Selecciona una talla/tamaño'
-                        />
-                      </SelectTrigger>
-                    </FormControl>
-
-                    <SelectContent>
-                      {sizesAvailable.map((sizeCategory) => (
-                        <SelectItem
-                          key={sizeCategory.id}
-                          value={sizeCategory.id}
-                          className='cursor-pointer'
-                        >
-                          {sizeCategory.size.name} - {sizeCategory.size.value}
-                        </SelectItem>
-                      ))}
-                      {initialProductMaster &&
-                        mainProduct?.sizeCategoryId != null && (
-                          <SelectItem
-                            key={mainProduct?.sizeCategoryId!}
-                            value={mainProduct?.sizeCategoryId!}
-                            className='cursor-pointer'
-                          >
-                            {mainProduct?.sizeCategory?.size.name} -{' '}
-                              {mainProduct?.sizeCategory?.size.value}
-                          </SelectItem>
-                        )}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            /> */}
-
             <FormField
               control={productForm.control}
               name='sizeCategoryId'
@@ -826,12 +758,9 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
                   <FormLabel>Talla/Tamaño</FormLabel>
                   <FormControl>
                     <Select
-                      disabled={isLoading}
+                      disabled={isLoading || sizesAvailable.length === 0}
                       // eslint-disable-next-line react/jsx-handler-names
-                      onValueChange={(value) => {
-                        field.onChange(value)
-                        console.log(value)
-                      }}
+                      onValueChange={field.onChange}
                       value={field.value || undefined}
                       defaultValue={field.value || undefined}
                     >
@@ -848,24 +777,10 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
                             key={sizeCategory.id}
                             value={sizeCategory.id}
                             className='cursor-pointer'
-                            onClick={() => {
-                              console.log(sizeCategory.id)
-                            }}
                           >
                             {sizeCategory.size.name} - {sizeCategory.size.value}
                           </SelectItem>
                         ))}
-                        {initialProductMaster &&
-                          mainProduct?.sizeCategoryId != null && (
-                            <SelectItem
-                              key={mainProduct?.sizeCategoryId!}
-                              value={mainProduct?.sizeCategoryId!}
-                              className='cursor-pointer'
-                            >
-                              {mainProduct?.sizeCategory?.size.name} -{' '}
-                              {mainProduct?.sizeCategory?.size.value}
-                            </SelectItem>
-                          )}
                       </SelectContent>
                     </Select>
                   </FormControl>

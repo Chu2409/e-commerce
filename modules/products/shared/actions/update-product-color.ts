@@ -19,7 +19,7 @@ export const updateProductColor = async (
         id,
       },
       data: {
-        colorId: data.colorId,
+        colorId: data.colorId ?? null,
         images: {
           deleteMany: {},
         },

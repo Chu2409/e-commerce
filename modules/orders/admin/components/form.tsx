@@ -236,11 +236,11 @@ export const OrderForm: React.FC<OrderFormProps> = ({
 
       <Form {...form}>
         <form
-          className='space-y-8 w-full mt-4'
+          className='space-y-6 w-full my-4'
           onSubmit={form.handleSubmit(onSubmit)}
         >
-          <div className='grid grid-cols-1 min-[1050px]:grid-cols-[1fr_600px] gap-8'>
-            <div className='grid gap-8 items-start grid-cols-1 min-[1300px]:grid-cols-2'>
+          <div className='grid min-[1050px]:grid-cols-[1fr_600px] gap-8'>
+            <div className='grid gap-8 min-[1300px]:grid-cols-2'>
               <FormField
                 control={form.control}
                 name='date'
@@ -291,51 +291,51 @@ export const OrderForm: React.FC<OrderFormProps> = ({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Estado</FormLabel>
-                    <Select
-                      disabled={isLoading}
-                      // eslint-disable-next-line react/jsx-handler-names
-                      onValueChange={field.onChange}
-                      value={field.value}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
+                    <FormControl>
+                      <Select
+                        disabled={isLoading}
+                        // eslint-disable-next-line react/jsx-handler-names
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        defaultValue={field.value}
+                      >
                         <SelectTrigger>
                           <SelectValue
                             defaultValue={field.value}
                             placeholder='Selecciona una estado'
                           />
                         </SelectTrigger>
-                      </FormControl>
 
-                      <SelectContent>
-                        {(initialData == null ||
-                          initialData?.state === ORDER_STATE.GENERADO) && (
+                        <SelectContent>
+                          {(initialData == null ||
+                            initialData?.state === ORDER_STATE.GENERADO) && (
+                            <SelectItem
+                              value={orderStates[0]}
+                              className='cursor-pointer'
+                            >
+                              {orderStates[0]}
+                            </SelectItem>
+                          )}
+
+                          {(initialData == null ||
+                            initialData?.state !== ORDER_STATE.FINALIZADO) && (
+                            <SelectItem
+                              value={orderStates[1]}
+                              className='cursor-pointer'
+                            >
+                              {orderStates[1]}
+                            </SelectItem>
+                          )}
+
                           <SelectItem
-                            value={orderStates[0]}
+                            value={orderStates[2]}
                             className='cursor-pointer'
                           >
-                            {orderStates[0]}
+                            {orderStates[2]}
                           </SelectItem>
-                        )}
-
-                        {(initialData == null ||
-                          initialData?.state !== ORDER_STATE.FINALIZADO) && (
-                          <SelectItem
-                            value={orderStates[1]}
-                            className='cursor-pointer'
-                          >
-                            {orderStates[1]}
-                          </SelectItem>
-                        )}
-
-                        <SelectItem
-                          value={orderStates[2]}
-                          className='cursor-pointer'
-                        >
-                          {orderStates[2]}
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -347,33 +347,33 @@ export const OrderForm: React.FC<OrderFormProps> = ({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Método de Pago</FormLabel>
-                    <Select
-                      disabled={isLoading}
-                      // eslint-disable-next-line react/jsx-handler-names
-                      onValueChange={field.onChange}
-                      value={field.value}
-                    >
-                      <FormControl>
+                    <FormControl>
+                      <Select
+                        disabled={isLoading}
+                        // eslint-disable-next-line react/jsx-handler-names
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
                         <SelectTrigger>
                           <SelectValue
                             defaultValue={field.value}
                             placeholder='Selecciona una estado'
                           />
                         </SelectTrigger>
-                      </FormControl>
 
-                      <SelectContent>
-                        {payMethods.map((payMethod) => (
-                          <SelectItem
-                            key={payMethod}
-                            value={payMethod}
-                            className='cursor-pointer'
-                          >
-                            {payMethod}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                        <SelectContent>
+                          {payMethods.map((payMethod) => (
+                            <SelectItem
+                              key={payMethod}
+                              value={payMethod}
+                              className='cursor-pointer'
+                            >
+                              {payMethod}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -489,34 +489,34 @@ export const OrderForm: React.FC<OrderFormProps> = ({
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Cliente</FormLabel>
-                    <Select
-                      disabled={isLoading || initialData !== null}
-                      // eslint-disable-next-line react/jsx-handler-names
-                      onValueChange={field.onChange}
-                      value={field.value}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
+                    <FormControl>
+                      <Select
+                        disabled={isLoading || initialData !== null}
+                        // eslint-disable-next-line react/jsx-handler-names
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        defaultValue={field.value}
+                      >
                         <SelectTrigger>
                           <SelectValue
                             defaultValue={field.value}
                             placeholder='Selecciona un cliente'
                           />
                         </SelectTrigger>
-                      </FormControl>
 
-                      <SelectContent>
-                        {customers.map((customer) => (
-                          <SelectItem
-                            key={customer.id}
-                            value={customer.id}
-                            className='cursor-pointer'
-                          >
-                            {customer.firstName} {customer.lastName}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                        <SelectContent>
+                          {customers.map((customer) => (
+                            <SelectItem
+                              key={customer.id}
+                              value={customer.id}
+                              className='cursor-pointer'
+                            >
+                              {customer.firstName} {customer.lastName}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -585,19 +585,24 @@ export const OrderForm: React.FC<OrderFormProps> = ({
                                   {item.product.productColor.productMaster.name}
                                 </h3>
 
-                                <p className='text-sm text-gray-600'>
-                                  Talla:{' '}
-                                  <span className='font-medium'>
-                                    {item.product.sizeCategory.size.value}
-                                  </span>
-                                </p>
+                                {item.product.sizeCategory != null && (
+                                  <p className='text-sm text-gray-600'>
+                                    Talla:{' '}
+                                    <span className='font-medium'>
+                                      {item.product.sizeCategory.size.value}
+                                    </span>
+                                  </p>
+                                )}
 
-                                <p className='text-sm text-gray-600'>
-                                  Género:{' '}
-                                  <span className='font-medium capitalize'>
-                                    {item.product.productColor.productMaster.gender?.toLowerCase()}
-                                  </span>
-                                </p>
+                                {item.product.productColor.productMaster
+                                  .gender && (
+                                  <p className='text-sm text-gray-600'>
+                                    Género:{' '}
+                                    <span className='font-medium capitalize'>
+                                      {item.product.productColor.productMaster.gender?.toLowerCase()}
+                                    </span>
+                                  </p>
+                                )}
 
                                 {initialData != null &&
                                 initialData.state !== ORDER_STATE.GENERADO ? (
