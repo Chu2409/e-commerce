@@ -168,12 +168,14 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ productMaster }) => {
             </div>
           </div>
 
-          <div className='flex items-center gap-2'>
-            <h3 className='font-semibold text-black'>Género:</h3>
-            <div className='flex gap-1 capitalize'>
-              {productMaster.gender?.replace('_', ' ').toLowerCase()}
+          {productMaster.gender && (
+            <div className='flex items-center gap-2'>
+              <h3 className='font-semibold text-black'>Género:</h3>
+              <div className='flex gap-1 capitalize'>
+                {productMaster.gender?.replace('_', ' ').toLowerCase()}
+              </div>
             </div>
-          </div>
+          )}
 
           <div className='mt-6 flex items-center gap-x-3 self-end '>
             <Button
