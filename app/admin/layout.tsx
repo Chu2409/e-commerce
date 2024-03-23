@@ -3,9 +3,9 @@ import { adminRoutes } from '@/modules/admin/consts/admin-routes'
 import { redirect } from 'next/navigation'
 import { getServerSession } from 'next-auth'
 
-import { MainNav } from '@/modules/shared/components/main-nav'
+import { AdminMainNav } from '@/modules/admin/components/main-nav'
 import { authOptions } from '@/modules/auth/consts/auth-options'
-import { NavBar } from '@/modules/shared/components/navbar'
+import { AdminNavBar } from '@/modules/admin/components/navbar'
 
 const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
   const session = await getServerSession(authOptions)
@@ -15,9 +15,9 @@ const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
 
   return (
     <>
-      <NavBar>
-        <MainNav routes={adminRoutes} session />
-      </NavBar>
+      <AdminNavBar>
+        <AdminMainNav routes={adminRoutes} />
+      </AdminNavBar>
       {children}
     </>
   )

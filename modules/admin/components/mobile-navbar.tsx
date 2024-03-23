@@ -7,7 +7,11 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import IconButton from '@/modules/admin/components/icon-button'
 
-export const MobileNavbar = ({ children }: { children: React.ReactNode }) => {
+export const AdminMobileNavbar = ({
+  children,
+}: {
+  children: React.ReactNode
+}) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const onOpen = () => setIsOpen(true)

@@ -1,6 +1,6 @@
-import { MainNav } from '@/modules/shared/components/main-nav'
-import { NavBar } from '@/modules/shared/components/navbar'
+import { CustomerMainNav } from '@/modules/customer/components/main-nav'
 import { getCategories } from '@/modules/categories/shared/actions/get-categories'
+import { CustomerNavBar } from '@/modules/customer/components/navbar'
 
 export const revalidate = 0
 
@@ -14,9 +14,9 @@ const CustomerLayout = async ({ children }: { children: React.ReactNode }) => {
 
   return (
     <>
-      <NavBar>
-        <MainNav routes={formattedCategories} session={false} />
-      </NavBar>
+      <CustomerNavBar>
+        <CustomerMainNav routes={formattedCategories} />
+      </CustomerNavBar>
       {children}
     </>
   )
