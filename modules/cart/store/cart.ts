@@ -3,13 +3,13 @@ import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import toast from 'react-hot-toast'
 
-export interface ProductItemsInterface
+export interface ProductsCartInterface
   extends Pick<IFullItemOrder, 'product' | 'quantity' | 'state'> {}
 
 interface ProductItemsState {
-  productItems: ProductItemsInterface[]
-  setProductItems: (productItems: ProductItemsInterface[]) => void
-  addProductItem: (item: ProductItemsInterface) => void
+  productItems: ProductsCartInterface[]
+  setProductItems: (productItems: ProductsCartInterface[]) => void
+  addProductItem: (item: ProductsCartInterface) => void
   modifyQuantity: (id: string, quantity: number) => void
   removeProductItem: (id: string) => void
   clearCart: () => void

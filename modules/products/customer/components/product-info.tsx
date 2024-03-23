@@ -23,9 +23,10 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ productMaster }) => {
     mainProductColor.images[0],
   )
 
-  const sizes = mainProductColor.products.map(
-    (product) => product.sizeCategory?.size,
-  )
+  const sizes = mainProductColor.products.map((product) => {
+    return product.sizeCategory?.size
+  })
+
   const colors = productMaster.productsColors.map(
     (productColor) => productColor.color,
   )
@@ -109,44 +110,51 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ productMaster }) => {
 
         <hr className='my-4' />
 
-        <div className='flex flex-col gap-y-4'>
-          <div className='flex items-center gap-2'>
-            <div className='font-semibold text-black'>Tallas disponibles:</div>
-
-            {sizes.map((size) => (
-              <div
-                key={size.id}
-                className={cn(
-                  'text-sm text-gray-600 cursor-pointer hover:scale-125 duration-300 hover:opacity-70',
-                  {
-                    'font-bold': size.id === mainProduct.sizeCategory?.sizeId,
-                  },
-                )}
-                onClick={() => handleSizeChange(size.id)}
-              >
-                {size.value}
+        <div className='flex flex-col gap-4'>
+          {sizes[0] && (
+            <div className='flex items-center gap-2'>
+              <div className='font-semibold text-black'>
+                Tallas disponibles:
               </div>
-            ))}
-          </div>
 
-          <div className='flex items-center gap-2'>
-            <h3 className='font-semibold text-black'>Colores:</h3>
-            <div className='flex gap-1'>
-              {colors.map((color) => (
+              {sizes.map((size) => (
                 <div
-                  key={color?.id}
+                  key={size?.id}
                   className={cn(
-                    'w-6 h-6 rounded-full border cursor-pointer hover:scale-125 duration-300 hover:opacity-70 border-black border-opacity-30',
-                    color?.id === mainProductColor.colorId
-                      ? 'border-opacity-50'
-                      : 'opacity-40 scale-75',
+                    'text-sm text-gray-600 cursor-pointer hover:scale-125 duration-300 hover:opacity-70',
+                    {
+                      'font-bold':
+                        size?.id === mainProduct.sizeCategory?.sizeId,
+                    },
                   )}
-                  onClick={() => handleColorChange(color?.id || '')}
-                  style={{ backgroundColor: color?.value }}
-                />
+                  onClick={() => handleSizeChange(size.id)}
+                >
+                  {size?.value}
+                </div>
               ))}
             </div>
-          </div>
+          )}
+
+          {colors[0] && (
+            <div className='flex items-center gap-2'>
+              <h3 className='font-semibold text-black'>Colores:</h3>
+              <div className='flex gap-1'>
+                {colors.map((color) => (
+                  <div
+                    key={color?.id}
+                    className={cn(
+                      'w-6 h-6 rounded-full border cursor-pointer hover:scale-125 duration-300 hover:opacity-70 border-black border-opacity-30',
+                      color?.id === mainProductColor.colorId
+                        ? 'border-opacity-50'
+                        : 'opacity-40 scale-75',
+                    )}
+                    onClick={() => handleColorChange(color?.id || '')}
+                    style={{ backgroundColor: color?.value }}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
 
           <div className='flex items-center gap-2'>
             <h3 className='font-semibold text-black'>Stock:</h3>

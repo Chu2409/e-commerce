@@ -152,6 +152,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     try {
+      setIsLoading(true)
       let result
 
       if (initialData) {
@@ -172,9 +173,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({
         })
       }
 
-      if (result == null) {
-        throw new Error()
-      }
+      if (result == null) throw new Error()
 
       router.push('/admin/orders')
       router.refresh()
@@ -194,9 +193,7 @@ export const OrderForm: React.FC<OrderFormProps> = ({
 
       const deleted = await deleteOrder(initialData?.id!)
 
-      if (!deleted) {
-        throw new Error()
-      }
+      if (!deleted) throw new Error()
 
       router.push('/admin/orders')
       router.refresh()
