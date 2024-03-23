@@ -6,6 +6,7 @@ import { ProductsSelector } from '@/modules/orders/admin/components/products-sel
 import { getOrder } from '@/modules/orders/shared/actions/get-order'
 import { getCustomers } from '@/modules/customers/shared/actions/get-customers'
 import { getProductsAvailable } from '@/modules/products/shared/actions/get-products-available'
+import { Container } from '@/modules/shared/components/container'
 
 export const revalidate = 0
 
@@ -21,13 +22,13 @@ const OrderPage = async ({
   const products = await getProductsAvailable()
 
   return (
-    <div className='flex flex-col p-8 pt-6'>
+    <Container>
       <OrderForm initialData={order} customers={customers} />
 
       {order == null || order.state === ORDER_STATE.GENERADO ? (
         <ProductsSelector products={products} />
       ) : null}
-    </div>
+    </Container>
   )
 }
 

@@ -2,7 +2,7 @@ import { Brand, Color, Size } from '@prisma/client'
 
 import { IFullProductMaster } from '../../shared/interfaces/product'
 
-import GroupProductCard from '@/modules/products/shared/components/group-product-card'
+import { GroupProductCard } from '@/modules/products/shared/components/group-product-card'
 import SizeFilter from '@/modules/products/customer/components/filters/size-filter'
 // import ColorFilter from '@/modules/products/customer/components/filters/color-filter'
 import BrandFilter from '@/modules/products/customer/components/filters/brand-filter'

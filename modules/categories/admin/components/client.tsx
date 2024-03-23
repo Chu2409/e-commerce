@@ -3,7 +3,6 @@ import { categoriesColumns } from './columns'
 
 import { Header } from '@/modules/admin/components/header'
 import { DataTable } from '@/modules/admin/components/data-table'
-import { Separator } from '@/components/ui/separator'
 
 export const CategoriesClient = ({
   categories,
@@ -11,20 +10,18 @@ export const CategoriesClient = ({
   categories: Category[]
 }) => {
   return (
-    <div>
+    <>
       <Header
         title='Categorías'
         description='Administra tus categorías'
-        buttonLabel='Nueva'
+        buttonLabel='Nueva categoría'
       />
-
-      <Separator className='my-4' />
 
       <DataTable
         columns={categoriesColumns}
         data={categories}
         keySearch='name'
       />
-    </div>
+    </>
   )
 }

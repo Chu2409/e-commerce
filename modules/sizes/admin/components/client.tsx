@@ -5,7 +5,6 @@ import { Category } from '@prisma/client'
 import { brandsColumns } from './columns'
 
 import { Header } from '@/modules/admin/components/header'
-import { Separator } from '@/components/ui/separator'
 import { DataTable } from '@/modules/admin/components/data-table'
 
 import { SizesFilters } from './filters/filters'
@@ -38,10 +37,8 @@ export const SizesClient = ({ categories }: { categories: Category[] }) => {
       <Header
         title='Tallas y Tamaños'
         description='Administra las tallas y tamaños'
-        buttonLabel='Nuevo'
+        buttonLabel='Nueva Talla/Tamaño'
       />
-
-      <Separator className='my-4' />
 
       <SizesFilters categories={categories} />
 

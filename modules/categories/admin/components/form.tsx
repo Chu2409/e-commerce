@@ -26,6 +26,7 @@ import { Trash } from 'lucide-react'
 import { deleteCategory } from '../../shared/actions/delete-category'
 import { updateCategory } from '../../shared/actions/update-category'
 import { createCategory } from '../../shared/actions/create-category'
+import { FormGrid } from '@/modules/shared/components/form-grid'
 
 const formSchema = z.object({
   name: z
@@ -62,10 +63,12 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
   const toastMessage = initialData
     ? 'Categoría actualizada'
     : 'Categoría creada'
-  const action = initialData ? 'Actualizar' : 'Crear'
+  const action = initialData ? 'Actualizar categoría' : 'Crear categoría'
 
   const onsubmit = async (data: z.infer<typeof formSchema>) => {
     try {
+      setIsLoading(true)
+
       let result
       if (initialData) {
         result = await updateCategory(initialData.id, data)
@@ -73,9 +76,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
         result = await createCategory(data)
       }
 
-      if (!result) {
-        throw new Error()
-      }
+      if (!result) throw new Error()
 
       router.push('/admin/categories')
       router.refresh()
@@ -92,9 +93,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
       setIsLoading(true)
       const deleted = await deleteCategory(initialData?.id!)
 
-      if (!deleted) {
-        throw new Error()
-      }
+      if (!deleted) throw new Error()
 
       router.push('/admin/categories')
       router.refresh()
@@ -135,11 +134,8 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
       <Separator className='my-4' />
 
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onsubmit)}
-          className='space-y-8 w-full mt-4'
-        >
-          <div className='grid grid-cols-3 gap-8 max-lg:grid-cols-2 max-md:grid-cols-1'>
+        <form onSubmit={form.handleSubmit(onsubmit)}>
+          <FormGrid>
             <FormField
               control={form.control}
               name='name'
@@ -157,7 +153,7 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
                 </FormItem>
               )}
             />
-          </div>
+          </FormGrid>
 
           <Button disabled={isLoading} type='submit'>
             {action}

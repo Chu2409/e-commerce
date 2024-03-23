@@ -24,7 +24,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ productMaster }) => {
   )
 
   const sizes = mainProductColor.products.map(
-    (product) => product.sizeCategory.size,
+    (product) => product.sizeCategory?.size,
   )
   const colors = productMaster.productsColors.map(
     (productColor) => productColor.color,
@@ -43,7 +43,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ productMaster }) => {
 
   const handleSizeChange = (sizeId: string) => {
     const newProduct = mainProductColor.products.find(
-      (product) => product.sizeCategory.sizeId === sizeId,
+      (product) => product.sizeCategory?.sizeId === sizeId,
     )
     if (newProduct) {
       setMainProduct(newProduct)
@@ -119,7 +119,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ productMaster }) => {
                 className={cn(
                   'text-sm text-gray-600 cursor-pointer hover:scale-125 duration-300 hover:opacity-70',
                   {
-                    'font-bold': size.id === mainProduct.sizeCategory.sizeId,
+                    'font-bold': size.id === mainProduct.sizeCategory?.sizeId,
                   },
                 )}
                 onClick={() => handleSizeChange(size.id)}
@@ -134,15 +134,15 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ productMaster }) => {
             <div className='flex gap-1'>
               {colors.map((color) => (
                 <div
-                  key={color.id}
+                  key={color?.id}
                   className={cn(
                     'w-6 h-6 rounded-full border cursor-pointer hover:scale-125 duration-300 hover:opacity-70 border-black border-opacity-30',
-                    color.id === mainProductColor.colorId
+                    color?.id === mainProductColor.colorId
                       ? 'border-opacity-50'
                       : 'opacity-40 scale-75',
                   )}
-                  onClick={() => handleColorChange(color.id)}
-                  style={{ backgroundColor: color.value }}
+                  onClick={() => handleColorChange(color?.id || '')}
+                  style={{ backgroundColor: color?.value }}
                 />
               ))}
             </div>

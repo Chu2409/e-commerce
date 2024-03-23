@@ -7,6 +7,8 @@ import { getCategories } from '@/modules/categories/shared/actions/get-categorie
 import { getColors } from '@/modules/colors/shared/actions/get-colors'
 import { getMasterByProduct } from '@/modules/products/shared/actions/get-master-by-product'
 import { getSizesByCategory } from '@/modules/sizes/shared/actions/get-sizes-by-category'
+import { Container } from '@/modules/shared/components/container'
+import { MainGrid } from '@/modules/shared/components/main-grid'
 
 export const revalidate = 0
 
@@ -25,7 +27,7 @@ const ProductPage = async ({
   const sizesCategories = await getSizesByCategory(productMaster?.categoryId!)
 
   return (
-    <div className='flex flex-col p-8 pt-6'>
+    <Container>
       <FullProductForm
         initialProductMaster={productMaster}
         selectedProductId={params.id}
@@ -35,24 +37,22 @@ const ProductPage = async ({
         sizesCategories={sizesCategories}
       />
 
-      <Separator className='mt-8 mb-4' />
-
       {productMaster && (
-        <div>
-          <div className='mb-4'>
-            <h2 className='text-xl font-semibold tracking-tight'>
-              Todas las variaciones
-            </h2>
-          </div>
+        <>
+          <Separator className='mt-8 mb-4' />
 
-          <div className='gap-y-8 gap-x-6 grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 max-md:justify-items-center'>
+          <h2 className='text-xl font-semibold tracking-tight mb-4'>
+            Todas las variaciones
+          </h2>
+
+          <MainGrid>
             {productMaster?.productsColors.map((productColor) => (
               <ProductCard key={productColor.id} productColor={productColor} />
             ))}
-          </div>
-        </div>
+          </MainGrid>
+        </>
       )}
-    </div>
+    </Container>
   )
 }
 

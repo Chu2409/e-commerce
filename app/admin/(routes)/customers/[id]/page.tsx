@@ -1,6 +1,7 @@
 import { CustomerForm } from '@/modules/customers/admin/components/form'
 
 import { getCustomer } from '@/modules/customers/shared/actions/get-customer'
+import { Container } from '@/modules/shared/components/container'
 
 const CustomerPage = async ({
   params,
@@ -12,11 +13,9 @@ const CustomerPage = async ({
   const customer = await getCustomer(params.id)
 
   return (
-    <div className='flex flex-col'>
-      <div className='p-8 pt-6 flex flex-col flex-1'>
-        <CustomerForm initialData={customer} />
-      </div>
-    </div>
+    <Container>
+      <CustomerForm initialData={customer} />
+    </Container>
   )
 }
 

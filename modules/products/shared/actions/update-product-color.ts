@@ -3,7 +3,7 @@
 import prismadb from '@/lib/prismadb'
 
 interface UpdateProductColorData {
-  colorId: string
+  colorId?: string | null
   images: {
     url: string
   }[]

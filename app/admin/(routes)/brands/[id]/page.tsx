@@ -1,6 +1,7 @@
 import { BrandForm } from '@/modules/brands/admin/components/form'
 
 import { getBrand } from '@/modules/brands/shared/actions/get-brand'
+import { Container } from '@/modules/shared/components/container'
 
 const BrandPage = async ({
   params,
@@ -12,11 +13,9 @@ const BrandPage = async ({
   const brand = await getBrand(params.id)
 
   return (
-    <div className='flex flex-col'>
-      <div className='p-8 pt-6 flex flex-col flex-1'>
-        <BrandForm initialData={brand} />
-      </div>
-    </div>
+    <Container>
+      <BrandForm initialData={brand} />
+    </Container>
   )
 }
 

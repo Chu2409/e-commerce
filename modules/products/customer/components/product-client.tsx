@@ -1,6 +1,6 @@
 import { IFullProductMaster } from '../../shared/interfaces/product'
 
-import GroupProductCard from '@/modules/products/shared/components/group-product-card'
+import { GroupProductCard } from '@/modules/products/shared/components/group-product-card'
 import { ProductInfo } from './product-info'
 import { Separator } from '@/components/ui/separator'
 
