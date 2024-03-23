@@ -1,7 +1,8 @@
-import GroupProductCard from '../../shared/components/group-product-card'
+import { GroupProductCard } from '../../shared/components/group-product-card'
 import { Button } from '@/components/ui/button'
 
 import { IFullProductMaster } from '../../shared/interfaces/product'
+import { MainGrid } from '@/modules/shared/components/main-grid'
 
 interface ProductsListProps {
   productsMasters: IFullProductMaster[]
@@ -16,14 +17,14 @@ export const ProductsList = ({
   filters,
 }: ProductsListProps) => {
   return (
-    <div className='mt-2'>
+    <div className='my-4'>
       {productsMasters.length === 0 && (
         <div className='flex items-center justify-center h-full w-full text-neutral-500 mt-10'>
           <p>No hay productos disponibles</p>
         </div>
       )}
 
-      <div className='gap-y-8 gap-x-6 grid 2xl:grid-cols-5 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 max-md:justify-items-center'>
+      <MainGrid>
         {productsMasters.slice(0, 10).map((productMaster) => (
           <GroupProductCard
             key={productMaster.id}
@@ -31,9 +32,9 @@ export const ProductsList = ({
             link='/admin/products/'
           />
         ))}
-      </div>
+      </MainGrid>
 
-      <div className='flex items-center justify-end space-x-2 my-2'>
+      <div className='flex items-center justify-end gap-2 my-4'>
         <Button
           variant='outline'
           size='sm'

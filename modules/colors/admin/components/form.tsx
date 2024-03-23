@@ -32,6 +32,7 @@ import { Trash } from 'lucide-react'
 import { updateColor } from '../../shared/actions/update-color'
 import { createColor } from '../../shared/actions/create-color'
 import { deleteColor } from '../../shared/actions/delete-color'
+import { FormGrid } from '@/modules/shared/components/form-grid'
 
 const formSchema = z.object({
   name: z
@@ -69,10 +70,12 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
   const title = initialData ? 'Actualizar color' : 'Nuevo color'
   const description = initialData ? 'Actualizar color' : 'Agregar nuevo color'
   const toastMessage = initialData ? 'Color actualizado' : 'Color creado'
-  const action = initialData ? 'Actualizar' : 'Crear'
+  const action = initialData ? 'Actualizar color' : 'Crear color'
 
   const onsubmit = async (data: z.infer<typeof formSchema>) => {
     try {
+      setIsLoading(true)
+
       let result
       if (initialData) {
         result = await updateColor(initialData.id, data)
@@ -80,9 +83,7 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
         result = await createColor(data)
       }
 
-      if (!result) {
-        throw new Error()
-      }
+      if (!result) throw new Error()
 
       router.push('/admin/colors')
       router.refresh()
@@ -99,9 +100,7 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
       setIsLoading(true)
       const deleted = await deleteColor(initialData?.id!)
 
-      if (!deleted) {
-        throw new Error()
-      }
+      if (!deleted) throw new Error()
 
       router.push('/admin/colors')
       router.refresh()
@@ -140,11 +139,8 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
       <Separator className='my-4' />
 
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onsubmit)}
-          className='space-y-8 w-full mt-4'
-        >
-          <div className='grid grid-cols-3 gap-8 max-lg:grid-cols-2 max-md:grid-cols-1 items-start'>
+        <form onSubmit={form.handleSubmit(onsubmit)}>
+          <FormGrid>
             <FormField
               control={form.control}
               name='name'
@@ -170,7 +166,7 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
                 <FormItem>
                   <FormLabel>Valor</FormLabel>
                   <Popover>
-                    <PopoverTrigger asChild>
+                    <PopoverTrigger asChild disabled={isLoading}>
                       <div
                         className='rounded-md border p-5 w-[200px] cursor-pointer border-black border-opacity-30'
                         style={{ backgroundColor: field.value }}
@@ -189,7 +185,7 @@ export const ColorForm: React.FC<ColorFormProps> = ({ initialData }) => {
                 </FormItem>
               )}
             />
-          </div>
+          </FormGrid>
 
           <Button disabled={isLoading} type='submit'>
             {action}

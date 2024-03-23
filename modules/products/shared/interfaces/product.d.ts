@@ -9,11 +9,11 @@ import {
 import { IFullSize } from '../../sizes/interfaces/size'
 
 export interface IFullProduct extends Product {
-  sizeCategory: Omit<IFullSize, 'category'>
+  sizeCategory: Omit<IFullSize, 'category'> | null
 }
 
 export interface IFullProductColor extends ProductColor {
-  color: Color
+  color: Color | null
   images: Image[]
   products: IFullProduct[]
 }

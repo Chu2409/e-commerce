@@ -15,13 +15,13 @@ interface IFullProductMasterOrder extends ProductMaster {
 }
 
 interface IFullProductColorOrder extends ProductColor {
-  color: Color
+  color: Color | null
   images: Image[]
   productMaster: IFullProductMasterOrder
 }
 
 export interface IFullProductOrder extends Product {
-  sizeCategory: IFullSize
+  sizeCategory: IFullSize | null
   productColor: IFullProductColorOrder
 }
 

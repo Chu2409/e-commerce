@@ -1,11 +1,11 @@
 import { formatMoney } from '@/lib/utils'
 import { ShoppingCart, Trash } from 'lucide-react'
 import { CldImage } from 'next-cloudinary'
-import { ProductItemsInterface, useCart } from '../store/cart'
+import { ProductsCartInterface, useCart } from '../store/cart'
 import { Input } from '@/components/ui/input'
 
 interface ProductInCartProps {
-  item: ProductItemsInterface
+  item: ProductsCartInterface
 }
 
 export const ProductInCart: React.FC<ProductInCartProps> = ({ item }) => {
@@ -38,12 +38,14 @@ export const ProductInCart: React.FC<ProductInCartProps> = ({ item }) => {
             {item.product.productColor.productMaster.name}
           </h3>
 
-          <p className='text-sm text-gray-600'>
-            Talla:{' '}
-            <span className='font-medium'>
-              {item.product.sizeCategory.size.value}
-            </span>
-          </p>
+          {item.product.sizeCategory && (
+            <p className='text-sm text-gray-600'>
+              Talla:{' '}
+              <span className='font-medium'>
+                {item.product.sizeCategory.size.value}
+              </span>
+            </p>
+          )}
 
           <p className='text-sm text-gray-600 flex items-center gap-2'>
             Stock: <span className='font-medium'>{item.product.stock}</span>
@@ -55,6 +57,17 @@ export const ProductInCart: React.FC<ProductInCartProps> = ({ item }) => {
               {item.state.replace('_', ' ').toLowerCase()}
             </span>
           </p>
+
+          {item.product.productColor.productMaster.gender && (
+            <p className='text-sm text-gray-600'>
+              Género:{' '}
+              <span className='font-medium capitalize'>
+                {item.product.productColor.productMaster.gender
+                  .replace('_', ' ')
+                  .toLowerCase()}
+              </span>
+            </p>
+          )}
         </div>
       </div>
 

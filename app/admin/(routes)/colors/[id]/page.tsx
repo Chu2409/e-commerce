@@ -1,6 +1,7 @@
 import { ColorForm } from '@/modules/colors/admin/components/form'
 
 import { getColor } from '@/modules/colors/shared/actions/get-color'
+import { Container } from '@/modules/shared/components/container'
 
 const ColorPage = async ({
   params,
@@ -12,11 +13,9 @@ const ColorPage = async ({
   const color = await getColor(params.id)
 
   return (
-    <div className='flex flex-col'>
-      <div className='p-8 pt-6 flex flex-col flex-1'>
-        <ColorForm initialData={color} />
-      </div>
-    </div>
+    <Container>
+      <ColorForm initialData={color} />
+    </Container>
   )
 }
 

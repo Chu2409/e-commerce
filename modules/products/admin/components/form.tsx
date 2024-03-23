@@ -3,7 +3,13 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
-import { Brand, Category, Color, PRODUCT_STATE } from '@prisma/client'
+import {
+  Brand,
+  Category,
+  Color,
+  PRODUCT_GENDER,
+  PRODUCT_STATE,
+} from '@prisma/client'
 import toast from 'react-hot-toast'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -33,30 +39,43 @@ import { Plus } from 'lucide-react'
 
 import { IFullSize } from '@/modules/sizes/shared/interfaces/size'
 import { getSizesByCategory } from '@/modules/sizes/shared/actions/get-sizes-by-category'
-import { IFullProductMaster } from '../../shared/interfaces/product'
+import {
+  IFullProduct,
+  IFullProductColor,
+  IFullProductMaster,
+} from '../../shared/interfaces/product'
 import { updateProductMaster } from '../../shared/actions/update-product-master'
 import { updateProductColor } from '../../shared/actions/update-product-color'
 import { createProductMaster } from '../../shared/actions/create-product-master'
 import { createProductColor } from '../../shared/actions/create-product-color'
 import { createProduct } from '../../shared/actions/create-product'
 import { updateProduct } from '../../shared/actions/update-product'
+import { FormGrid } from '@/modules/shared/components/form-grid'
+
+const productGenders = Object.values(PRODUCT_GENDER).map((state) =>
+  state.replace('_', ' '),
+)
+
+const productStates = Object.values(PRODUCT_STATE).map((state) =>
+  state.replace('_', ' '),
+)
 
 const productMasterFormSchema = z.object({
   name: z
     .string()
     .min(3, { message: 'Mínimo 3 caracteres' })
     .max(200, { message: 'Máximo 200 caracteres' }),
-  description: z.string().optional(),
+  description: z.string().optional().nullable(),
   brandId: z.string().min(1, { message: 'Selecciona una marca' }),
   categoryId: z.string().min(1, { message: 'Selecciona una categoría' }),
+  gender: z
+    .enum(productGenders as any)
+    .optional()
+    .nullable(),
 })
 
-const productStates = Object.values(PRODUCT_STATE).map((state) =>
-  state.replace('_', ' '),
-)
-
 const productColorFormSchema = z.object({
-  colorId: z.string().min(1, { message: 'Selecciona un color' }),
+  colorId: z.string().optional().nullable(),
   images: z
     .object({ url: z.string() })
     .array()
@@ -64,13 +83,13 @@ const productColorFormSchema = z.object({
 })
 
 const productFormSchema = z.object({
-  sizeCategoryId: z.string().min(1, { message: 'Selecciona una talla/tamaño' }),
+  sizeCategoryId: z.string().optional().nullable(),
   price: z.coerce
-    .number()
+    .number({ invalid_type_error: 'Precio inválido' })
     .positive({ message: 'Precio inválido' })
     .nonnegative({ message: 'Precio inválido' }),
   stock: z.coerce
-    .number()
+    .number({ invalid_type_error: 'Precio inválido' })
     .int({ message: 'Stock inválido' })
     .nonnegative({ message: 'Stock inválido' }),
   state: z.enum(productStates as any),
@@ -93,45 +112,74 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
   colors,
   sizesCategories,
 }) => {
+  const router = useRouter()
+
   const [isLoading, setIsLoading] = useState(false)
 
-  const productMasterForm = useForm<z.infer<typeof productMasterFormSchema>>({
-    resolver: zodResolver(productMasterFormSchema),
-    defaultValues: initialProductMaster
-      ? {
-          ...initialProductMaster,
-          description: initialProductMaster.description || '',
-        }
-      : {
-          name: '',
-          description: '',
-          brandId: '',
-          categoryId: '',
-        },
-  })
+  const [mainProductColor, setMainProductColor] =
+    useState<IFullProductColor | null>(
+      initialProductMaster?.productsColors.find((productColor) =>
+        productColor.products.find(
+          (product) => product.id === selectedProductId,
+        ),
+      ) || null,
+    )
 
-  const [mainProductColor, setMainProductColor] = useState(
-    initialProductMaster?.productsColors.find((productColor) =>
-      productColor.products.find((product) => product.id === selectedProductId),
+  const [mainProduct, setMainProduct] = useState<IFullProduct | null>(
+    mainProductColor?.products.find(
+      (product) => product.id === selectedProductId,
     ) || null,
   )
 
   const colorsAvailable = colors.filter(
     (color) =>
-      !initialProductMaster?.productsColors.some(
-        (productColor) => productColor.colorId === color.id,
-      ),
+      !initialProductMaster?.productsColors.some((productColor) => {
+        if (mainProductColor && productColor.id === mainProductColor.id)
+          return false
+        return productColor.colorId === color.id
+      }),
   )
 
   const [sizesAvailable, setSizesAvailable] = useState<
     Omit<IFullSize, 'category'>[]
   >([])
 
-  const [mainProduct, setMainProduct] = useState(
-    mainProductColor?.products.find(
-      (product) => product.id === selectedProductId,
-    ) || null,
-  )
+  const productMasterForm = useForm<z.infer<typeof productMasterFormSchema>>({
+    resolver: zodResolver(productMasterFormSchema),
+    defaultValues: initialProductMaster
+      ? {
+          ...initialProductMaster,
+        }
+      : {
+          name: '',
+          brandId: '',
+          categoryId: '',
+        },
+  })
+
+  const productColorForm = useForm<z.infer<typeof productColorFormSchema>>({
+    resolver: zodResolver(productColorFormSchema),
+    defaultValues: mainProductColor
+      ? {
+          ...mainProductColor,
+        }
+      : {
+          images: [],
+        },
+  })
+
+  const productForm = useForm<z.infer<typeof productFormSchema>>({
+    resolver: zodResolver(productFormSchema),
+    defaultValues: mainProduct
+      ? {
+          ...mainProduct,
+          state: mainProduct.state.replace('_', ' '),
+        }
+      : {
+          stock: 1,
+          state: PRODUCT_STATE.DISPONIBLE,
+        },
+  })
 
   useEffect(() => {
     if (!mainProductColor) {
@@ -156,9 +204,10 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
       setSizesAvailable(
         sizesCategories.filter(
           (sizeCategory) =>
-            !mainProductColor?.products.some(
-              (product) => product.sizeCategory.id === sizeCategory.id,
-            ),
+            !mainProductColor.products.some((product) => {
+              if (mainProduct && product.id === mainProduct.id) return false
+              return product.sizeCategoryId === sizeCategory.id
+            }),
         ),
       )
     }
@@ -169,47 +218,22 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mainProduct])
 
-  const productColorForm = useForm<z.infer<typeof productColorFormSchema>>({
-    resolver: zodResolver(productColorFormSchema),
-    defaultValues:
-      mainProductColor && mainProduct
-        ? {
-            colorId: mainProductColor.colorId,
-            images: mainProductColor.images,
-          }
-        : {
-            colorId: '',
-            images: [],
-          },
-  })
+  useEffect(() => {
+    const state = productForm.getValues('state')
 
-  const productForm = useForm<z.infer<typeof productFormSchema>>({
-    resolver: zodResolver(productFormSchema),
-    defaultValues:
-      mainProductColor && mainProduct
-        ? {
-            sizeCategoryId: mainProduct.sizeCategoryId,
-            price: mainProduct.price,
-            stock: mainProduct.stock,
-            state: mainProduct.state.replace('_', ' '),
-          }
-        : {
-            sizeCategoryId: '',
-            price: 0,
-            stock: 0,
-            state: PRODUCT_STATE.DISPONIBLE,
-          },
-  })
-
-  const router = useRouter()
+    if (state !== PRODUCT_STATE.DISPONIBLE) {
+      productForm.setValue('stock', 0)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [productForm.watch('state')])
 
   const title = initialProductMaster ? 'Actualizar producto' : 'Nueva producto'
   const description = initialProductMaster
     ? 'Actualizar producto'
     : 'Agregar nuevo producto'
-  const action = initialProductMaster ? 'Actualizar' : 'Crear'
+  const action = initialProductMaster ? 'Actualizar producto' : 'Crear producto'
 
-  const handleProductMasterSubmit = async (
+  const handleProductMasterUpdate = async (
     data: z.infer<typeof productMasterFormSchema>,
   ) => {
     try {
@@ -220,11 +244,10 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
         {
           ...data,
           description: data.description || null,
+          gender: data.gender != null ? data.gender : null,
         },
       )
-      if (!productMaster) {
-        throw new Error()
-      }
+      if (!productMaster) throw new Error()
 
       router.refresh()
       toast.success('Información principal actualizada')
@@ -235,16 +258,17 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
     }
   }
 
-  const handleProductColorSubmit = async (
+  const handleProductColorUpdate = async (
     data: z.infer<typeof productColorFormSchema>,
   ) => {
     try {
       setIsLoading(true)
 
-      const productColor = await updateProductColor(mainProductColor?.id!, data)
-      if (!productColor) {
-        throw new Error()
-      }
+      const productColor = await updateProductColor(mainProductColor?.id!, {
+        ...data,
+      })
+
+      if (!productColor) throw new Error()
 
       router.refresh()
       toast.success('Variación principal actualizada')
@@ -267,19 +291,18 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
 
         const productColorData = productColorForm.getValues()
         const productColor = await createProductColor({
-          productMasterId: initialProductMaster?.id!,
           ...productColorData,
+          productMasterId: initialProductMaster?.id!,
         })
 
         const product = await createProduct({
           ...data,
           productColorId: productColor?.id!,
           state: data.state as PRODUCT_STATE,
+          sizeCategoryId: data.sizeCategoryId || null,
         })
 
-        if (!product || !productColor) {
-          throw new Error()
-        }
+        if (!product || !productColor) throw new Error()
 
         toast.success('Variación creada')
         router.push(`/admin/products/${product.id}`)
@@ -288,11 +311,10 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
           ...data,
           productColorId: mainProductColor?.id!,
           state: data.state as PRODUCT_STATE,
+          sizeCategoryId: data.sizeCategoryId || null,
         })
 
-        if (!product) {
-          throw new Error()
-        }
+        if (!product) throw new Error()
 
         toast.success('Variación secundaria creada')
         router.push(`/admin/products/${product.id}`)
@@ -300,10 +322,9 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
         const result = await updateProduct(mainProduct?.id!, {
           ...data,
           state: data.state as PRODUCT_STATE,
+          sizeCategoryId: data.sizeCategoryId || null,
         })
-        if (!result) {
-          throw new Error()
-        }
+        if (!result) throw new Error()
 
         toast.success('Variación secundaria actualizada')
       }
@@ -338,6 +359,8 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
       const productMaster = await createProductMaster({
         ...productMasterData,
         description: productMasterData.description || null,
+        gender:
+          productMasterData.gender != null ? productMasterData.gender : null,
       })
 
       const productColor = await createProductColor({
@@ -346,16 +369,14 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
       })
 
       const product = await createProduct({
-        sizeCategoryId: productData.sizeCategoryId,
         stock: parseFloat(String(productData.stock)),
         price: parseFloat(String(productData.price)),
         productColorId: productColor?.id!,
         state: productData.state as PRODUCT_STATE,
+        sizeCategoryId: productData.sizeCategoryId || null,
       })
 
-      if (!product || !productColor || !productMaster) {
-        throw new Error()
-      }
+      if (!product || !productColor || !productMaster) throw new Error()
 
       toast.success('Producto creado')
       router.push(`/admin/products`)
@@ -367,25 +388,16 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
     }
   }
 
-  useEffect(() => {
-    const state = productForm.getValues('state')
-
-    if (state !== PRODUCT_STATE.DISPONIBLE) {
-      productForm.setValue('stock', 0)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [productForm.watch('state')])
-
   return (
-    <div className='flex flex-col gap-y-4'>
+    <>
       <Heading title={title} description={description} />
 
-      <Separator />
+      <Separator className='my-4' />
 
       <Form {...productMasterForm}>
         <form
-          onSubmit={productMasterForm.handleSubmit(handleProductMasterSubmit)}
-          className='space-y-6 w-full mt-4'
+          onSubmit={productMasterForm.handleSubmit(handleProductMasterUpdate)}
+          className='space-y-6 w-full my-4'
         >
           <div className='flex items-center justify-between'>
             <h2 className='text-xl font-semibold tracking-tight'>
@@ -405,7 +417,7 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
             </Button>
           </div>
 
-          <div className='grid grid-cols-3 gap-x-8 gap-y-4 max-lg:grid-cols-2 max-md:grid-cols-1'>
+          <FormGrid>
             <FormField
               control={productMasterForm.control}
               name='name'
@@ -432,9 +444,10 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
                   <FormLabel>Descripción</FormLabel>
                   <FormControl>
                     <Input
+                      {...field}
                       disabled={isLoading}
                       placeholder='Descripción del producto'
-                      {...field}
+                      value={field.value || undefined}
                     />
                   </FormControl>
                   <FormMessage />
@@ -448,34 +461,34 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Marca</FormLabel>
-                  <Select
-                    disabled={isLoading}
-                    // eslint-disable-next-line react/jsx-handler-names
-                    onValueChange={field.onChange}
-                    value={field.value}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
+                  <FormControl>
+                    <Select
+                      disabled={isLoading}
+                      // eslint-disable-next-line react/jsx-handler-names
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      defaultValue={field.value}
+                    >
                       <SelectTrigger>
                         <SelectValue
                           defaultValue={field.value}
                           placeholder='Selecciona una marca'
                         />
                       </SelectTrigger>
-                    </FormControl>
 
-                    <SelectContent>
-                      {brands.map((brand) => (
-                        <SelectItem
-                          key={brand.id}
-                          value={brand.id}
-                          className='cursor-pointer'
-                        >
-                          {brand.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                      <SelectContent>
+                        {brands.map((brand) => (
+                          <SelectItem
+                            key={brand.id}
+                            value={brand.id}
+                            className='cursor-pointer'
+                          >
+                            {brand.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -487,39 +500,79 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Categoría</FormLabel>
-                  <Select
-                    disabled={isLoading || initialProductMaster !== null}
-                    // eslint-disable-next-line react/jsx-handler-names
-                    onValueChange={field.onChange}
-                    value={field.value}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
+                  <FormControl>
+                    <Select
+                      disabled={isLoading || initialProductMaster != null}
+                      // eslint-disable-next-line react/jsx-handler-names
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      defaultValue={field.value}
+                    >
                       <SelectTrigger>
                         <SelectValue
                           defaultValue={field.value}
                           placeholder='Selecciona una categoría'
                         />
                       </SelectTrigger>
-                    </FormControl>
 
-                    <SelectContent>
-                      {categories.map((category) => (
-                        <SelectItem
-                          key={category.id}
-                          value={category.id}
-                          className='cursor-pointer'
-                        >
-                          {category.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                      <SelectContent>
+                        {categories.map((category) => (
+                          <SelectItem
+                            key={category.id}
+                            value={category.id}
+                            className='cursor-pointer'
+                          >
+                            {category.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+
                   <FormMessage />
                 </FormItem>
               )}
             />
-          </div>
+
+            <FormField
+              control={productMasterForm.control}
+              name='gender'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Género</FormLabel>
+                  <FormControl>
+                    <Select
+                      disabled={isLoading}
+                      // eslint-disable-next-line react/jsx-handler-names
+                      onValueChange={field.onChange}
+                      value={field.value || undefined}
+                      defaultValue={field.value || undefined}
+                    >
+                      <SelectTrigger>
+                        <SelectValue
+                          defaultValue={field.value || undefined}
+                          placeholder='Selecciona una género'
+                        />
+                      </SelectTrigger>
+
+                      <SelectContent>
+                        {productGenders.map((gender) => (
+                          <SelectItem
+                            key={gender}
+                            value={gender}
+                            className='cursor-pointer'
+                          >
+                            {gender}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </FormGrid>
 
           <Button
             disabled={isLoading}
@@ -531,12 +584,12 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
         </form>
       </Form>
 
-      <Separator className='mt-4' />
+      <Separator className='my-4' />
 
       <Form {...productColorForm}>
         <form
-          onSubmit={productColorForm.handleSubmit(handleProductColorSubmit)}
-          className='space-y-8 w-full mt-4'
+          onSubmit={productColorForm.handleSubmit(handleProductColorUpdate)}
+          className='space-y-8 w-full my-4'
         >
           <div className='flex items-center justify-between'>
             <div>
@@ -568,7 +621,7 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
             </Button>
           </div>
 
-          <div className='grid lg:grid-cols-2 gap-8 grid-cols-1'>
+          <div className='grid lg:grid-cols-2 gap-8'>
             <FormField
               control={productColorForm.control}
               name='images'
@@ -602,57 +655,40 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
               render={({ field }) => (
                 <FormItem className='w-[300px] lg:ml-8'>
                   <FormLabel>Color</FormLabel>
-                  <Select
-                    disabled={isLoading}
-                    // eslint-disable-next-line react/jsx-handler-names
-                    onValueChange={field.onChange}
-                    value={field.value}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
+                  <FormControl>
+                    <Select
+                      disabled={isLoading}
+                      // eslint-disable-next-line react/jsx-handler-names
+                      onValueChange={field.onChange}
+                      value={field.value || undefined}
+                      defaultValue={field.value || undefined}
+                    >
                       <SelectTrigger>
                         <SelectValue
-                          defaultValue={field.value}
+                          defaultValue={field.value || undefined}
                           placeholder='Selecciona un color'
                         />
                       </SelectTrigger>
-                    </FormControl>
 
-                    <SelectContent>
-                      {colorsAvailable.map((color) => (
-                        <SelectItem
-                          key={color.id}
-                          value={color.id}
-                          className='cursor-pointer'
-                        >
-                          <div className='flex items-center gap-x-2'>
-                            {color.name}
-                            <div
-                              className='w-6 h-6 rounded-full border border-black border-opacity-30'
-                              style={{ backgroundColor: color.value }}
-                            />
-                          </div>
-                        </SelectItem>
-                      ))}
-                      {initialProductMaster && mainProductColor !== null && (
-                        <SelectItem
-                          key={mainProductColor?.colorId!}
-                          value={mainProductColor?.colorId!}
-                          className='cursor-pointer'
-                        >
-                          <div className='flex items-center gap-x-2'>
-                            {mainProductColor.color.name}
-                            <div
-                              className='w-6 h-6 rounded-full border border-black border-opacity-30'
-                              style={{
-                                backgroundColor: mainProductColor.color.value,
-                              }}
-                            />
-                          </div>
-                        </SelectItem>
-                      )}
-                    </SelectContent>
-                  </Select>
+                      <SelectContent>
+                        {colorsAvailable.map((color) => (
+                          <SelectItem
+                            key={color.id}
+                            value={color.id}
+                            className='cursor-pointer'
+                          >
+                            <div className='flex items-center gap-x-2'>
+                              {color.name}
+                              <div
+                                className='w-6 h-6 rounded-full border border-black border-opacity-30'
+                                style={{ backgroundColor: color.value }}
+                              />
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -663,7 +699,7 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
             disabled={isLoading}
             type='submit'
             className={cn(
-              initialProductMaster && mainProductColor !== null
+              initialProductMaster && mainProductColor != null
                 ? 'block'
                 : 'hidden',
             )}
@@ -673,12 +709,12 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
         </form>
       </Form>
 
-      <Separator className='mt-4' />
+      <Separator className='my-4' />
 
       <Form {...productForm}>
         <form
           onSubmit={productForm.handleSubmit(handleProductSubmit)}
-          className='space-y-8 w-full mt-4'
+          className='space-y-8 w-full my-4'
         >
           <div className='flex items-center justify-between'>
             <div>
@@ -703,7 +739,7 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
               }}
               className={cn(
                 'ml-4',
-                initialProductMaster && mainProductColor !== null
+                initialProductMaster && mainProductColor != null
                   ? 'flex'
                   : 'hidden',
               )}
@@ -713,55 +749,41 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
             </Button>
           </div>
 
-          <div className='grid grid-cols-3 gap-8 max-lg:grid-cols-2 max-md:grid-cols-1'>
+          <FormGrid>
             <FormField
               control={productForm.control}
               name='sizeCategoryId'
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Talla/Tamaño</FormLabel>
-                  <Select
-                    disabled={
-                      isLoading ||
-                      (initialProductMaster !== null &&
-                        mainProductColor !== null &&
-                        mainProduct !== null)
-                    }
-                    // eslint-disable-next-line react/jsx-handler-names
-                    onValueChange={field.onChange}
-                    value={field.value}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
+                  <FormControl>
+                    <Select
+                      disabled={isLoading || sizesAvailable.length === 0}
+                      // eslint-disable-next-line react/jsx-handler-names
+                      onValueChange={field.onChange}
+                      value={field.value || undefined}
+                      defaultValue={field.value || undefined}
+                    >
                       <SelectTrigger>
                         <SelectValue
-                          defaultValue={field.value}
+                          defaultValue={field.value || undefined}
                           placeholder='Selecciona una talla/tamaño'
                         />
                       </SelectTrigger>
-                    </FormControl>
 
-                    <SelectContent>
-                      {sizesAvailable.map((sizeCategory) => (
-                        <SelectItem
-                          key={sizeCategory.id}
-                          value={sizeCategory.id}
-                          className='cursor-pointer'
-                        >
-                          {sizeCategory.size.name} - {sizeCategory.size.value}
-                        </SelectItem>
-                      ))}
-                      {initialProductMaster && mainProduct !== null && (
-                        <SelectItem
-                          key={mainProduct?.sizeCategoryId!}
-                          value={mainProduct?.sizeCategoryId!}
-                          className='cursor-pointer'
-                        >
-                          {mainProduct?.sizeCategory.size.name}
-                        </SelectItem>
-                      )}
-                    </SelectContent>
-                  </Select>
+                      <SelectContent>
+                        {sizesAvailable.map((sizeCategory) => (
+                          <SelectItem
+                            key={sizeCategory.id}
+                            value={sizeCategory.id}
+                            className='cursor-pointer'
+                          >
+                            {sizeCategory.size.name} - {sizeCategory.size.value}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -815,39 +837,39 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Estado</FormLabel>
-                  <Select
-                    disabled={isLoading}
-                    // eslint-disable-next-line react/jsx-handler-names
-                    onValueChange={field.onChange}
-                    value={field.value}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
+                  <FormControl>
+                    <Select
+                      disabled={isLoading}
+                      // eslint-disable-next-line react/jsx-handler-names
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      defaultValue={field.value}
+                    >
                       <SelectTrigger>
                         <SelectValue
                           defaultValue={field.value}
                           placeholder='Selecciona una estado'
                         />
                       </SelectTrigger>
-                    </FormControl>
 
-                    <SelectContent>
-                      {productStates.map((state) => (
-                        <SelectItem
-                          key={state}
-                          value={state}
-                          className='cursor-pointer'
-                        >
-                          {state}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                      <SelectContent>
+                        {productStates.map((state) => (
+                          <SelectItem
+                            key={state}
+                            value={state}
+                            className='cursor-pointer'
+                          >
+                            {state}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-          </div>
+          </FormGrid>
 
           <Button
             disabled={isLoading}
@@ -873,6 +895,6 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
           Crear Producto
         </Button>
       </div>
-    </div>
+    </>
   )
 }

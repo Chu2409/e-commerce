@@ -7,7 +7,6 @@ import { Customer } from '@prisma/client'
 
 import { Header } from '@/modules/admin/components/header'
 import { DataTable } from '@/modules/admin/components/data-table'
-import { Separator } from '@/components/ui/separator'
 
 import { IFullOrder } from '../../shared/interfaces/order'
 import { useOrdersFilters } from '../../shared/store/filters'
@@ -39,10 +38,8 @@ export const OrdersClient = ({ customers }: { customers: Customer[] }) => {
       <Header
         title='Órdenes'
         description='Administra tus órdenes'
-        buttonLabel='Nueva'
+        buttonLabel='Nueva orden'
       />
-
-      <Separator className='my-4' />
 
       <OrdersFilters customers={customers} />
 

@@ -3,6 +3,7 @@ import { ProductsClient } from '@/modules/products/admin/components/client'
 import { getBrands } from '@/modules/brands/shared/actions/get-brands'
 import { getCategories } from '@/modules/categories/shared/actions/get-categories'
 import { getColors } from '@/modules/colors/shared/actions/get-colors'
+import { Container } from '@/modules/shared/components/container'
 
 export const revalidate = 0
 
@@ -12,15 +13,9 @@ const ProductsPage = async () => {
   const colors = await getColors()
 
   return (
-    <div className='flex flex-col'>
-      <div className='p-8 pt-6 flex flex-col flex-1'>
-        <ProductsClient
-          brands={brands}
-          categories={categories}
-          colors={colors}
-        />
-      </div>
-    </div>
+    <Container>
+      <ProductsClient brands={brands} categories={categories} colors={colors} />
+    </Container>
   )
 }
 

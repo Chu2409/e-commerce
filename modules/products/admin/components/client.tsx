@@ -6,7 +6,6 @@ import { Brand, Category, Color } from '@prisma/client'
 import { ProductsFilters } from './filters/filters'
 import { ProductsList } from './products-list'
 import { Header } from '@/modules/admin/components/header'
-import { Separator } from '@/components/ui/separator'
 
 import { IFullProductMaster } from '../../shared/interfaces/product'
 import { useProductsFilters } from '../../shared/store/filters'
@@ -51,14 +50,12 @@ export const ProductsClient = ({
   if (!isMounted) return null
 
   return (
-    <div>
+    <>
       <Header
         title='Productos'
         description='Administra tus productos'
-        buttonLabel='Nuevo'
+        buttonLabel='Nuevo producto'
       />
-
-      <Separator className='my-4' />
 
       <ProductsFilters
         brands={brands}
@@ -73,6 +70,6 @@ export const ProductsClient = ({
           setSkip,
         }}
       />
-    </div>
+    </>
   )
 }

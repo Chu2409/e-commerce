@@ -3,7 +3,7 @@
 import prismadb from '@/lib/prismadb'
 
 interface UpdateProductColorData {
-  colorId: string
+  colorId?: string | null
   images: {
     url: string
   }[]
@@ -19,7 +19,7 @@ export const updateProductColor = async (
         id,
       },
       data: {
-        colorId: data.colorId,
+        colorId: data.colorId ?? null,
         images: {
           deleteMany: {},
         },

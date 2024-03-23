@@ -12,7 +12,7 @@ const Summary = () => {
   const message = items.reduce((acc, item) => {
     return (
       acc +
-      `|${item.product.productColor.productMaster.name} ~ ${item.product.productColor.color.name} ~ ${item.quantity}|`
+      `|${item.product.productColor.productMaster.name} ~ ${item.product.productColor.color?.name} ~ ${item.quantity}|`
     )
   }, '')
 

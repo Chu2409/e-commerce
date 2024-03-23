@@ -99,8 +99,8 @@ model Product {
   productColorId String       @map("product_color_id")
   productColor   ProductColor @relation(fields: [productColorId], references: [id])
 
-  sizeCategoryId String       @map("size_category_id")
-  sizeCategory   SizeCategory @relation(fields: [sizeCategoryId], references: [id])
+  sizeCategoryId String?       @map("size_category_id")
+  sizeCategory   SizeCategory? @relation(fields: [sizeCategoryId], references: [id])
 
   items Item[]
 
@@ -121,8 +121,8 @@ model ProductColor {
 
   productMasterId String        @map("product_master_id")
   productMaster   ProductMaster @relation(fields: [productMasterId], references: [id])
-  colorId         String        @map("color_id")
-  color           Color         @relation(fields: [colorId], references: [id])
+  colorId         String?       @map("color_id")
+  color           Color?        @relation(fields: [colorId], references: [id])
 
   images   Image[]
   products Product[]
@@ -163,9 +163,10 @@ model SizeCategory {
 }
 
 model ProductMaster {
-  id          String  @id @default(uuid()) @map("id")
-  name        String  @map("name")
-  description String? @map("description")
+  id          String          @id @default(uuid()) @map("id")
+  name        String          @map("name")
+  description String?         @map("description")
+  gender      PRODUCT_GENDER? @map("gender")
 
   brandId    String   @map("brand_id")
   brand      Brand    @relation(fields: [brandId], references: [id])
@@ -178,6 +179,12 @@ model ProductMaster {
   updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("products_master")
+}
+
+enum PRODUCT_GENDER {
+  HOMBRE
+  MUJER
+  UNISEX
 }
 
 model Size {

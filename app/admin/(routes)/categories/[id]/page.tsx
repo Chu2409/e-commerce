@@ -1,6 +1,7 @@
 import { CategoryForm } from '@/modules/categories/admin/components/form'
 
 import { getCategory } from '@/modules/categories/shared/actions/get-category'
+import { Container } from '@/modules/shared/components/container'
 
 const CategoryPage = async ({
   params,
@@ -12,11 +13,9 @@ const CategoryPage = async ({
   const category = await getCategory(params.id)
 
   return (
-    <div className='flex flex-col'>
-      <div className='p-8 pt-6 flex flex-col flex-1'>
-        <CategoryForm initialData={category} />
-      </div>
-    </div>
+    <Container>
+      <CategoryForm initialData={category} />
+    </Container>
   )
 }
 

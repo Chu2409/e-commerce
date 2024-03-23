@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/form'
 import { AlertModal } from '@/modules/shared/components/alert-modal'
 import { Heading } from '@/modules/admin/components/heading'
+import { FormGrid } from '@/modules/shared/components/form-grid'
 import { Button } from '@/components/ui/button'
 import { Trash } from 'lucide-react'
 import { Separator } from '@/components/ui/separator'
@@ -58,10 +59,12 @@ export const BrandForm: React.FC<BrandFormProps> = ({ initialData }) => {
   const title = initialData ? 'Actualizar marca' : 'Nueva marca'
   const description = initialData ? 'Actualizar marca' : 'Agregar nueva marca'
   const toastMessage = initialData ? 'Marca actualizada' : 'Marca creada'
-  const action = initialData ? 'Actualizar' : 'Crear'
+  const action = initialData ? 'Actualizar marca' : 'Crear marca'
 
   const onsubmit = async (data: z.infer<typeof formSchema>) => {
     try {
+      setIsLoading(true)
+
       let result
       if (initialData) {
         result = await updateBrand(initialData.id, data)
@@ -69,9 +72,7 @@ export const BrandForm: React.FC<BrandFormProps> = ({ initialData }) => {
         result = await createBrand(data)
       }
 
-      if (!result) {
-        throw new Error()
-      }
+      if (!result) throw new Error()
 
       router.push('/admin/brands')
       router.refresh()
@@ -88,9 +89,7 @@ export const BrandForm: React.FC<BrandFormProps> = ({ initialData }) => {
       setIsLoading(true)
       const deleted = await deleteBrand(initialData?.id!)
 
-      if (!deleted) {
-        throw new Error()
-      }
+      if (!deleted) throw new Error()
 
       router.push('/admin/brands')
       router.refresh()
@@ -129,11 +128,8 @@ export const BrandForm: React.FC<BrandFormProps> = ({ initialData }) => {
       <Separator className='my-4' />
 
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onsubmit)}
-          className='space-y-8 w-full mt-4'
-        >
-          <div className='grid grid-cols-3 gap-8 max-lg:grid-cols-2 max-md:grid-cols-1'>
+        <form onSubmit={form.handleSubmit(onsubmit)}>
+          <FormGrid>
             <FormField
               control={form.control}
               name='name'
@@ -151,7 +147,7 @@ export const BrandForm: React.FC<BrandFormProps> = ({ initialData }) => {
                 </FormItem>
               )}
             />
-          </div>
+          </FormGrid>
 
           <Button disabled={isLoading} type='submit'>
             {action}

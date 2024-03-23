@@ -5,35 +5,36 @@ import { useRouter } from 'next/navigation'
 import { cn, formatMoney } from '@/lib/utils'
 import { CldImage } from 'next-cloudinary'
 
-import { IFullProductMaster } from '../interfaces/product'
+import {
+  IFullProduct,
+  IFullProductColor,
+  IFullProductMaster,
+} from '../interfaces/product'
 
 interface GroupProductCardProps {
   productMaster: IFullProductMaster
   link: string
 }
 
-const GroupProductCard: React.FC<GroupProductCardProps> = ({
+export const GroupProductCard: React.FC<GroupProductCardProps> = ({
   productMaster,
   link,
 }) => {
-  const [mainProductColor, setMainProductColor] = useState(
+  const [mainProductColor, setMainProductColor] = useState<IFullProductColor>(
     productMaster.productsColors[0],
   )
-  const [mainProduct, setMainProduct] = useState(
+
+  const [mainProduct, setMainProduct] = useState<IFullProduct>(
     productMaster.productsColors[0].products[0],
   )
 
-  const sizes = mainProductColor.products.map(
-    (product) => product.sizeCategory.size,
-  )
   const colors = productMaster.productsColors.map(
-    (productColor) => productColor.color,
+    (productColor) => productColor?.color,
   )
 
-  // useEffect(() => {
-  //   setMainProductColor(productMaster.productsColors[0])
-  //   setMainProduct(productMaster.productsColors[0].products[0])
-  // }, [productMaster])
+  const sizes = mainProductColor.products.map(
+    (product) => product.sizeCategory?.size,
+  )
 
   const router = useRouter()
   const handleClick = () => {
@@ -52,7 +53,7 @@ const GroupProductCard: React.FC<GroupProductCardProps> = ({
 
   const handleSizeChange = (sizeId: string) => {
     const newProduct = mainProductColor.products.find(
-      (product) => product.sizeCategory.sizeId === sizeId,
+      (product) => product.sizeCategory?.sizeId === sizeId,
     )
     if (newProduct) {
       setMainProduct(newProduct)
@@ -74,23 +75,26 @@ const GroupProductCard: React.FC<GroupProductCardProps> = ({
       <div>
         <p className='font-semibold text-lg'>{productMaster.name}</p>
 
-        <div className='flex gap-2 items-center'>
-          <div className='text-sm text-gray-500'>Tallas disponibles:</div>
-          {sizes.map((size) => (
-            <div
-              key={size.id}
-              className={cn(
-                'text-sm text-gray-600 cursor-pointer hover:scale-125 duration-300 hover:opacity-70',
-                {
-                  'font-extrabold': size.id === mainProduct.sizeCategory.sizeId,
-                },
-              )}
-              onClick={() => handleSizeChange(size.id)}
-            >
-              {size.value}
-            </div>
-          ))}
-        </div>
+        {sizes[0] != null && (
+          <div className='flex gap-2 items-center'>
+            <div className='text-sm text-gray-500'>Tallas disponibles:</div>
+            {sizes.map((size) => (
+              <div
+                key={size?.id}
+                className={cn(
+                  'text-sm text-gray-600 cursor-pointer hover:scale-125 duration-300 hover:opacity-70',
+                  {
+                    'font-extrabold':
+                      size?.id === mainProduct.sizeCategory?.sizeId,
+                  },
+                )}
+                onClick={() => handleSizeChange(size?.id)}
+              >
+                {size?.value}
+              </div>
+            ))}
+          </div>
+        )}
 
         <div className='flex gap-2 items-center text-sm text-gray-500'>
           Stock:
@@ -103,30 +107,39 @@ const GroupProductCard: React.FC<GroupProductCardProps> = ({
             {mainProduct.state.replace('_', ' ').toLowerCase()}
           </span>
         </p>
+
+        {productMaster.gender && (
+          <p className='text-sm text-gray-600'>
+            Género:{' '}
+            <span className='capitalize font-medium'>
+              {productMaster.gender?.replace('_', ' ').toLowerCase()}
+            </span>
+          </p>
+        )}
       </div>
 
       <div className='flex items-center justify-between font-semibold'>
         {formatMoney(mainProduct.price)}
 
-        <div className='flex gap-1'>
-          {colors.map((color) => (
-            <div
-              key={color.id}
-              className={cn(
-                'w-4 h-4 rounded-full border cursor-pointer hover:scale-125 duration-300 hover:opacity-70 border-black border-opacity-30 ',
+        {colors[0] != null && (
+          <div className='flex gap-1'>
+            {colors.map((color) => (
+              <div
+                key={color?.id}
+                className={cn(
+                  'w-4 h-4 rounded-full border cursor-pointer hover:scale-125 duration-300 hover:opacity-70 border-black border-opacity-30 ',
 
-                color.id === mainProductColor.colorId
-                  ? 'border-opacity-50'
-                  : 'opacity-40 scale-75',
-              )}
-              onClick={() => handleColorChange(color.id)}
-              style={{ backgroundColor: color.value }}
-            />
-          ))}
-        </div>
+                  color?.id === mainProductColor.colorId
+                    ? 'border-opacity-50'
+                    : 'opacity-40 scale-75',
+                )}
+                onClick={() => handleColorChange(color?.id || '')}
+                style={{ backgroundColor: color?.value }}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )
 }
-
-export default GroupProductCard

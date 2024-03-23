@@ -41,6 +41,7 @@ import { IFullSize } from '../../shared/interfaces/size'
 import { updateSizeCategory } from '../../shared/actions/update-size-category'
 import { createSizeCategory } from '../../shared/actions/create-size-category'
 import { deleteSizeCategory } from '../../shared/actions/delete-size-category'
+import { FormGrid } from '@/modules/shared/components/form-grid'
 
 const formSchema = z.object({
   name: z
@@ -95,6 +96,8 @@ export const SizeForm: React.FC<SizeFormProps> = ({
 
   const onsubmit = async (data: z.infer<typeof formSchema>) => {
     try {
+      setIsLoading(true)
+
       let result
       if (initialData) {
         result = await updateSizeCategory(initialData.id, data)
@@ -102,9 +105,7 @@ export const SizeForm: React.FC<SizeFormProps> = ({
         result = await createSizeCategory(data)
       }
 
-      if (!result) {
-        throw new Error()
-      }
+      if (!result) throw new Error()
 
       router.push('/admin/sizes')
       router.refresh()
@@ -162,11 +163,8 @@ export const SizeForm: React.FC<SizeFormProps> = ({
       <Separator className='my-4' />
 
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onsubmit)}
-          className='space-y-8 w-full mt-4'
-        >
-          <div className='grid grid-cols-3 gap-8 max-lg:grid-cols-2 max-md:grid-cols-1'>
+        <form onSubmit={form.handleSubmit(onsubmit)}>
+          <FormGrid>
             <FormField
               control={form.control}
               name='categoryId'
@@ -241,7 +239,7 @@ export const SizeForm: React.FC<SizeFormProps> = ({
                 </FormItem>
               )}
             />
-          </div>
+          </FormGrid>
 
           <Button disabled={isLoading} type='submit'>
             {action}

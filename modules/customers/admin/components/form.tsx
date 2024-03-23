@@ -25,6 +25,7 @@ import toast from 'react-hot-toast'
 import { updateCustomer } from '../../shared/actions/update-customer'
 import { createCustomer } from '../../shared/actions/create-customer'
 import { deleteCustomer } from '../../shared/actions/delete-customer'
+import { FormGrid } from '@/modules/shared/components/form-grid'
 
 const formSchema = z.object({
   dni: z
@@ -80,10 +81,12 @@ export const CustomerForm: React.FC<CustomerFormProps> = ({ initialData }) => {
     ? 'Actualizar cliente'
     : 'Agregar nuevo cliente'
   const toastMessage = initialData ? 'Cliente actualizado' : 'Cliente creado'
-  const action = initialData ? 'Actualizar' : 'Crear'
+  const action = initialData ? 'Actualizar cliente' : 'Crear cliente'
 
   const onsubmit = async (data: z.infer<typeof formSchema>) => {
     try {
+      setIsLoading(true)
+
       let result
       if (initialData) {
         result = await updateCustomer(initialData.id, data)
@@ -91,9 +94,7 @@ export const CustomerForm: React.FC<CustomerFormProps> = ({ initialData }) => {
         result = await createCustomer(data)
       }
 
-      if (!result) {
-        throw new Error()
-      }
+      if (!result) throw new Error()
 
       router.push('/admin/customers')
       router.refresh()
@@ -110,9 +111,7 @@ export const CustomerForm: React.FC<CustomerFormProps> = ({ initialData }) => {
       setIsLoading(true)
       const deleted = await deleteCustomer(initialData?.id!)
 
-      if (!deleted) {
-        throw new Error()
-      }
+      if (!deleted) throw new Error()
 
       router.push('/admin/customers')
       router.refresh()
@@ -151,11 +150,8 @@ export const CustomerForm: React.FC<CustomerFormProps> = ({ initialData }) => {
       <Separator className='my-4' />
 
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onsubmit)}
-          className='space-y-8 w-full mt-4'
-        >
-          <div className='grid grid-cols-3 gap-8 max-lg:grid-cols-2 max-md:grid-cols-1 items-start'>
+        <form onSubmit={form.handleSubmit(onsubmit)}>
+          <FormGrid>
             <FormField
               control={form.control}
               name='dni'
@@ -165,7 +161,7 @@ export const CustomerForm: React.FC<CustomerFormProps> = ({ initialData }) => {
                   <FormControl>
                     <Input
                       disabled={isLoading}
-                      placeholder='Cédula'
+                      placeholder='Cédula de identidad del cliente'
                       {...field}
                     />
                   </FormControl>
@@ -183,7 +179,7 @@ export const CustomerForm: React.FC<CustomerFormProps> = ({ initialData }) => {
                   <FormControl>
                     <Input
                       disabled={isLoading}
-                      placeholder='Nombre'
+                      placeholder='Nombre del cliente'
                       {...field}
                     />
                   </FormControl>
@@ -201,7 +197,7 @@ export const CustomerForm: React.FC<CustomerFormProps> = ({ initialData }) => {
                   <FormControl>
                     <Input
                       disabled={isLoading}
-                      placeholder='Apellido'
+                      placeholder='Apellido del cliente'
                       {...field}
                     />
                   </FormControl>
@@ -219,7 +215,7 @@ export const CustomerForm: React.FC<CustomerFormProps> = ({ initialData }) => {
                   <FormControl>
                     <Input
                       disabled={isLoading}
-                      placeholder='Teléfono'
+                      placeholder='Teléfono del cliente'
                       {...field}
                     />
                   </FormControl>
@@ -237,7 +233,7 @@ export const CustomerForm: React.FC<CustomerFormProps> = ({ initialData }) => {
                   <FormControl>
                     <Input
                       disabled={isLoading}
-                      placeholder='Correo'
+                      placeholder='Correo del cliente'
                       {...field}
                     />
                   </FormControl>
@@ -255,7 +251,7 @@ export const CustomerForm: React.FC<CustomerFormProps> = ({ initialData }) => {
                   <FormControl>
                     <Input
                       disabled={isLoading}
-                      placeholder='Ciudad'
+                      placeholder='Ciudad del cliente'
                       {...field}
                     />
                   </FormControl>
@@ -263,7 +259,7 @@ export const CustomerForm: React.FC<CustomerFormProps> = ({ initialData }) => {
                 </FormItem>
               )}
             />
-          </div>
+          </FormGrid>
 
           <Button disabled={isLoading} type='submit'>
             {action}

@@ -4,7 +4,7 @@ import prismadb from '@/lib/prismadb'
 
 interface CreateProductColorData {
   productMasterId: string
-  colorId: string
+  colorId?: string | null
   images: {
     url: string
   }[]

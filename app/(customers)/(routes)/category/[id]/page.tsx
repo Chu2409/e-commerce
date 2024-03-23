@@ -12,6 +12,7 @@ const CategoryPage = async ({
     id: string
   }
   searchParams: {
+    gender?: string
     brandId?: string
     sizeId?: string
     state?: string

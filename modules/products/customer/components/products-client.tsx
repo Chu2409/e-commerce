@@ -2,12 +2,14 @@ import { Brand, Color, Size } from '@prisma/client'
 
 import { IFullProductMaster } from '../../shared/interfaces/product'
 
-import GroupProductCard from '@/modules/products/shared/components/group-product-card'
+import { GroupProductCard } from '@/modules/products/shared/components/group-product-card'
 import SizeFilter from '@/modules/products/customer/components/filters/size-filter'
 // import ColorFilter from '@/modules/products/customer/components/filters/color-filter'
 import BrandFilter from '@/modules/products/customer/components/filters/brand-filter'
 import StateFilter from './filters/state-filter'
 import MobileFilters from './filters/mobile-filters'
+import GenderFilter from './filters/gender-filter'
+import { Container } from '@/modules/shared/components/container'
 
 interface ProductsByCategoryClientProps {
   productsMasters: IFullProductMaster[]
@@ -20,11 +22,13 @@ export const ProductsByCategoryClient: React.FC<
   ProductsByCategoryClientProps
 > = ({ brands, colors, productsMasters, sizes }) => {
   return (
-    <div className='px-8 py-10'>
-      <div className='grid grid-cols-[300px_1fr] gap-10 max-lg:grid-cols-1 w-full'>
+    <Container>
+      <div className='grid lg:grid-cols-[300px_1fr] gap-8 w-full'>
         <MobileFilters sizes={sizes} colors={colors} brands={brands} />
 
         <div className='max-lg:hidden'>
+          <GenderFilter valueKey='gender' name='Género' />
+
           <BrandFilter valueKey='brandId' name='Marcas' data={brands} />
 
           <SizeFilter valueKey='sizeId' name='Tallas/Tamaños' data={sizes} />
@@ -52,6 +56,6 @@ export const ProductsByCategoryClient: React.FC<
           </div>
         </div>
       </div>
-    </div>
+    </Container>
   )
 }
