@@ -467,13 +467,9 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
                       // eslint-disable-next-line react/jsx-handler-names
                       onValueChange={field.onChange}
                       value={field.value}
-                      defaultValue={field.value}
                     >
                       <SelectTrigger>
-                        <SelectValue
-                          defaultValue={field.value}
-                          placeholder='Selecciona una marca'
-                        />
+                        <SelectValue placeholder='Selecciona una marca' />
                       </SelectTrigger>
 
                       <SelectContent>
@@ -506,13 +502,9 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
                       // eslint-disable-next-line react/jsx-handler-names
                       onValueChange={field.onChange}
                       value={field.value}
-                      defaultValue={field.value}
                     >
                       <SelectTrigger>
-                        <SelectValue
-                          defaultValue={field.value}
-                          placeholder='Selecciona una categoría'
-                        />
+                        <SelectValue placeholder='Selecciona una categoría' />
                       </SelectTrigger>
 
                       <SelectContent>
@@ -546,13 +538,9 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
                       // eslint-disable-next-line react/jsx-handler-names
                       onValueChange={field.onChange}
                       value={field.value || undefined}
-                      defaultValue={field.value || undefined}
                     >
                       <SelectTrigger>
-                        <SelectValue
-                          defaultValue={field.value || undefined}
-                          placeholder='Selecciona una género'
-                        />
+                        <SelectValue placeholder='Selecciona una género' />
                       </SelectTrigger>
 
                       <SelectContent>
@@ -610,8 +598,8 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
                 productColorForm.setValue('colorId', '')
                 productColorForm.setValue('images', [])
                 productForm.setValue('sizeCategoryId', '')
-                productForm.setValue('price', 0)
-                productForm.setValue('stock', 0)
+                productForm.setValue('price', '' as any)
+                productForm.setValue('stock', 1)
                 productForm.setValue('state', PRODUCT_STATE.DISPONIBLE)
               }}
               className={cn('ml-4', initialProductMaster ? 'flex' : 'hidden')}
@@ -661,13 +649,9 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
                       // eslint-disable-next-line react/jsx-handler-names
                       onValueChange={field.onChange}
                       value={field.value || undefined}
-                      defaultValue={field.value || undefined}
                     >
                       <SelectTrigger>
-                        <SelectValue
-                          defaultValue={field.value || undefined}
-                          placeholder='Selecciona un color'
-                        />
+                        <SelectValue placeholder='Selecciona un color' />
                       </SelectTrigger>
 
                       <SelectContent>
@@ -762,13 +746,9 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
                       // eslint-disable-next-line react/jsx-handler-names
                       onValueChange={field.onChange}
                       value={field.value || undefined}
-                      defaultValue={field.value || undefined}
                     >
                       <SelectTrigger>
-                        <SelectValue
-                          defaultValue={field.value || undefined}
-                          placeholder='Selecciona una talla/tamaño'
-                        />
+                        <SelectValue placeholder='Selecciona una talla/tamaño' />
                       </SelectTrigger>
 
                       <SelectContent>
@@ -843,13 +823,9 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
                       // eslint-disable-next-line react/jsx-handler-names
                       onValueChange={field.onChange}
                       value={field.value}
-                      defaultValue={field.value}
                     >
                       <SelectTrigger>
-                        <SelectValue
-                          defaultValue={field.value}
-                          placeholder='Selecciona una estado'
-                        />
+                        <SelectValue placeholder='Selecciona una estado' />
                       </SelectTrigger>
 
                       <SelectContent>
