@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button'
 import BrandFilter from './brand-filter'
 import SizeFilter from './size-filter'
 import StateFilter from './state-filter'
-import ColorFilter from './color-filter'
 import IconButton from '@/modules/admin/components/icon-button'
 import { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
@@ -64,7 +63,7 @@ const MobileFilters: React.FC<MovileFiltersProps> = ({
 
         <StateFilter valueKey='state' name='Estado' />
 
-        <ColorFilter valueKey='colorId' name='Colores' data={colors} />
+        {/* <ColorFilter valueKey='colorId' name='Colores' data={colors} /> */}
       </div>
     </div>
   )

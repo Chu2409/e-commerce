@@ -1,8 +1,8 @@
 import { getProductsByCategory } from '@/modules/products/shared/actions/get-products-by-category'
 import { getSizesByCategory } from '@/modules/sizes/shared/actions/get-sizes-by-category'
-import { getBrands } from '@/modules/brands/shared/actions/get-brands'
 import { getColors } from '@/modules/colors/shared/actions/get-colors'
 import { ProductsByCategoryClient } from '@/modules/products/customer/components/products-client'
+import { getBrandsInCategory } from '@/modules/brands/shared/actions/get-brands-in-category'
 
 const CategoryPage = async ({
   params,
@@ -26,7 +26,7 @@ const CategoryPage = async ({
 
   const colors = await getColors()
 
-  const brands = await getBrands()
+  const brands = await getBrandsInCategory(params.id)
 
   return (
     <ProductsByCategoryClient

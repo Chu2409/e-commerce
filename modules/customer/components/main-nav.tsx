@@ -1,12 +1,11 @@
 'use client'
 
 import React from 'react'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 
 import { cn } from '@/lib/utils'
 
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
 import { IRoute } from '@/modules/shared/interfaces/route'
 import { ShoppingBag } from 'lucide-react'
 import { useCart } from '@/modules/cart/store/cart'
@@ -17,7 +16,6 @@ interface MainNavProps {
 
 export const CustomerMainNav: React.FC<MainNavProps> = ({ routes }) => {
   const pathname = usePathname()
-  const router = useRouter()
 
   const items = useCart((state) => state.productItems)
 
@@ -39,15 +37,15 @@ export const CustomerMainNav: React.FC<MainNavProps> = ({ routes }) => {
       ))}
 
       <div className='ml-auto flex items-center gap-x-4'>
-        <Button
-          onClick={() => router.push('/cart')}
-          className='flex items-center rounded-full bg-black px-4 py-2'
+        <Link
+          href='/cart'
+          className='justify-center text-sm font-medium transition-colors text-primary-foreground h-10 flex items-center rounded-full bg-black px-4 py-2 hover:opacity-70 '
         >
           <ShoppingBag size={20} color='white' />
           <span className='ml-2 text-sm font-medium text-white'>
             {items.length}
           </span>
-        </Button>
+        </Link>
       </div>
     </nav>
   )
