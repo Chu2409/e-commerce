@@ -1,15 +1,18 @@
 import { CustomerMainNav } from '@/modules/customer/components/main-nav'
-import { getCategories } from '@/modules/categories/shared/actions/get-categories'
 import { CustomerNavBar } from '@/modules/customer/components/navbar'
+import { getMasterWithCategories } from '@/modules/categories/shared/actions/get-master-with-categories'
 
 export const revalidate = 0
 
 const CustomerLayout = async ({ children }: { children: React.ReactNode }) => {
-  const categories = await getCategories()
+  const categoriesMaster = await getMasterWithCategories()
 
-  const formattedCategories = categories.map((category) => ({
-    label: category.name,
-    href: `/category/${category.id}`,
+  const formattedCategories = categoriesMaster.map((masterCategory) => ({
+    mainLabel: masterCategory.name,
+    routes: masterCategory.categories.map((category) => ({
+      label: category.name,
+      href: `/category/${category.id}`,
+    })),
   }))
 
   return (

@@ -171,34 +171,35 @@ export const SizeForm: React.FC<SizeFormProps> = ({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Categoría</FormLabel>
-                  <Select
-                    disabled={isLoading || initialData !== null}
-                    // eslint-disable-next-line react/jsx-handler-names
-                    onValueChange={field.onChange}
-                    value={field.value}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
+                  <FormControl>
+                    <Select
+                      disabled={isLoading || initialData !== null}
+                      // eslint-disable-next-line react/jsx-handler-names
+                      onValueChange={field.onChange}
+                      value={field.value}
+                      defaultValue={field.value}
+                    >
                       <SelectTrigger>
                         <SelectValue
                           defaultValue={field.value}
                           placeholder='Selecciona una categoría'
                         />
                       </SelectTrigger>
-                    </FormControl>
 
-                    <SelectContent>
-                      {categories.map((category) => (
-                        <SelectItem
-                          key={category.id}
-                          value={category.id}
-                          className='cursor-pointer'
-                        >
-                          {category.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                      <SelectContent>
+                        {categories.map((category) => (
+                          <SelectItem
+                            key={category.id}
+                            value={category.id}
+                            className='cursor-pointer'
+                          >
+                            {category.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+
                   <FormMessage />
                 </FormItem>
               )}

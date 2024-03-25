@@ -204,6 +204,10 @@ model Category {
   id   String @id @default(uuid()) @map("id")
   name String @unique @map("name")
 
+  masterCategoryId String?   @map("master_category_id")
+  masterCategory   Category? @relation(fields: [masterCategoryId], references: [id], name: "CategoryToMasterCategory")
+
+  categories      Category[]      @relation("CategoryToMasterCategory")
   productsMaster  ProductMaster[]
   sizesCategories SizeCategory[]
 

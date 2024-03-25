@@ -1,13 +1,13 @@
-import { Category } from '@prisma/client'
 import { categoriesColumns } from './columns'
 
 import { Header } from '@/modules/admin/components/header'
 import { DataTable } from '@/modules/admin/components/data-table'
+import { IFullCategory } from '../../shared/interfaces/categories'
 
 export const CategoriesClient = ({
   categories,
 }: {
-  categories: Category[]
+  categories: IFullCategory[]
 }) => {
   return (
     <>

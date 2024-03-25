@@ -11,7 +11,10 @@ import { ShoppingBag } from 'lucide-react'
 import { useCart } from '@/modules/cart/store/cart'
 
 interface MainNavProps {
-  routes: IRoute[]
+  routes: {
+    mainLabel: string
+    routes: IRoute[]
+  }[]
 }
 
 export const CustomerMainNav: React.FC<MainNavProps> = ({ routes }) => {
@@ -26,7 +29,7 @@ export const CustomerMainNav: React.FC<MainNavProps> = ({ routes }) => {
           key={route.href}
           href={route.href}
           className={cn(
-            'text-base font-medium transition-colors hover:text-primary',
+            'text-base font-medium transition-colors hover:text-primary text-center',
             route.href === pathname
               ? 'text-black font-bold dark:text-white '
               : 'text-muted-foreground',
