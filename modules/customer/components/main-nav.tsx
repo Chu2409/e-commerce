@@ -6,46 +6,70 @@ import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 
 import Link from 'next/link'
-import { IRoute } from '@/modules/shared/interfaces/route'
-import { ShoppingBag } from 'lucide-react'
-import { useCart } from '@/modules/cart/store/cart'
+import { ArrowRight } from 'lucide-react'
+import { ICategoryRoutes } from '../interfaces/categories-routes'
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from '@/components/ui/navigation-menu'
+import { Cart } from './cart'
 
-interface MainNavProps {
-  routes: IRoute[]
-}
-
-export const CustomerMainNav: React.FC<MainNavProps> = ({ routes }) => {
+export const CustomerMainNav = ({ routes }: { routes: ICategoryRoutes[] }) => {
   const pathname = usePathname()
 
-  const items = useCart((state) => state.productItems)
-
   return (
-    <nav className='flex px-6 w-full justify-between max-lg:flex-col gap-y-6 items-center gap-x-10'>
+    <nav className='w-full px-6 flex gap-4 items-center max-lg:hidden'>
       {routes.map((route) => (
-        <Link
-          key={route.href}
-          href={route.href}
-          className={cn(
-            'text-base font-medium transition-colors hover:text-primary',
-            route.href === pathname
-              ? 'text-black font-bold dark:text-white '
-              : 'text-muted-foreground',
-          )}
-        >
-          {route.label}
-        </Link>
+        <NavigationMenu key={route.mainLabel}>
+          <NavigationMenuList>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger
+                className={cn(
+                  'text-base text-muted-foreground font-medium transition-colors hover:text-primary text-center',
+                  route.routes.some((subRoute) => subRoute.href === pathname) &&
+                    'text-black font-bold',
+                )}
+              >
+                {route.mainLabel}
+              </NavigationMenuTrigger>
+
+              <NavigationMenuContent>
+                <ul className='grid w-max gap-y-4 gap-x-10 p-4 lg:grid-cols-2'>
+                  {route.routes.map((subRoute) => (
+                    <Link
+                      href={subRoute.href}
+                      legacyBehavior
+                      passHref
+                      key={subRoute.href}
+                    >
+                      <NavigationMenuLink
+                        className={cn(
+                          navigationMenuTriggerStyle,
+                          'flex items-center gap-2 text-sm',
+                          subRoute.href === pathname
+                            ? 'text-black font-bold dark:text-white'
+                            : 'text-muted-foreground',
+                        )}
+                      >
+                        <ArrowRight size={12} />
+                        {subRoute.label}
+                      </NavigationMenuLink>
+                    </Link>
+                  ))}
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
       ))}
 
-      <div className='ml-auto flex items-center gap-x-4'>
-        <Link
-          href='/cart'
-          className='justify-center text-sm font-medium transition-colors text-primary-foreground h-10 flex items-center rounded-full bg-black px-4 py-2 hover:opacity-70 '
-        >
-          <ShoppingBag size={20} color='white' />
-          <span className='ml-2 text-sm font-medium text-white'>
-            {items.length}
-          </span>
-        </Link>
+      <div className='ml-auto'>
+        <Cart />
       </div>
     </nav>
   )

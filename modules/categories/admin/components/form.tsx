@@ -27,19 +27,31 @@ import { deleteCategory } from '../../shared/actions/delete-category'
 import { updateCategory } from '../../shared/actions/update-category'
 import { createCategory } from '../../shared/actions/create-category'
 import { FormGrid } from '@/modules/shared/components/form-grid'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
 const formSchema = z.object({
   name: z
     .string()
     .min(3, { message: 'Mínimo 3 caracteres' })
     .max(100, { message: 'Máximo 100 caracteres' }),
+  masterCategoryId: z.string().optional().nullable(),
 })
 
 interface CategoryFormProps {
   initialData: Category | null
+  masterCategories: Category[]
 }
 
-export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
+export const CategoryForm: React.FC<CategoryFormProps> = ({
+  initialData,
+  masterCategories,
+}) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: initialData
@@ -149,6 +161,41 @@ export const CategoryForm: React.FC<CategoryFormProps> = ({ initialData }) => {
                       {...field}
                     />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name='masterCategoryId'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Categoría Maestra</FormLabel>
+                  <Select
+                    disabled={isLoading}
+                    // eslint-disable-next-line react/jsx-handler-names
+                    onValueChange={field.onChange}
+                    value={field.value || undefined}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder='Selecciona una categoría maestra' />
+                      </SelectTrigger>
+                    </FormControl>
+
+                    <SelectContent>
+                      {masterCategories.map((masterCategory) => (
+                        <SelectItem
+                          key={masterCategory.id}
+                          value={masterCategory.id}
+                          className='cursor-pointer'
+                        >
+                          {masterCategory.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}

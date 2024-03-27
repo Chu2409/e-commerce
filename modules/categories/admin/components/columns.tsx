@@ -1,6 +1,5 @@
 'use client'
 
-import { Brand } from '@prisma/client'
 import { ColumnDef } from '@tanstack/react-table'
 
 import { Button } from '@/components/ui/button'
@@ -8,8 +7,9 @@ import { CellActions } from '@/modules/admin/components/cell-actions'
 import { ArrowUpDown } from 'lucide-react'
 
 import { deleteCategory } from '../../shared/actions/delete-category'
+import { IFullCategory } from '../../shared/interfaces/categories'
 
-export const categoriesColumns: ColumnDef<Brand>[] = [
+export const categoriesColumns: ColumnDef<IFullCategory>[] = [
   {
     accessorKey: 'name',
     header: ({ column }) => {
@@ -23,6 +23,13 @@ export const categoriesColumns: ColumnDef<Brand>[] = [
           <ArrowUpDown className='ml-2 h-4 w-4' />
         </Button>
       )
+    },
+  },
+  {
+    accessorKey: 'masterCategory',
+    header: 'Categoría Maestra',
+    cell: ({ row }) => {
+      return row.original.masterCategory?.name
     },
   },
   {

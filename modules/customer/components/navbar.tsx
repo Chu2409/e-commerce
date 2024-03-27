@@ -1,7 +1,9 @@
-import { CustomerMobileNavbar } from '@/modules/customer/components/mobile-navbar'
 import Link from 'next/link'
+import { ICategoryRoutes } from '../interfaces/categories-routes'
+import { CustomerMainNav } from './main-nav'
+import { CustomerMobileNavbar } from './mobile-navbar'
 
-export const CustomerNavBar = ({ children }: { children: React.ReactNode }) => {
+export const CustomerNavBar = ({ routes }: { routes: ICategoryRoutes[] }) => {
   return (
     <div className='flex items-center border-b min-h-[3.5rem] max-lg:justify-between'>
       <Link
@@ -11,8 +13,8 @@ export const CustomerNavBar = ({ children }: { children: React.ReactNode }) => {
         D&L American Outlet
       </Link>
 
-      <div className='max-lg:hidden w-full'>{children}</div>
-      <CustomerMobileNavbar>{children}</CustomerMobileNavbar>
+      <CustomerMainNav routes={routes} />
+      <CustomerMobileNavbar routes={routes} />
     </div>
   )
 }
