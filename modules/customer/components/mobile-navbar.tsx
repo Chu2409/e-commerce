@@ -1,17 +1,27 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Menu, X } from 'lucide-react'
+import { ArrowRight, ArrowUpDown, Menu, X } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import IconButton from '@/modules/admin/components/icon-button'
+import { ICategoryRoutes } from '../interfaces/categories-routes'
+import { Cart } from './cart'
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@/components/ui/collapsible'
+import { usePathname } from 'next/navigation'
+import Link from 'next/link'
 
 export const CustomerMobileNavbar = ({
-  children,
+  routes,
 }: {
-  children: React.ReactNode
+  routes: ICategoryRoutes[]
 }) => {
+  const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
 
   const onOpen = () => setIsOpen(true)
@@ -33,7 +43,7 @@ export const CustomerMobileNavbar = ({
 
       <div
         className={cn(
-          'absolute inset-0 bg-black bg-opacity-50 z-40',
+          'absolute inset-0 bg-black bg-opacity-50 z-30',
           isOpen ? 'block' : 'hidden',
         )}
         onClick={onClose}
@@ -41,7 +51,7 @@ export const CustomerMobileNavbar = ({
 
       <div
         className={cn(
-          'absolute bg-white right-0 z-50 top-0 bottom-0 max-w-sm w-full flex-col p-4',
+          'absolute bg-white right-0 z-40 top-0 bottom-0 max-w-sm w-full flex-col p-4',
           isOpen ? 'block' : 'hidden',
         )}
       >
@@ -49,8 +59,50 @@ export const CustomerMobileNavbar = ({
           <IconButton icon={<X size={15} />} onClick={onClose} />
         </div>
 
-        <h2 className='text-base pb-5 font-semibold'>Secciones disponibles</h2>
-        <div onClick={() => setIsOpen(false)}>{children}</div>
+        <h2 className='text-base font-semibold py-2'>Secciones disponibles</h2>
+
+        <div className='w-full flex flex-col py-2'>
+          {routes.map((route) => (
+            <Collapsible key={route.mainLabel} className='text-center w-full'>
+              <CollapsibleTrigger
+                className={cn(
+                  'gap-2 rounded-md border py-2 shadow-sm w-full text-base',
+                  route.routes.some((subRoute) => subRoute.href === pathname)
+                    ? 'text-black font-bold dark:text-white   '
+                    : 'text-muted-foreground',
+                )}
+              >
+                <div className='flex items-center justify-center gap-2 '>
+                  {route.mainLabel}
+                  <ArrowUpDown size={12} />
+                </div>
+              </CollapsibleTrigger>
+
+              <CollapsibleContent className='flex flex-col gap-2 py-2'>
+                {route.routes.map((subRoute) => (
+                  <Link
+                    key={subRoute.href}
+                    href={subRoute.href}
+                    className={cn(
+                      'font-medium transition-colors flex justify-center items-center gap-2 text-sm rounded-md border py-2 shadow-sm bg-neutral-200',
+                      subRoute.href === pathname
+                        ? 'bg-primary text-white font-bold dark:text-white hover:opacity-90'
+                        : 'text-muted-foreground hover:text-primary',
+                    )}
+                    onClick={onClose}
+                  >
+                    <ArrowRight size={12} />
+                    {subRoute.label}
+                  </Link>
+                ))}
+              </CollapsibleContent>
+            </Collapsible>
+          ))}
+        </div>
+
+        <div className='flex justify-end'>
+          <Cart />
+        </div>
       </div>
     </div>
   )

@@ -1,8 +1,9 @@
 import { formatMoney } from '@/lib/utils'
-import { ShoppingCart, Trash } from 'lucide-react'
+import { ShoppingCart, X } from 'lucide-react'
 import { CldImage } from 'next-cloudinary'
 import { ProductsCartInterface, useCart } from '../store/cart'
 import { Input } from '@/components/ui/input'
+import IconButton from '@/modules/admin/components/icon-button'
 
 interface ProductInCartProps {
   item: ProductsCartInterface
@@ -13,25 +14,24 @@ export const ProductInCart: React.FC<ProductInCartProps> = ({ item }) => {
   const modifyQuantity = useCart((state) => state.modifyQuantity)
 
   return (
-    <div className='flex items-center justify-between w-full border-b py-4'>
-      <div className='flex items-center'>
-        <div
-          className='relative group'
+    <div className='flex items-center justify-between w-full border p-4 relative rounded-lg'>
+      <div className='absolute right-0 top-0 p-2'>
+        <IconButton
+          icon={<X size={16} />}
+          className='bg-red-500 text-white opacity-90'
           onClick={() => removeItem(item.product.id)}
-        >
-          <CldImage
-            src={item.product.productColor.images?.[0]?.url}
-            crop='fill'
-            width={120}
-            height={120}
-            alt='Image'
-            className='aspect-square object-cover rounded-md transition duration-300 ease-in-out group-hover:opacity-50'
-          />
+        />
+      </div>
 
-          <div className='absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-300 ease-in-out cursor-pointer'>
-            <Trash className='h-6 w-6' />
-          </div>
-        </div>
+      <div className='flex items-center'>
+        <CldImage
+          src={item.product.productColor.images?.[0]?.url}
+          crop='fill'
+          width={120}
+          height={120}
+          alt='Image'
+          className='aspect-square object-cover rounded-md transition duration-300 ease-in-out group-hover:opacity-50'
+        />
 
         <div className='ml-4'>
           <h3 className='text-base font-semibold'>
