@@ -39,7 +39,7 @@ export const CustomerMainNav = ({ routes }: { routes: ICategoryRoutes[] }) => {
               </NavigationMenuTrigger>
 
               <NavigationMenuContent>
-                <ul className='grid w-max gap-y-4 gap-x-10 p-4 lg:grid-cols-2'>
+                <ul className='grid grid-cols-2 gap-4 p-4 w-max'>
                   {route.routes.map((subRoute) => (
                     <Link
                       href={subRoute.href}
@@ -50,7 +50,7 @@ export const CustomerMainNav = ({ routes }: { routes: ICategoryRoutes[] }) => {
                       <NavigationMenuLink
                         className={cn(
                           navigationMenuTriggerStyle,
-                          'flex items-center gap-2 text-sm',
+                          'flex items-center gap-2 text-sm min-w-[200px]',
                           subRoute.href === pathname
                             ? 'text-black font-bold dark:text-white'
                             : 'text-muted-foreground',

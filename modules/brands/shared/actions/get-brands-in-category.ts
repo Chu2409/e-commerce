@@ -19,7 +19,7 @@ export const getBrandsInCategory = async (
 
     return brands
   } catch (error: any) {
-    console.log('[GET_BRANDS]', error.message)
+    console.log('[GET_BRANDS_IN_CATEGORY]', error.message)
     return []
   }
 }

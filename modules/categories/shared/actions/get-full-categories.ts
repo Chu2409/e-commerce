@@ -3,22 +3,17 @@
 import prismadb from '@/lib/prismadb'
 import { IFullCategory } from '../interfaces/categories'
 
-export const getCategories = async (): Promise<IFullCategory[]> => {
+export const getFullCategories = async (): Promise<IFullCategory[]> => {
   try {
     const categories = await prismadb.category.findMany({
       include: {
         masterCategory: true,
       },
-      where: {
-        masterCategoryId: {
-          not: null,
-        },
-      },
     })
 
     return categories
   } catch (error: any) {
-    console.log('[GET_CATEGORIES]', error.message)
+    console.log('[GET_FULL_CATEGORIES]', error.message)
     return []
   }
 }
