@@ -9,6 +9,7 @@ import StateFilter from './state-filter'
 import IconButton from '@/modules/admin/components/icon-button'
 import { useEffect, useState } from 'react'
 import { cn } from '@/lib/utils'
+import ColorFilter from './color-filter'
 
 interface MovileFiltersProps {
   sizes: Size[]
@@ -63,7 +64,7 @@ const MobileFilters: React.FC<MovileFiltersProps> = ({
 
         <StateFilter valueKey='state' name='Estado' />
 
-        {/* <ColorFilter valueKey='colorId' name='Colores' data={colors} /> */}
+        <ColorFilter valueKey='colorId' name='Colores' data={colors} />
       </div>
     </div>
   )

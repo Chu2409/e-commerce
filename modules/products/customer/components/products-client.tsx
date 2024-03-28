@@ -10,6 +10,7 @@ import StateFilter from './filters/state-filter'
 import MobileFilters from './filters/mobile-filters'
 import GenderFilter from './filters/gender-filter'
 import { Container } from '@/modules/shared/components/container'
+import ColorFilter from './filters/color-filter'
 
 interface ProductsByCategoryClientProps {
   productsMasters: IFullProductMaster[]
@@ -27,15 +28,23 @@ export const ProductsByCategoryClient: React.FC<
         <MobileFilters sizes={sizes} colors={colors} brands={brands} />
 
         <div className='max-lg:hidden'>
-          <GenderFilter valueKey='gender' name='Género' />
+          {productsMasters.some((product) => product.gender) && (
+            <GenderFilter valueKey='gender' name='Género' />
+          )}
 
-          <BrandFilter valueKey='brandId' name='Marcas' data={brands} />
+          {brands.length > 0 && (
+            <BrandFilter valueKey='brandId' name='Marcas' data={brands} />
+          )}
 
-          <SizeFilter valueKey='sizeId' name='Tallas/Tamaños' data={sizes} />
+          {sizes.length > 0 && (
+            <SizeFilter valueKey='sizeId' name='Tallas/Tamaños' data={sizes} />
+          )}
+
+          {colors.length > 0 && (
+            <ColorFilter valueKey='colorId' name='Colores' data={colors} />
+          )}
 
           <StateFilter valueKey='state' name='Estado' />
-
-          {/* <ColorFilter valueKey='colorId' name='Colores' data={colors} /> */}
         </div>
 
         <div>
