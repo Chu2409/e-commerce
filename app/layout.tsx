@@ -7,7 +7,17 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'D&L American Outlet',
-  description: 'Tienda de ropa, tecnología y más',
+  description: 'Tienda de ropa, tecnología y más en Ecuador',
+  keywords:
+    'ropa, tecnología, outlet, descuentos, ofertas, tienda, online, ecuador',
+  metadataBase: new URL('https://dl-american-outlet.vercel.app/'),
+  openGraph: {
+    type: 'website',
+    url: 'https://dl-american-outlet.vercel.app/',
+    title: 'D&L American Outlet',
+    description: 'Tienda de ropa, tecnología y más en Ecuador',
+    siteName: 'D&L American Outlet',
+  },
 }
 
 export default function RootLayout({
