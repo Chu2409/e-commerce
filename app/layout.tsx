@@ -7,16 +7,6 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: process.env.NEXT_PUBLIC_SITE_NAME,
-  description: 'Change this',
-  keywords: 'Change this',
-  metadataBase: new URL(process.env.NEXT_PUBLIC_HOST!),
-  openGraph: {
-    type: 'website',
-    url: process.env.NEXT_PUBLIC_HOST!,
-    title: process.env.NEXT_PUBLIC_SITE_NAME,
-    description: 'Change this',
-    siteName: process.env.NEXT_PUBLIC_SITE_NAME,
-  },
 }
 
 export default function RootLayout({
