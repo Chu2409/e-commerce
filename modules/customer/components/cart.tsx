@@ -8,12 +8,10 @@ export const Cart = () => {
   return (
     <Link
       href='/cart'
-      className='justify-center text-sm font-medium transition-colors text-primary-foreground h-10 flex items-center rounded-full bg-black px-4 py-2 hover:opacity-70'
+      className='justify-center text-sm font-medium transition-colors text-primary-foreground h-12 flex items-center rounded-full bg-black px-6 py-2 hover:opacity-70 gap-2'
     >
       <ShoppingBag size={20} />
-      <span className='ml-2 text-sm font-medium text-white'>
-        {items.length}
-      </span>
+      <span className='text-sm font-medium text-white'>{items.length}</span>
     </Link>
   )
 }

@@ -18,6 +18,7 @@ import {
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
 import { Cart } from './cart'
+import { Profile } from './profile'
 
 export const CustomerMainNav = ({ routes }: { routes: ICategoryRoutes[] }) => {
   const pathname = usePathname()
@@ -68,7 +69,11 @@ export const CustomerMainNav = ({ routes }: { routes: ICategoryRoutes[] }) => {
         </NavigationMenu>
       ))}
 
-      <div className='ml-auto'>
+      <div className='ml-auto flex items-center'>
+        <Profile />
+      </div>
+
+      <div className='fixed bottom-0 right-0 p-4'>
         <Cart />
       </div>
     </nav>
