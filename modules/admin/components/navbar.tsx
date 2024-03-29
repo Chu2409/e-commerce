@@ -16,7 +16,7 @@ export const AdminNavBar = ({ children }: { children: React.ReactNode }) => {
           height={24}
           className='w-6 h-6 align-middle hover:scale-105 transition-transform duration-200 ease-in-out'
         />
-        D&L American Outlet
+        {process.env.NEXT_PUBLIC_SITE_NAME}
       </Link>
 
       <div className='max-lg:hidden w-full'>{children}</div>

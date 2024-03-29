@@ -18,7 +18,7 @@ export const CustomerNavBar = ({ routes }: { routes: ICategoryRoutes[] }) => {
           height={24}
           className='w-6 h-6 align-middle hover:scale-105 transition-transform duration-200 ease-in-out'
         />
-        D&L American Outlet
+        {process.env.NEXT_PUBLIC_SITE_NAME}
       </Link>
 
       <CustomerMainNav routes={routes} />
