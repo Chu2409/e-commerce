@@ -7,7 +7,7 @@ import bcrypt from 'bcrypt'
 export const authOptions = {
   providers: [
     Credentials({
-      name: 'Credentials',
+      name: 'credentials',
       credentials: {
         dni: { label: 'Cédula', type: 'text' },
         password: { label: 'Contraseña', type: 'password' },
@@ -38,6 +38,10 @@ export const authOptions = {
       },
     }),
   ],
+  session: {
+    strategy: 'jwt',
+  },
+  secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: '/auth/login',
   },
