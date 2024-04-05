@@ -33,13 +33,35 @@ export const authOptions = {
           id: adminFound.id,
           email: adminFound.email,
           name: adminFound.firstName + ' ' + adminFound.lastName,
-          image: 'admin',
+          role: 'admin',
         }
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, user, trigger }) {
+      if (user) {
+        return {
+          ...token,
+          role: user.role,
+        }
+      }
+
+      return token
+    },
+    async session({ session, token }) {
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          role: token.role,
+        },
+      }
+    },
+  },
   session: {
     strategy: 'jwt',
+    maxAge: 28800,
   },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
