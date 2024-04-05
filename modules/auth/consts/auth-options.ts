@@ -12,34 +12,50 @@ export const authOptions = {
         dni: { label: 'Cédula', type: 'text' },
         password: { label: 'Contraseña', type: 'password' },
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         const adminFound = await prismadb.user.findUnique({
           where: {
             dni: credentials?.dni,
           },
         })
-        if (!adminFound) throw new Error('No se encontró el usuario')
 
-        const passwordMatch = bcrypt.compareSync(
-          credentials?.password || '',
-          adminFound.password,
-        )
+        // if (!adminFound) throw new Error('No se encontró el usuario')
+        if (adminFound) {
+          verify(credentials?.password || '', adminFound.password)
+
+          return {
+            id: adminFound.id,
+            email: adminFound.email,
+            name: adminFound.firstName + ' ' + adminFound.lastName,
+            role: 'admin',
+          }
+        }
+
+        const userFound = await prismadb.user.findUnique({
+          where: {
+            dni: credentials?.dni,
+          },
+        })
+
+        if (userFound) {
+          verify(credentials?.password || '', userFound.password)
+
+          return {
+            id: userFound.id,
+            email: userFound.email,
+            name: userFound.firstName + ' ' + userFound.lastName,
+            role: 'user',
+          }
+        }
+
+        throw new Error('No se encontró el usuario')
 
         // console.log(bcrypt.hashSync('0703224337_store', 10))
-
-        if (!passwordMatch) throw new Error('Contraseña incorrecta')
-
-        return {
-          id: adminFound.id,
-          email: adminFound.email,
-          name: adminFound.firstName + ' ' + adminFound.lastName,
-          role: 'admin',
-        }
       },
     }),
   ],
   callbacks: {
-    async jwt({ token, user, trigger }) {
+    async jwt({ token, user }) {
       if (user) {
         return {
           ...token,
@@ -62,9 +78,16 @@ export const authOptions = {
   session: {
     strategy: 'jwt',
     maxAge: 28800,
+    updateAge: 1800,
   },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: '/auth/login',
   },
 } satisfies NextAuthOptions
+
+const verify = (password: string, hash: string) => {
+  const passwordMatch = bcrypt.compareSync(password, hash)
+
+  if (!passwordMatch) throw new Error('Contraseña incorrecta')
+}

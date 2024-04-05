@@ -57,6 +57,7 @@ export const LoginForm = () => {
 
       router.push('/admin')
       router.refresh()
+      toast.success('Bienvenido!')
     } catch (error: any) {
       toast.error(error.message)
     } finally {
