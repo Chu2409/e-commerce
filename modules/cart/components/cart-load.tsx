@@ -11,12 +11,13 @@ export const CartLoad = ({
   productsInCart: IProductCart[]
 }) => {
   const { data: session } = useSession()
-  const items = useCart((state) => state.productItems)
 
+  const items = useCart((state) => state.productItems)
   const setProductItems = useCart((state) => state.setProductItems)
 
   useEffect(() => {
     const newItems = items.filter((item) => !productsInCart.includes(item))
+    console.log(newItems)
 
     if (session && newItems.length > 0) {
       const addToCart = async () => {
@@ -32,7 +33,7 @@ export const CartLoad = ({
       addToCart()
     }
 
-    setProductItems([...newItems, ...productsInCart])
+    setProductItems([...productsInCart, ...newItems])
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

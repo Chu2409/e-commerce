@@ -30,8 +30,9 @@ export const addProductToCart = async ({
         productId,
       },
     })
+    console.log(itemExists)
 
-    if (itemExists) throw new Error('Producto ya se encuentra en el carrito')
+    if (itemExists) return
 
     const item = await prismadb.item.create({
       data: {

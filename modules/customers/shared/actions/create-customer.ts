@@ -11,16 +11,19 @@ export interface CreateCustomerProps {
   phoneNumber: string
   city?: string
   email: string
+  password?: string
 }
 
 export const createCustomer = async (
   data: CreateCustomerProps,
 ): Promise<Customer | null> => {
   try {
+    const password = data.password || data.dni
+
     const customer = await prismadb.customer.create({
       data: {
         ...data,
-        password: bcrypt.hashSync(data.dni, 10),
+        password: bcrypt.hashSync(password, 10),
       },
     })
 

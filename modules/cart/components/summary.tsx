@@ -4,35 +4,28 @@ import { useCart } from '../store/cart'
 import { formatMoney } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { useSession } from 'next-auth/react'
-// import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 const phone = process.env.NEXT_PUBLIC_PHONE_NUMBER!
 
 const Summary = () => {
   const { data: session } = useSession()
-  // const router = useRouter()
+  const router = useRouter()
 
   const items = useCart((state) => state.productItems)
-
-  const message = items.reduce((acc, item) => {
-    return (
-      acc +
-      `|${item.product.productColor.productMaster.name} ~ ${item.product.sizeCategory?.size.value || 'NA'} ~ ${item.product.productColor.color?.name || 'NA'} ~ ${item.quantity}|`
-    )
-  }, '')
 
   const totalPrice = items.reduce((acc, item) => {
     return acc + item.product.price * item.quantity
   }, 0)
 
   const handleClick = () => {
-    // if (!session) {
-    //   router.push('/auth/register?redirect=/cart/')
-    //   return
-    // }
+    if (!session) {
+      router.push('/auth/login?redirect=/cart/')
+      return
+    }
 
     window.open(
-      `https://api.whatsapp.com/send/?phone=${phone}&text=Hola${session ? ', soy ' + session.user.name : ''}, me gustaría comprar los siguientes productos: ${message}`,
+      `https://api.whatsapp.com/send/?phone=${phone}&text=Hola, soy ${session.user.name} y he registrado mi carrito de compras en la tienda. ¿Podrías ayudarme con mi pedido?`,
     )
   }
 
