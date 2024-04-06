@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { ArrowRight, ArrowUpDown, Menu, X } from 'lucide-react'
+import { ArrowRight, ArrowUpDown, Bolt, LogIn, Menu, X } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -13,15 +13,20 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@/components/ui/collapsible'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { Session } from 'next-auth'
+import { Profile } from './profile'
 
 export const CustomerMobileNavbar = ({
   routes,
+  session,
 }: {
   routes: ICategoryRoutes[]
+  session: Session | null
 }) => {
   const pathname = usePathname()
+  const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
 
   const onOpen = () => setIsOpen(true)
@@ -61,6 +66,32 @@ export const CustomerMobileNavbar = ({
       >
         <div className='flex items-center justify-end px-2'>
           <IconButton icon={<X size={15} />} onClick={onClose} />
+        </div>
+
+        <div className='ml-auto flex items-center w-full py-2'>
+          {session ? (
+            session.user?.role === 'admin' ? (
+              <Button
+                variant='outline'
+                onClick={() => router.push('/admin')}
+                className='flex gap-x-2 text-xs ml-auto'
+              >
+                Administrar
+                <Bolt className='w-4 h-4' />
+              </Button>
+            ) : (
+              <Profile />
+            )
+          ) : (
+            <Button
+              variant='outline'
+              onClick={() => router.push('/auth/login')}
+              className='flex gap-x-2 text-xs ml-auto'
+            >
+              Iniciar sesión
+              <LogIn className='w-4 h-4' />
+            </Button>
+          )}
         </div>
 
         <h2 className='text-base font-semibold py-2'>Secciones disponibles</h2>

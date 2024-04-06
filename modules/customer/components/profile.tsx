@@ -14,7 +14,7 @@ export const Profile = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className='rounded-full overflow-hidden cursor-pointer border border-black'>
+        <div className='ml-auto rounded-full overflow-hidden cursor-pointer border border-black'>
           <Image
             src='/icon.png'
             alt='Profile'

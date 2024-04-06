@@ -19,14 +19,20 @@ import {
 } from '@/components/ui/navigation-menu'
 import { Cart } from './cart'
 import { Profile } from './profile'
-import { useSession } from 'next-auth/react'
 import { Button } from '@/components/ui/button'
+import { Session } from 'next-auth'
 
-export const CustomerMainNav = ({ routes }: { routes: ICategoryRoutes[] }) => {
+export const CustomerMainNav = ({
+  routes,
+  session,
+}: {
+  routes: ICategoryRoutes[]
+  session: Session | null
+}) => {
   const pathname = usePathname()
   const router = useRouter()
 
-  const { data: session } = useSession()
+  // const { data: session } = useSession()
 
   return (
     <nav className='w-full px-6 flex gap-4 items-center max-lg:hidden'>
