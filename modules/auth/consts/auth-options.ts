@@ -18,8 +18,6 @@ export const authOptions = {
             dni: credentials?.dni,
           },
         })
-
-        // if (!adminFound) throw new Error('No se encontró el usuario')
         if (adminFound) {
           verify(credentials?.password || '', adminFound.password)
 
@@ -31,20 +29,19 @@ export const authOptions = {
           }
         }
 
-        const userFound = await prismadb.user.findUnique({
+        const customerFound = await prismadb.customer.findUnique({
           where: {
             dni: credentials?.dni,
           },
         })
-
-        if (userFound) {
-          verify(credentials?.password || '', userFound.password)
+        if (customerFound) {
+          verify(credentials?.password || '', customerFound.password)
 
           return {
-            id: userFound.id,
-            email: userFound.email,
-            name: userFound.firstName + ' ' + userFound.lastName,
-            role: 'user',
+            id: customerFound.id,
+            email: customerFound.email,
+            name: customerFound.firstName + ' ' + customerFound.lastName,
+            role: 'customer',
           }
         }
 
@@ -59,6 +56,7 @@ export const authOptions = {
       if (user) {
         return {
           ...token,
+          id: user.id,
           role: user.role,
         }
       }
@@ -70,6 +68,7 @@ export const authOptions = {
         ...session,
         user: {
           ...session.user,
+          id: token.id,
           role: token.role,
         },
       }

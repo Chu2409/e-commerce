@@ -7,6 +7,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
+import { signOut } from 'next-auth/react'
 import Image from 'next/image'
 
 export const Profile = () => {
@@ -40,7 +41,10 @@ export const Profile = () => {
 
           <DropdownMenuSeparator />
 
-          <DropdownMenuItem className='cursor-pointer'>
+          <DropdownMenuItem
+            className='cursor-pointer'
+            onClick={() => signOut()}
+          >
             Cerrar sesión
           </DropdownMenuItem>
         </DropdownMenuGroup>

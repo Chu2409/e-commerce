@@ -1,25 +1,58 @@
+'use client'
+
 import { formatMoney } from '@/lib/utils'
 import { ShoppingCart, X } from 'lucide-react'
 import { CldImage } from 'next-cloudinary'
-import { ProductsCartInterface, useCart } from '../store/cart'
+import { IProductCart, useCart } from '../store/cart'
 import { Input } from '@/components/ui/input'
 import IconButton from '@/modules/admin/components/icon-button'
+import { useState } from 'react'
+import toast from 'react-hot-toast'
+import { Session } from 'next-auth'
+import { deleteItemCart } from '../actions/delete-item-cart'
 
 interface ProductInCartProps {
-  item: ProductsCartInterface
+  item: IProductCart
+  session: Session | null
 }
 
-export const ProductInCart: React.FC<ProductInCartProps> = ({ item }) => {
+export const ProductInCart: React.FC<ProductInCartProps> = ({
+  item,
+  session,
+}) => {
+  const [isLoading, setIsLoading] = useState(false)
   const removeItem = useCart((state) => state.removeProductItem)
   const modifyQuantity = useCart((state) => state.modifyQuantity)
+
+  const handleClick = async () => {
+    try {
+      setIsLoading(true)
+
+      if (session) {
+        const itemDeleted = await deleteItemCart({
+          customerId: session.user.id,
+          productId: item.product.id,
+        })
+
+        if (!itemDeleted) throw new Error()
+      }
+
+      removeItem(item.product.id)
+    } catch (error) {
+      toast.error('Error al eliminar producto')
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   return (
     <div className='flex items-center justify-between w-full border p-4 relative rounded-lg'>
       <div className='absolute right-0 top-0 p-2'>
         <IconButton
+          disabled={isLoading}
           icon={<X size={16} />}
           className='bg-red-500 text-white opacity-90'
-          onClick={() => removeItem(item.product.id)}
+          onClick={handleClick}
         />
       </div>
 
@@ -74,6 +107,7 @@ export const ProductInCart: React.FC<ProductInCartProps> = ({ item }) => {
       <div className='flex items-center gap-4'>
         <Input
           type='number'
+          inputMode='numeric'
           value={item.quantity}
           min={1}
           max={item.product.stock === 0 ? 10 : item.product.stock}
