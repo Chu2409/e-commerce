@@ -2,6 +2,7 @@
 
 import prismadb from '@/lib/prismadb'
 import { Customer } from '@prisma/client'
+import bcrypt from 'bcrypt'
 
 export interface CreateCustomerProps {
   dni: string
@@ -10,16 +11,19 @@ export interface CreateCustomerProps {
   phoneNumber: string
   city?: string
   email: string
+  password?: string
 }
 
 export const createCustomer = async (
   data: CreateCustomerProps,
 ): Promise<Customer | null> => {
   try {
+    const password = data.password || data.dni
+
     const customer = await prismadb.customer.create({
       data: {
         ...data,
-        password: '123456',
+        password: bcrypt.hashSync(password, 10),
       },
     })
 

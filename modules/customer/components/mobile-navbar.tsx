@@ -31,6 +31,10 @@ export const CustomerMobileNavbar = ({
     isOpen
       ? (document.body.style.overflow = 'hidden')
       : (document.body.style.overflow = 'auto')
+
+    return () => {
+      document.body.style.overflow = 'auto'
+    }
   }, [isOpen])
 
   return (

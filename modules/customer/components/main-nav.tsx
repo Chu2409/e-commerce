@@ -1,12 +1,12 @@
 'use client'
 
 import React from 'react'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 
 import { cn } from '@/lib/utils'
 
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Bolt, LogIn } from 'lucide-react'
 import { ICategoryRoutes } from '../interfaces/categories-routes'
 import {
   NavigationMenu,
@@ -18,9 +18,15 @@ import {
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
 import { Cart } from './cart'
+import { Profile } from './profile'
+import { useSession } from 'next-auth/react'
+import { Button } from '@/components/ui/button'
 
 export const CustomerMainNav = ({ routes }: { routes: ICategoryRoutes[] }) => {
   const pathname = usePathname()
+  const router = useRouter()
+
+  const { data: session } = useSession()
 
   return (
     <nav className='w-full px-6 flex gap-4 items-center max-lg:hidden'>
@@ -68,7 +74,33 @@ export const CustomerMainNav = ({ routes }: { routes: ICategoryRoutes[] }) => {
         </NavigationMenu>
       ))}
 
-      <div className='ml-auto'>
+      <div className='ml-auto flex items-center'>
+        {session ? (
+          session.user?.role === 'admin' ? (
+            <Button
+              variant='outline'
+              onClick={() => router.push('/admin')}
+              className='flex gap-x-2 text-xs'
+            >
+              Administrar
+              <Bolt className='w-4 h-4' />
+            </Button>
+          ) : (
+            <Profile />
+          )
+        ) : (
+          <Button
+            variant='outline'
+            onClick={() => router.push('/auth/login')}
+            className='flex gap-x-2 text-xs'
+          >
+            Iniciar sesión
+            <LogIn className='w-4 h-4' />
+          </Button>
+        )}
+      </div>
+
+      <div className='fixed bottom-0 right-0 p-4'>
         <Cart />
       </div>
     </nav>

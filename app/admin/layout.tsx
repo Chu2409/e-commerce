@@ -11,7 +11,7 @@ const AdminLayout = async ({ children }: { children: React.ReactNode }) => {
   const session = await getServerSession(authOptions)
 
   if (!session) redirect('/auth/login')
-  if (session.user?.image !== 'admin') redirect('/')
+  if (session.user?.role !== 'admin') redirect('/')
 
   return (
     <>

@@ -1,7 +1,13 @@
 import { LoginForm } from '@/modules/auth/components/login-form'
 
-const LoginPage = () => {
-  return <LoginForm />
+const LoginPage = ({
+  searchParams,
+}: {
+  searchParams: {
+    redirect?: string
+  }
+}) => {
+  return <LoginForm redirect={searchParams.redirect} />
 }
 
 export default LoginPage

@@ -20,6 +20,8 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { LogIn } from 'lucide-react'
+import Link from 'next/link'
+import Image from 'next/image'
 
 const formSchema = z.object({
   dni: z
@@ -30,7 +32,7 @@ const formSchema = z.object({
   password: z.string().min(6, { message: 'Mínimo 6 caracteres' }),
 })
 
-export const LoginForm = () => {
+export const LoginForm = ({ redirect }: { redirect?: string }) => {
   const router = useRouter()
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -55,8 +57,9 @@ export const LoginForm = () => {
 
       if (res?.error) throw new Error(res?.error)
 
-      router.push('/admin')
+      router.push(redirect || '/')
       router.refresh()
+      toast.success('Bienvenido!')
     } catch (error: any) {
       toast.error(error.message)
     } finally {
@@ -69,37 +72,61 @@ export const LoginForm = () => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className='p-8 rounded-lg max-w-lg w-full shadow-lg bg-neutral-950 flex flex-col gap-y-6'
+          className='px-8 py-6 rounded-lg max-w-lg w-full shadow-lg bg-neutral-950 flex flex-col gap-y-5'
         >
-          <h1 className='text-4xl font-bold block text-neutral-100'>Ingreso</h1>
+          <div className='flex justify-between'>
+            <h1 className='text-4xl font-bold block text-neutral-100'>
+              Ingreso
+            </h1>
 
-          <FormField
-            control={form.control}
-            name='dni'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className='text-neutral-100'>Cédula</FormLabel>
-                <FormControl>
-                  <Input placeholder='1442121323' {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            <Link
+              href='/'
+              className='text-base font-extrabold hover:scale-105 transition-transform duration-200 ease-in-out text-white text-center px-6 max-w-[260px] w-full flex items-center gap-4'
+            >
+              <Image
+                src='/icon.png'
+                alt='Website Icon'
+                width={24}
+                height={24}
+                className='w-6 h-6 align-middle '
+              />
+              {process.env.NEXT_PUBLIC_SITE_NAME}
+            </Link>
+          </div>
 
-          <FormField
-            control={form.control}
-            name='password'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel className='text-neutral-100'>Contraseña</FormLabel>
-                <FormControl>
-                  <Input placeholder='**********' type='password' {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className='space-y-4'>
+            <FormField
+              control={form.control}
+              name='dni'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className='text-neutral-100'>Cédula</FormLabel>
+                  <FormControl>
+                    <Input placeholder='1442121323' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name='password'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className='text-neutral-100'>Contraseña</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder='**********'
+                      type='password'
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
           <Button
             disabled={isLoading}
@@ -110,6 +137,13 @@ export const LoginForm = () => {
             Ingresar
             <LogIn className='w-4 h-4' />
           </Button>
+
+          <Link
+            href={`/auth/register${redirect ? `?redirect=${redirect}` : ''}`}
+            className='ml-auto text-white hover:underline hover:text-blue-200'
+          >
+            Registrarse
+          </Link>
         </form>
       </Form>
     </div>

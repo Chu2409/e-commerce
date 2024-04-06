@@ -1,9 +1,11 @@
 'use client'
+import { useSession } from 'next-auth/react'
 import { useCart } from '../store/cart'
 import { ProductInCart } from './product-in-cart'
 import Summary from './summary'
 
 export const CartClient = () => {
+  const { data: session } = useSession()
   const items = useCart((state) => state.productItems)
 
   return (
@@ -18,7 +20,11 @@ export const CartClient = () => {
             )}
 
             {items.map((item) => (
-              <ProductInCart key={item.product.id} item={item} />
+              <ProductInCart
+                key={item.product.id}
+                item={item}
+                session={session}
+              />
             ))}
           </div>
 

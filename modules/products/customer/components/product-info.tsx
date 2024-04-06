@@ -9,12 +9,19 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { Button } from '@/components/ui/button'
 import { ShoppingCart } from 'lucide-react'
 import { useCart } from '@/modules/cart/store/cart'
+import { useSession } from 'next-auth/react'
+import { addProductToCart } from '@/modules/cart/actions/add-product-to-cart'
+import toast from 'react-hot-toast'
 
 interface ProductInfoProps {
   productMaster: IFullProductMaster
 }
 
 export const ProductInfo: React.FC<ProductInfoProps> = ({ productMaster }) => {
+  const [isLoading, setIsLoading] = useState(false)
+
+  const { data: session } = useSession()
+
   const [mainProductColor, setMainProductColor] = useState(
     productMaster.productsColors[0],
   )
@@ -52,6 +59,39 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ productMaster }) => {
   }
 
   const addItemToCart = useCart((state) => state.addProductItem)
+
+  const handleClick = async () => {
+    try {
+      setIsLoading(true)
+
+      if (session) {
+        const item = await addProductToCart({
+          customerId: session.user.id,
+          productId: mainProduct.id,
+          quantity: 1,
+          productPrice: mainProduct.price,
+        })
+
+        if (!item) throw new Error()
+      }
+
+      addItemToCart({
+        product: {
+          ...mainProduct,
+          productColor: {
+            ...mainProductColor,
+            productMaster,
+          },
+        },
+        quantity: 1,
+        state: mainProduct.state,
+      })
+    } catch (error: any) {
+      toast.error(error.message || 'Error al agregar producto al carrito')
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   return (
     <div className='grid lg:grid-cols-2 lg:gap-6 gap-10'>
@@ -179,19 +219,8 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ productMaster }) => {
 
           <div className='mt-6 flex items-center gap-x-3 self-end '>
             <Button
-              onClick={() => {
-                addItemToCart({
-                  product: {
-                    ...mainProduct,
-                    productColor: {
-                      ...mainProductColor,
-                      productMaster,
-                    },
-                  },
-                  quantity: 1,
-                  state: mainProduct.state,
-                })
-              }}
+              disabled={isLoading || session?.user?.role === 'ADMIN'}
+              onClick={handleClick}
               className='flex items-center gap-x-2'
             >
               Agregar al carrito

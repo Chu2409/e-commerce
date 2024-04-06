@@ -1,24 +1,33 @@
 'use client'
 
-import toast from 'react-hot-toast'
 import { useCart } from '../store/cart'
 import { formatMoney } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 
 const phone = process.env.NEXT_PUBLIC_PHONE_NUMBER!
 
 const Summary = () => {
-  const items = useCart((state) => state.productItems)
+  const { data: session } = useSession()
+  const router = useRouter()
 
-  const message = items.reduce((acc, item) => {
-    return (
-      acc +
-      `|${item.product.productColor.productMaster.name} ~ ${item.product.sizeCategory?.size.value || 'NA'} ~ ${item.product.productColor.color?.name || 'NA'} ~ ${item.quantity}|`
-    )
-  }, '')
+  const items = useCart((state) => state.productItems)
 
   const totalPrice = items.reduce((acc, item) => {
     return acc + item.product.price * item.quantity
   }, 0)
+
+  const handleClick = () => {
+    if (!session) {
+      router.push('/auth/login?redirect=/cart/')
+      return
+    }
+
+    window.open(
+      `https://api.whatsapp.com/send/?phone=${phone}&text=Hola, soy ${session.user.name} y he registrado mi carrito de compras en la tienda. ¿Podrías ayudarme con mi pedido?`,
+    )
+  }
 
   return (
     <div className='mt-16 rounded-lg bg-gray-50 px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8'>
@@ -32,16 +41,13 @@ const Summary = () => {
         </div>
       </div>
 
-      <a
-        className='w-full mt-6 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-black hover:opacity-70 cursor-pointer'
-        href={`https://api.whatsapp.com/send/?phone=${phone}&text=Hola, me gustaría comprar los siguientes productos: ${message}`}
-        target='_blank'
-        onClick={() => {
-          toast.success('¡Pedido realizado con éxito!')
-        }}
+      <Button
+        className='w-full mt-6'
+        disabled={items.length === 0}
+        onClick={handleClick}
       >
         Realizar pedido
-      </a>
+      </Button>
     </div>
   )
 }
