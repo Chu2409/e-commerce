@@ -3,8 +3,16 @@ import { ICategoryRoutes } from '../interfaces/categories-routes'
 import { CustomerMainNav } from './main-nav'
 import { CustomerMobileNavbar } from './mobile-navbar'
 import Image from 'next/image'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/modules/auth/consts/auth-options'
 
-export const CustomerNavBar = ({ routes }: { routes: ICategoryRoutes[] }) => {
+export const CustomerNavBar = async ({
+  routes,
+}: {
+  routes: ICategoryRoutes[]
+}) => {
+  const session = await getServerSession(authOptions)
+
   return (
     <div className='flex items-center border-b min-h-[3.5rem] max-lg:justify-between'>
       <Link
@@ -21,8 +29,8 @@ export const CustomerNavBar = ({ routes }: { routes: ICategoryRoutes[] }) => {
         {process.env.NEXT_PUBLIC_SITE_NAME}
       </Link>
 
-      <CustomerMainNav routes={routes} />
-      <CustomerMobileNavbar routes={routes} />
+      <CustomerMainNav routes={routes} session={session} />
+      <CustomerMobileNavbar routes={routes} session={session} />
     </div>
   )
 }
