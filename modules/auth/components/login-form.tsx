@@ -55,7 +55,7 @@ export const LoginForm = () => {
 
       if (res?.error) throw new Error(res?.error)
 
-      router.push('/admin')
+      router.push('/')
       router.refresh()
       toast.success('Bienvenido!')
     } catch (error: any) {

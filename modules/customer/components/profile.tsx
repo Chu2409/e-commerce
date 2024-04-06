@@ -31,7 +31,7 @@ export const Profile = () => {
         <DropdownMenuSeparator />
 
         <DropdownMenuGroup>
-          <DropdownMenuItem className='cursor-pointer'>
+          {/* <DropdownMenuItem className='cursor-pointer'>
             Órdenes
           </DropdownMenuItem>
 
@@ -39,7 +39,7 @@ export const Profile = () => {
             Configuración
           </DropdownMenuItem>
 
-          <DropdownMenuSeparator />
+          <DropdownMenuSeparator /> */}
 
           <DropdownMenuItem
             className='cursor-pointer'

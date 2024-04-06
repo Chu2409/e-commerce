@@ -46,7 +46,7 @@ export const ProductInCart: React.FC<ProductInCartProps> = ({
   }
 
   return (
-    <div className='flex items-center justify-between w-full border p-4 relative rounded-lg'>
+    <div className='flex items-center justify-between w-full border p-4 relative rounded-lg gap-1'>
       <div className='absolute right-0 top-0 p-2'>
         <IconButton
           disabled={isLoading}
@@ -104,7 +104,7 @@ export const ProductInCart: React.FC<ProductInCartProps> = ({
         </div>
       </div>
 
-      <div className='flex items-center gap-4'>
+      <div className='flex items-center gap-x-4 gap-y-2 max-md:flex-col'>
         <Input
           type='number'
           inputMode='numeric'
