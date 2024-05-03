@@ -16,8 +16,10 @@ INSERT INTO public.brands (id,name,created_at,updated_at) VALUES
 	 ('fbb66234-569b-41f1-9bdb-5ffbfb496fd0','Victoria Secret''s','2024-03-24 15:42:28.854','2024-03-24 15:42:28.854'),
 	 ('9ee4d63c-a4b7-4f72-9b5d-94a624ec0026','Crocs','2024-03-24 15:42:38.934','2024-03-24 15:42:38.934'),
 	 ('82574083-8da6-410d-88b2-37a1f42d0455','Pink','2024-03-24 16:39:02.46','2024-03-24 16:39:02.46'),
-	 ('626ff839-0360-4c4a-ac32-31a1c311cc0e','Adidas','2024-03-24 16:58:01.674','2024-03-24 16:58:01.674');
-
+	 ('626ff839-0360-4c4a-ac32-31a1c311cc0e','Adidas','2024-03-24 16:58:01.674','2024-03-24 16:58:01.674'),
+	 ('315b16b5-a04a-4e9b-a432-3b93898f38ff','Converse','2024-04-13 21:54:12.257','2024-04-13 21:54:12.257'),
+	 ('6afbfc73-ea56-4b8b-b695-f7b0feb8b4aa','Michael Kors','2024-04-23 19:44:08.537','2024-04-23 19:44:08.537');
+	
 
 INSERT INTO public.categories (id,name,created_at,updated_at,master_category_id) VALUES
 	 ('230f2f78-fec2-477b-a95c-dac19ecc548b','Camisas','2024-03-13 17:37:51.728','2024-03-27 03:57:47.547','f238ea2a-91a4-4685-897c-0211dfb55d91'),
@@ -32,8 +34,9 @@ INSERT INTO public.categories (id,name,created_at,updated_at,master_category_id)
 	 ('25feddb3-4dd8-4099-9b7d-f285b984f9b8','Artículos Varios','2024-03-27 04:05:08.049','2024-03-27 04:11:10.387','42ac4bad-ceff-4de1-846e-e9babc16df11'),
 	 ('f238ea2a-91a4-4685-897c-0211dfb55d91','Moda','2024-03-27 03:57:41.264','2024-03-27 04:17:52.864',NULL),
 	 ('161a9e78-7bfd-4f9c-9190-cdf858318bb4','Belleza y Cuidado Personal','2024-03-24 15:40:08.897','2024-03-27 04:18:44.455',NULL),
-	 ('42ac4bad-ceff-4de1-846e-e9babc16df11','Hogar','2024-03-24 15:27:00.963','2024-03-27 04:19:24.55',NULL);
-
+	 ('42ac4bad-ceff-4de1-846e-e9babc16df11','Hogar','2024-03-24 15:27:00.963','2024-03-27 04:19:24.55',NULL),
+	 ('652e2df3-6af9-467f-b493-4909e56ccbe3','Carteras','2024-04-23 19:42:53.163','2024-04-23 19:42:53.163','f238ea2a-91a4-4685-897c-0211dfb55d91');
+	
 
 INSERT INTO public.colors (id,name,value,created_at,updated_at) VALUES
 	 ('2074bd1c-735e-4108-81dd-3d32a739d46b','Rojo','#FF0000','2024-03-19 16:57:08.212','2024-03-19 16:57:08.212'),
@@ -64,8 +67,9 @@ INSERT INTO public.colors (id,name,value,created_at,updated_at) VALUES
 	 ('d6fc91de-b19b-495b-b0f5-d2da9bf90969','Azul Vino','#264eb1','2024-03-21 14:36:27.853','2024-03-21 14:36:27.853'),
 	 ('9bb624b7-b68b-4ec9-a7d8-ba9fc00ea2b7','Kaki','#c0ad8c','2024-03-21 15:13:26.394','2024-03-21 15:13:26.394'),
 	 ('fb1e3db2-1ab7-4a0b-8dfd-649d2957610c','Dorado','#ffd700','2024-03-24 15:05:23.145','2024-03-24 15:05:23.145'),
-	 ('4981959a-ad40-4c98-8465-af33f8014833','Plateado','#c0c0c0','2024-03-24 15:05:49.767','2024-03-24 15:05:49.767');
-
+	 ('4981959a-ad40-4c98-8465-af33f8014833','Plateado','#c0c0c0','2024-03-24 15:05:49.767','2024-03-24 15:05:49.767'),
+	 ('43017ef3-68b6-4ed5-9d0d-c2e7cb8476c0','Egret','#fffdd0','2024-04-13 21:56:15.728','2024-04-13 21:56:15.728');
+	
 
 INSERT INTO public.sizes (id,name,value,created_at,updated_at) VALUES
 	 ('9e87d36b-e42a-485d-b4a5-da6989d34b18','Extra Grande','XL','2024-03-13 17:38:10.881','2024-03-13 17:38:10.881'),
@@ -114,10 +118,6 @@ INSERT INTO public.sizes_categories (id,category_id,size_id,created_at,updated_a
 INSERT INTO public.users (id,dni,first_name,last_name,email,"password",created_at,updated_at) VALUES
 	 ('155779b7-77eb-44c1-841a-52cc9a0310b5','0707047643','Daniel','Zhu','dzhu2409@gmail.com','$2b$10$BAEDqFWekpEz8Przj2ACx.mqmE2MDxsddkkcLqzB8.zASP1m6gfbS','2024-03-13 04:36:22.256','2024-03-13 04:36:22.256'),
 	 ('e111b437-59bf-4203-94ca-cf71a481afcb','0703224337','Danny','Ordoñez','danny@gmail.com','$2b$10$hf6bmq4gw6y47pZGh7N9t.kQCAEvSbWHrQ.SgMtMUh.5VjGj8Z9Cm','2024-03-13 04:36:22.46','2024-03-13 04:36:22.46');
-
-
-INSERT INTO public.customers (id,dni,first_name,last_name,phone_number,city,email,"password",created_at,updated_at) VALUES
-	 ('ca8fed16-09e4-492d-aedc-fc5fe93835f5','0703224345','Doris','Ordoñez','0994459401','','doris-28@hotmail.es','123456','2024-03-13 19:42:09.276','2024-03-13 19:42:09.276');
 
 
 INSERT INTO public.products_master (id,name,description,brand_id,category_id,created_at,updated_at,gender) VALUES
@@ -170,11 +170,11 @@ INSERT INTO public.products_master (id,name,description,brand_id,category_id,cre
 	 ('ef64e3e8-bbff-44a3-a8de-f6d13da71fb5','Camiseta Columbia para Dama',NULL,'3bb70750-74b2-421f-84bb-bd1b5a1c90bc','230f2f78-fec2-477b-a95c-dac19ecc548b','2024-03-21 14:58:00.752','2024-03-23 16:35:59.099','MUJER'),
 	 ('84e2fcf4-19e4-4f3e-aaad-c4429b8effaa',' Gorra Columbia de malla Rugged Outdoor',NULL,'3bb70750-74b2-421f-84bb-bd1b5a1c90bc','44b576f1-a57c-4bab-b040-ae1ce01e6cd7','2024-03-20 00:34:20.335','2024-03-23 18:02:47.685','UNISEX'),
 	 ('ef75896b-ce68-4773-a5a7-c2cf13a6fcc5','Reloj Invicta de cuarzo japonés con pantalla Analógica Aviator ',NULL,'b124b978-306c-472f-aaab-442a7fbc2eb1','4498b87a-a011-4d6c-a945-ed51c9dfbc4f','2024-03-24 15:11:30.037','2024-03-24 15:11:30.037','HOMBRE'),
-	 ('53202a3f-87ef-4125-8d8e-dd9ddc8aab6a','Reloj Invicta Aviator cronógrafo de cuarzo ',NULL,'b124b978-306c-472f-aaab-442a7fbc2eb1','4498b87a-a011-4d6c-a945-ed51c9dfbc4f','2024-03-24 15:15:41.458','2024-03-24 15:15:41.458','HOMBRE');
-INSERT INTO public.products_master (id,name,description,brand_id,category_id,created_at,updated_at,gender) VALUES
+	 ('53202a3f-87ef-4125-8d8e-dd9ddc8aab6a','Reloj Invicta Aviator cronógrafo de cuarzo ',NULL,'b124b978-306c-472f-aaab-442a7fbc2eb1','4498b87a-a011-4d6c-a945-ed51c9dfbc4f','2024-03-24 15:15:41.458','2024-03-24 15:15:41.458','HOMBRE'),
 	 ('f4fc36f4-f6ca-4a69-9883-d03ffc9f53de','Reloj Fossil con cronógrafo de Cuarzo Garrett de acero inoxidable',NULL,'cf1f2621-0934-472d-86f2-583e75c3749f','4498b87a-a011-4d6c-a945-ed51c9dfbc4f','2024-03-24 15:18:15.699','2024-03-24 15:18:15.699','HOMBRE'),
 	 ('de5b66f6-fcf4-4cbe-bf98-96128fa6a56b','Reloj Casio de Cuarzo estilo buceador con correa de Acero Inoxidable',NULL,'f0e4b610-5bdf-4cb4-9310-0055fd0ff5ba','4498b87a-a011-4d6c-a945-ed51c9dfbc4f','2024-03-24 15:21:48.51','2024-03-24 15:21:48.51','UNISEX'),
 	 ('d2785cc6-97ec-419c-8021-323825edcfb2','Termo Columbia de doble pared, mantiene Caliente y Frio. 1 Litro',NULL,'3bb70750-74b2-421f-84bb-bd1b5a1c90bc','25feddb3-4dd8-4099-9b7d-f285b984f9b8','2024-03-24 16:00:45.686','2024-03-24 16:01:18.489',NULL),
+	 ('04c1b06a-f0dd-4530-8488-ca987e3f04cd','Gorra Columbia de malla con logotipo PHG',NULL,'3bb70750-74b2-421f-84bb-bd1b5a1c90bc','44b576f1-a57c-4bab-b040-ae1ce01e6cd7','2024-04-13 18:16:45.158','2024-04-13 18:16:45.158','UNISEX'),
 	 ('e28c1709-59c6-44a5-a577-cf4b9770b40f','Zapatos Crocs LiteRide 360',NULL,'9ee4d63c-a4b7-4f72-9b5d-94a624ec0026','1ffa0778-a657-443c-b7d6-c30ece6547aa','2024-03-24 16:51:52.975','2024-03-24 16:51:52.975','UNISEX'),
 	 ('6a1dfcc4-42ab-4e41-bb85-6485c6551087','Loción Corporal Relajante Pink Coco Chill Cannabis Sativa+ Aceite de Coco',NULL,'82574083-8da6-410d-88b2-37a1f42d0455','92ed41a5-cf6a-4e2f-96f5-a4162ca2fb11','2024-03-24 16:42:04.853','2024-03-24 16:42:04.853','MUJER'),
 	 ('c9b2f4e8-eeb0-43cd-a27c-e94193823cce','Zapatos Puma Cell Rapid Hyperwave',NULL,'5d748cf4-619f-46c1-bc6c-a32a98c778f5','1ffa0778-a657-443c-b7d6-c30ece6547aa','2024-03-24 16:54:02.268','2024-03-24 16:54:02.268','UNISEX'),
@@ -195,7 +195,16 @@ INSERT INTO public.products_master (id,name,description,brand_id,category_id,cre
 	 ('460433f6-76d3-447b-af4d-a0d64ddbfa9a','Gel Refrescante de Manos Victoria Secret''s Coconut Milk & Rose',NULL,'fbb66234-569b-41f1-9bdb-5ffbfb496fd0','92ed41a5-cf6a-4e2f-96f5-a4162ca2fb11','2024-03-24 16:32:57.976','2024-03-24 16:34:04.156','MUJER'),
 	 ('e723c3ac-5792-4b33-bc02-1f25159cf1c2','Loción Corporal Pink Honey Ginger',NULL,'82574083-8da6-410d-88b2-37a1f42d0455','92ed41a5-cf6a-4e2f-96f5-a4162ca2fb11','2024-03-24 16:44:13.276','2024-03-24 16:44:13.276','MUJER'),
 	 ('a34d4d61-4c9c-463e-a92a-77c0e2e818d2','Alexa Echo Show 8, 2da generación. Pantalla HD inteligente y cámara de 13 MP.',NULL,'95994e03-bc06-461e-93e8-8071944e622b','042f5a3f-05e9-4347-a270-e0edb5005697','2024-03-24 15:35:14.684','2024-03-24 15:35:14.684',NULL),
-	 ('e22d9637-035e-475d-90d7-6aab934c8f17','Hot Wheels a Control Remoto. Batmobile escala 1:64, coche de juguete a control remoto',NULL,'dc06f95a-dcdb-40d0-83a9-ae280fa7332c','25feddb3-4dd8-4099-9b7d-f285b984f9b8','2024-03-24 15:48:38.553','2024-03-24 15:49:06.169',NULL);
+	 ('e22d9637-035e-475d-90d7-6aab934c8f17','Hot Wheels a Control Remoto. Batmobile escala 1:64, coche de juguete a control remoto',NULL,'dc06f95a-dcdb-40d0-83a9-ae280fa7332c','25feddb3-4dd8-4099-9b7d-f285b984f9b8','2024-03-24 15:48:38.553','2024-03-24 15:49:06.169',NULL),
+	 ('74ec5d54-a15b-4bfa-843c-ea38a61bea8e','Gorra Columbia de malla PFG con diseño de bandera de peces de Canadá',NULL,'3bb70750-74b2-421f-84bb-bd1b5a1c90bc','44b576f1-a57c-4bab-b040-ae1ce01e6cd7','2024-04-13 18:19:27.916','2024-04-13 18:19:27.916','UNISEX'),
+	 ('cc47498d-5567-4daa-b126-5b19e133aa93','Reloj Invicta Specialty de pantalla analógica de cuarzo plateado',NULL,'b124b978-306c-472f-aaab-442a7fbc2eb1','4498b87a-a011-4d6c-a945-ed51c9dfbc4f','2024-04-13 18:26:34.516','2024-04-13 18:26:34.516','HOMBRE'),
+	 ('d4342e49-ec65-4556-996c-c736e5a43f38','Reloj Invicta Speedway - 42 mm',NULL,'b124b978-306c-472f-aaab-442a7fbc2eb1','4498b87a-a011-4d6c-a945-ed51c9dfbc4f','2024-04-13 18:29:47.246','2024-04-13 18:29:47.246','UNISEX'),
+	 ('a058d3f1-924b-4886-97af-4f9a4dd0a64f','Zapatos Converse Chuck Taylor All Star CX Caña Alta',NULL,'315b16b5-a04a-4e9b-a432-3b93898f38ff','1ffa0778-a657-443c-b7d6-c30ece6547aa','2024-04-13 22:01:07.74','2024-04-13 22:01:07.74','UNISEX'),
+	 ('e7fcb81c-41a1-4917-9acf-18e96b382f13','Zapatos Converse Chuck 70 Mixed Materials Caña Alta',NULL,'315b16b5-a04a-4e9b-a432-3b93898f38ff','1ffa0778-a657-443c-b7d6-c30ece6547aa','2024-04-13 22:02:54.328','2024-04-14 23:23:26.724','UNISEX'),
+	 ('17765378-9667-467f-8ef8-5b4fc55bf85a','Gorra Columbia PFG con Diseño de Bandera ',NULL,'3bb70750-74b2-421f-84bb-bd1b5a1c90bc','44b576f1-a57c-4bab-b040-ae1ce01e6cd7','2024-04-25 01:12:57.005','2024-04-25 01:12:57.005','UNISEX'),
+	 ('5da881ea-741c-453c-a92f-11de924ee0e2','Gorra Columbia Snapback ',NULL,'3bb70750-74b2-421f-84bb-bd1b5a1c90bc','44b576f1-a57c-4bab-b040-ae1ce01e6cd7','2024-04-25 01:14:24.449','2024-04-25 01:14:24.449','UNISEX'),
+	 ('d4b6fe06-4fbd-4286-9f51-24a877636437','Cartera Michael Kors Bolso con Cremallera Superior',NULL,'6afbfc73-ea56-4b8b-b695-f7b0feb8b4aa','652e2df3-6af9-467f-b493-4909e56ccbe3','2024-05-02 01:44:47.733','2024-05-02 01:44:47.733','MUJER'),
+	 ('34032002-eab7-434a-b1e2-4d45db8a6c14','Gorra Columbia Malla PFG ',NULL,'3bb70750-74b2-421f-84bb-bd1b5a1c90bc','44b576f1-a57c-4bab-b040-ae1ce01e6cd7','2024-05-03 16:41:53.785','2024-05-03 16:41:53.785','UNISEX');
 
 
 INSERT INTO public.products_colors (id,product_master_id,color_id,created_at,updated_at) VALUES
@@ -248,8 +257,7 @@ INSERT INTO public.products_colors (id,product_master_id,color_id,created_at,upd
 	 ('0540e73f-c298-402e-8d7e-b076cf9a8d21','fcfaacc0-5b80-401a-8918-e58487c2f59c','4eb2bc2d-d825-4b90-82f7-fa7e0973643f','2024-03-21 02:18:59.454','2024-03-21 02:18:59.454'),
 	 ('4eb60228-6919-4471-81eb-1a24f776c1da','84127eeb-f599-4d30-af28-6e483c97cd0e','c19c9c1f-3c08-45fd-a031-e34879cbdfc0','2024-03-21 02:28:05.093','2024-03-21 02:28:05.093'),
 	 ('31d98165-16a9-409f-90e2-4348fd1e92b7','eeade9ff-9b90-48b4-9c86-d69b16e61420','b23e28e7-6216-49bf-b631-7d6f6859b881','2024-03-21 02:31:00.417','2024-03-21 02:31:00.417'),
-	 ('9c075050-ae46-47a9-a130-8f233a3aff8e','7dfc36f3-e614-41a3-85ed-b74a2a8bf357','b23e28e7-6216-49bf-b631-7d6f6859b881','2024-03-21 02:32:46.593','2024-03-21 02:32:46.593');
-INSERT INTO public.products_colors (id,product_master_id,color_id,created_at,updated_at) VALUES
+	 ('9c075050-ae46-47a9-a130-8f233a3aff8e','7dfc36f3-e614-41a3-85ed-b74a2a8bf357','b23e28e7-6216-49bf-b631-7d6f6859b881','2024-03-21 02:32:46.593','2024-03-21 02:32:46.593'),
 	 ('7b6e341b-ffaa-4b61-ba96-f0b07f2d8ab5','db1dab50-7dc7-45d1-9432-fe21cac3ec93','f70564b3-5576-456a-bcb4-97c7c536f9c6','2024-03-21 14:14:39.235','2024-03-21 14:14:39.235'),
 	 ('8a094b2a-0e8b-4629-b21a-b2c4bae22b57','f8961e08-a6b6-47b2-907b-7faab7668391','2074bd1c-735e-4108-81dd-3d32a739d46b','2024-03-21 14:25:16.76','2024-03-21 14:25:16.76'),
 	 ('3dbb1903-820d-430f-aeb1-c9a71817dc27','f8961e08-a6b6-47b2-907b-7faab7668391','3be983d1-0485-40d5-a82e-84003ceb22f8','2024-03-21 14:35:11.087','2024-03-21 14:35:11.087'),
@@ -277,6 +285,7 @@ INSERT INTO public.products_colors (id,product_master_id,color_id,created_at,upd
 	 ('7a4c3bcc-4a61-4742-ba06-87cf3de769b2','f4fc36f4-f6ca-4a69-9883-d03ffc9f53de','fb1e3db2-1ab7-4a0b-8dfd-649d2957610c','2024-03-24 15:18:16.179','2024-03-24 15:18:16.179'),
 	 ('2e494cce-85ae-4cf1-a43e-6d3b161aad34','de5b66f6-fcf4-4cbe-bf98-96128fa6a56b','4981959a-ad40-4c98-8465-af33f8014833','2024-03-24 15:21:49.002','2024-03-24 15:21:49.002'),
 	 ('a7695f46-52ce-4a79-ac6d-2d443ea3eb5d','a34d4d61-4c9c-463e-a92a-77c0e2e818d2','f70564b3-5576-456a-bcb4-97c7c536f9c6','2024-03-24 15:35:15.237','2024-03-24 15:35:15.237'),
+	 ('0b515981-78b9-4e10-9e51-1407a2ccba63','04c1b06a-f0dd-4530-8488-ca987e3f04cd','b23e28e7-6216-49bf-b631-7d6f6859b881','2024-04-13 18:16:45.729','2024-04-13 18:16:45.729'),
 	 ('8f9a9676-2057-4b01-9191-0ef91bb27747','e22d9637-035e-475d-90d7-6aab934c8f17','b23e28e7-6216-49bf-b631-7d6f6859b881','2024-03-24 15:48:39.038','2024-03-24 15:50:21.709'),
 	 ('e556c431-db10-41b5-b476-dbf2d248c1e1','d2785cc6-97ec-419c-8021-323825edcfb2','4981959a-ad40-4c98-8465-af33f8014833','2024-03-24 16:00:46.171','2024-03-24 16:00:46.171'),
 	 ('afe3587c-37d3-4102-bfe9-b446ebe0d220','cea8ac39-e3ec-4d86-b9b2-105ccd94a134',NULL,'2024-03-24 16:07:43.836','2024-03-24 16:08:32.328'),
@@ -297,9 +306,18 @@ INSERT INTO public.products_colors (id,product_master_id,color_id,created_at,upd
 	 ('9b918752-87f8-4596-b8fa-4a9e4c2b6090','89fc8bb2-34bc-4c36-a1e8-8711568534da','f70564b3-5576-456a-bcb4-97c7c536f9c6','2024-03-24 16:59:10.669','2024-03-24 16:59:10.669'),
 	 ('ad36f373-4bb2-4775-9975-f81529aeb24d','76347b88-9eea-49a3-b0ab-758c00d6cff9','b23e28e7-6216-49bf-b631-7d6f6859b881','2024-03-24 17:04:34.876','2024-03-24 17:04:34.876'),
 	 ('59486403-5d51-4600-98aa-5d20ae059963','34310ec4-0694-4b2c-8c02-c308bcc19f7b','57add5a4-c5dd-478f-b456-8d82710d7f4c','2024-03-24 17:11:55.14','2024-03-24 17:11:55.14'),
-	 ('8364f6ea-6f54-48ce-a43c-a60f6bb9d763','2e1a94c2-2b4a-459f-8ced-4c1852373eff','4981959a-ad40-4c98-8465-af33f8014833','2024-03-24 17:26:24.663','2024-03-24 17:26:24.663');
+	 ('8364f6ea-6f54-48ce-a43c-a60f6bb9d763','2e1a94c2-2b4a-459f-8ced-4c1852373eff','4981959a-ad40-4c98-8465-af33f8014833','2024-03-24 17:26:24.663','2024-03-24 17:26:24.663'),
+	 ('d9e2b64f-f9d2-44fa-b660-befb41ad2419','74ec5d54-a15b-4bfa-843c-ea38a61bea8e','4eb2bc2d-d825-4b90-82f7-fa7e0973643f','2024-04-13 18:19:28.42','2024-04-13 18:19:28.42'),
+	 ('94cfcec0-0e87-4c82-bd10-e0be59fbd7fe','cc47498d-5567-4daa-b126-5b19e133aa93','3e3cfe1e-2677-4918-85f9-a9351badf09e','2024-04-13 18:26:35.014','2024-04-13 18:26:35.014'),
+	 ('cdbe3a59-051c-4696-97df-864485d328a9','d4342e49-ec65-4556-996c-c736e5a43f38','4981959a-ad40-4c98-8465-af33f8014833','2024-04-13 18:29:47.773','2024-04-13 18:29:47.773'),
+	 ('dffe7b68-4932-4b0e-b033-04097816ca0d','a058d3f1-924b-4886-97af-4f9a4dd0a64f','43017ef3-68b6-4ed5-9d0d-c2e7cb8476c0','2024-04-13 22:01:08.244','2024-04-13 22:01:08.244'),
+	 ('38c6d9a5-b00e-4cee-b12c-ec27cd702746','e7fcb81c-41a1-4917-9acf-18e96b382f13','43017ef3-68b6-4ed5-9d0d-c2e7cb8476c0','2024-04-13 22:02:54.824','2024-04-13 22:02:54.824'),
+	 ('a86a2bc9-d4ae-4ff2-99cd-53818f14a684','17765378-9667-467f-8ef8-5b4fc55bf85a','b23e28e7-6216-49bf-b631-7d6f6859b881','2024-04-25 01:12:57.52','2024-04-25 01:12:57.52'),
+	 ('e2e94282-db8a-4b28-9f03-c246400eb2bc','5da881ea-741c-453c-a92f-11de924ee0e2','4eb2bc2d-d825-4b90-82f7-fa7e0973643f','2024-04-25 01:14:25.078','2024-04-25 01:14:25.078'),
+	 ('f2db2749-3080-486f-bbd9-84f38585d377','d4b6fe06-4fbd-4286-9f51-24a877636437','2074bd1c-735e-4108-81dd-3d32a739d46b','2024-05-02 01:44:48.277','2024-05-02 01:44:48.277'),
+	 ('678e2c85-6713-4a92-b222-779a839e646a','34032002-eab7-434a-b1e2-4d45db8a6c14','b23e28e7-6216-49bf-b631-7d6f6859b881','2024-05-03 16:41:54.336','2024-05-03 16:41:54.336');
 
-	
+
 INSERT INTO public.images (id,url,product_color_id,created_at,updated_at) VALUES
 	 ('ceab3f85-1bf9-4759-aa33-bf737b0455d5','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1710867731/ftk3c7cmnjhvdlggvmux.webp','955c0e34-f2f2-42f6-899b-2973ddd2a624','2024-03-19 17:03:19.874','2024-03-19 17:03:19.874'),
 	 ('fe9acca2-1451-465f-97e8-2da5b3dd017d','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1710867828/yr3hmbfr88xllnmfmmg5.webp','b285ec90-0506-47e6-b7c3-24a842e187d6','2024-03-19 17:04:12.628','2024-03-19 17:04:12.628'),
@@ -350,8 +368,7 @@ INSERT INTO public.images (id,url,product_color_id,created_at,updated_at) VALUES
 	 ('8432e708-89c6-4b6c-ab66-a867793c11c8','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1710981813/vs6eubusbnzqf6lqanmy.jpg','dcf92f99-cb2e-4065-85e1-b392773abe9a','2024-03-21 00:44:10.542','2024-03-21 00:44:10.542'),
 	 ('cfd9a40a-0d33-4eab-81b2-dbe8313900de','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1710982037/cxubynqizepsvhfi8mfj.jpg','642a8397-76e0-4be7-9318-d65b4b1f168c','2024-03-21 00:47:22.74','2024-03-21 00:47:22.74'),
 	 ('5615bff8-2a42-4635-8fd5-f4d200067e1c','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1710982153/uxw3ndybvb4i2b9fg3yt.jpg','a52098a7-b430-41b3-b598-abf15ed2499c','2024-03-21 00:50:42.074','2024-03-21 00:50:42.074'),
-	 ('80934e6c-bd5e-4902-bd94-22b44826240d','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1710982210/cm4o4uahpnuvgtigci37.jpg','a52098a7-b430-41b3-b598-abf15ed2499c','2024-03-21 00:50:42.074','2024-03-21 00:50:42.074');
-INSERT INTO public.images (id,url,product_color_id,created_at,updated_at) VALUES
+	 ('80934e6c-bd5e-4902-bd94-22b44826240d','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1710982210/cm4o4uahpnuvgtigci37.jpg','a52098a7-b430-41b3-b598-abf15ed2499c','2024-03-21 00:50:42.074','2024-03-21 00:50:42.074'),
 	 ('cf3ce54d-84b2-4fd4-bf15-4b9968b9d9af','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1710982596/zyhebdh5nesongoqumu2.jpg','ed6dd2ce-1856-4eb6-9944-884606b9663b','2024-03-21 00:57:07.455','2024-03-21 00:57:07.455'),
 	 ('25f7a2c3-2977-4cee-907b-af9a7d12d02c','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1710982605/k8zdqnrca2hdpatldrtv.jpg','ed6dd2ce-1856-4eb6-9944-884606b9663b','2024-03-21 00:57:07.455','2024-03-21 00:57:07.455'),
 	 ('f464928c-5b8c-47d5-a404-2c7043ed981b','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1710983160/hnd8c87wt4zjcsc2n82c.jpg','99ea22bd-4d1f-4960-847a-1b60862839a2','2024-03-21 01:06:32.064','2024-03-21 01:06:32.064'),
@@ -401,8 +418,7 @@ INSERT INTO public.images (id,url,product_color_id,created_at,updated_at) VALUES
 	 ('e9e71d28-9950-48b3-85fd-9e04500e7c90','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1711033643/c3m2vkuyh9xrgktwarfb.webp','538e42ae-8fe7-4c65-8c6d-efc9d1620a6a','2024-03-21 15:07:59.939','2024-03-21 15:07:59.939'),
 	 ('2ee369de-2c24-485e-9630-54a9f2b64e9d','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1711033804/yqv95qrklk1wrs5o7j5f.webp','88f0f586-66c6-4dd8-92bf-7da7a32a3d89','2024-03-21 15:10:25.914','2024-03-21 15:10:25.914'),
 	 ('dcaaf255-ad63-4b97-af2c-884f96c8874e','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1711033812/jzgdtn3tcrfpseradie3.webp','88f0f586-66c6-4dd8-92bf-7da7a32a3d89','2024-03-21 15:10:25.914','2024-03-21 15:10:25.914'),
-	 ('2d7b9c9e-8c24-402e-94c3-e503451d5382','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1711034022/atbmkjw8gjko8vny8lqm.jpg','4465aa7f-065c-4dbf-91c5-cfb1298c08de','2024-03-21 15:14:09.086','2024-03-21 15:14:09.086');
-INSERT INTO public.images (id,url,product_color_id,created_at,updated_at) VALUES
+	 ('2d7b9c9e-8c24-402e-94c3-e503451d5382','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1711034022/atbmkjw8gjko8vny8lqm.jpg','4465aa7f-065c-4dbf-91c5-cfb1298c08de','2024-03-21 15:14:09.086','2024-03-21 15:14:09.086'),
 	 ('1d99cc46-02dd-490b-92e3-16f3c3b08f8f','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1711034029/mk1ouccyqfrfoirc26gp.jpg','4465aa7f-065c-4dbf-91c5-cfb1298c08de','2024-03-21 15:14:09.086','2024-03-21 15:14:09.086'),
 	 ('3b058dc7-1e6d-4fa5-9656-04830cf55c48','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1711034117/epqzsgin04v9wvgkwcd5.jpg','1f19879d-9d71-46ab-8cb6-15df08a049b0','2024-03-21 15:15:33.91','2024-03-21 15:15:33.91'),
 	 ('accaacaf-2782-4ab0-9b4e-a2cd3c935c2e','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1711034267/v2qswkx5aill5ety4hov.png','0383cac0-3cb6-4a21-97bf-01c80053ac6c','2024-03-21 15:18:42.545','2024-03-21 15:18:42.545'),
@@ -452,8 +468,7 @@ INSERT INTO public.images (id,url,product_color_id,created_at,updated_at) VALUES
 	 ('397e36a4-e9c6-4715-ac41-9a6b8cf19127','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1711298591/s2wcw7vwymelxaz3kmy6.jpg','96188b2c-2dfd-4613-b00f-2939cd94d959','2024-03-24 16:44:13.745','2024-03-24 16:44:13.745'),
 	 ('1e1830e9-adf9-4daf-9606-213d51b3b2fb','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1711299054/fb5qd2sslvnuw9myzl6z.webp','b408cf4e-1086-465b-b810-a0c753398fb2','2024-03-24 16:51:53.459','2024-03-24 16:51:53.459'),
 	 ('fd6956f4-4d3f-4166-8624-448207deb5b2','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1711299063/nrnuwo5fc2athtrdhhlm.webp','b408cf4e-1086-465b-b810-a0c753398fb2','2024-03-24 16:51:53.459','2024-03-24 16:51:53.459'),
-	 ('a286d16f-17db-4c50-aab6-73c6a428c182','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1711299227/mxrlrlxljbjii5eisvpl.avif','ed38e9af-1537-47b0-aa8d-c5526f96a83d','2024-03-24 16:54:02.754','2024-03-24 16:54:02.754');
-INSERT INTO public.images (id,url,product_color_id,created_at,updated_at) VALUES
+	 ('a286d16f-17db-4c50-aab6-73c6a428c182','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1711299227/mxrlrlxljbjii5eisvpl.avif','ed38e9af-1537-47b0-aa8d-c5526f96a83d','2024-03-24 16:54:02.754','2024-03-24 16:54:02.754'),
 	 ('e1ac7908-d6d1-4800-88de-1e88be9b32d7','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1711299234/gszkutrmjr0w2atnwoaz.avif','ed38e9af-1537-47b0-aa8d-c5526f96a83d','2024-03-24 16:54:02.754','2024-03-24 16:54:02.754'),
 	 ('dd8d2e06-173b-4230-ba6b-c37ee4e7f841','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1711299234/khy7gjtescgtz6ha8f2k.avif','ed38e9af-1537-47b0-aa8d-c5526f96a83d','2024-03-24 16:54:02.754','2024-03-24 16:54:02.754'),
 	 ('3467367e-d2e7-4996-abfc-f1b6968800d6','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1711299343/f6qxlipmpfa7ibcbuuea.avif','b3cf151e-b597-43c6-90e5-500b74011421','2024-03-24 16:55:57.466','2024-03-24 16:55:57.466'),
@@ -469,13 +484,36 @@ INSERT INTO public.images (id,url,product_color_id,created_at,updated_at) VALUES
 	 ('7ad83fcf-0504-496e-84c3-cf1ec9c2b530','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1711300191/exw3fnkru6yf5tdoubpv.jpg','59486403-5d51-4600-98aa-5d20ae059963','2024-03-24 17:11:55.14','2024-03-24 17:11:55.14'),
 	 ('dae2cbbd-e7d8-4736-827a-6852cb4e7d03','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1711300268/kooqvdj1ve8xj2jbrphh.jpg','59486403-5d51-4600-98aa-5d20ae059963','2024-03-24 17:11:55.14','2024-03-24 17:11:55.14'),
 	 ('d29c04d7-8024-40bf-9eca-5c77d6e80733','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1711301174/btpvoxxt8ook9e6net8n.webp','8364f6ea-6f54-48ce-a43c-a60f6bb9d763','2024-03-24 17:26:24.663','2024-03-24 17:26:24.663'),
-	 ('c394f6b8-ab41-4356-95a7-da9e5c30cf54','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1711301174/mmptmroxyy6pbubgwqhp.webp','8364f6ea-6f54-48ce-a43c-a60f6bb9d763','2024-03-24 17:26:24.663','2024-03-24 17:26:24.663');
+	 ('c394f6b8-ab41-4356-95a7-da9e5c30cf54','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1711301174/mmptmroxyy6pbubgwqhp.webp','8364f6ea-6f54-48ce-a43c-a60f6bb9d763','2024-03-24 17:26:24.663','2024-03-24 17:26:24.663'),
+	 ('ca2504a4-8ee0-4816-abdb-5bc84ef53d2f','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1713032183/runxtd8mblm7ynl1brlc.jpg','0b515981-78b9-4e10-9e51-1407a2ccba63','2024-04-13 18:16:45.729','2024-04-13 18:16:45.729'),
+	 ('2a5497b7-c069-4257-977b-6597c3084fe7','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1713032194/skxr0xpsdxmdwng91hmk.jpg','0b515981-78b9-4e10-9e51-1407a2ccba63','2024-04-13 18:16:45.729','2024-04-13 18:16:45.729'),
+	 ('d878c3ff-c2ed-4cc3-a719-a38a109c1fe6','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1713032303/ac2iysg5qw1fdy6yhh46.jpg','d9e2b64f-f9d2-44fa-b660-befb41ad2419','2024-04-13 18:19:28.42','2024-04-13 18:19:28.42'),
+	 ('5caaff59-016f-4a4b-92a5-5d7e42191fe0','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1713032311/ctlnxvevax5idhtfw1eg.jpg','d9e2b64f-f9d2-44fa-b660-befb41ad2419','2024-04-13 18:19:28.42','2024-04-13 18:19:28.42'),
+	 ('5f56baa8-d730-4de0-a415-9f3a2b8f0c83','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1713032763/j5rjpjym6ixscw1wyo18.jpg','94cfcec0-0e87-4c82-bd10-e0be59fbd7fe','2024-04-13 18:26:35.014','2024-04-13 18:26:35.014'),
+	 ('67909744-ec67-4a3a-9d65-bbf8da26e784','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1713032773/pnedmi9jieepucqvulsx.jpg','94cfcec0-0e87-4c82-bd10-e0be59fbd7fe','2024-04-13 18:26:35.014','2024-04-13 18:26:35.014'),
+	 ('20965d8e-a7c0-42c7-a7d1-4e50c46152f0','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1713032773/ey0pmkjg2v9ye3ipefdg.jpg','94cfcec0-0e87-4c82-bd10-e0be59fbd7fe','2024-04-13 18:26:35.014','2024-04-13 18:26:35.014'),
+	 ('9c7ea5d0-8269-42ac-89ea-421b21155973','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1713032912/hc6psxp3is2qobfgikfs.jpg','cdbe3a59-051c-4696-97df-864485d328a9','2024-04-13 18:29:47.773','2024-04-13 18:29:47.773'),
+	 ('71d1eaf6-7630-4cfb-94f4-3cbefbcafe77','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1713032971/nyssqvsromwiuzm8x1hg.jpg','cdbe3a59-051c-4696-97df-864485d328a9','2024-04-13 18:29:47.773','2024-04-13 18:29:47.773'),
+	 ('2defe2fd-a94a-4ea0-8677-16e26347b2d1','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1713045645/kc5mjwikdlcgjmsfxa8a.jpg','dffe7b68-4932-4b0e-b033-04097816ca0d','2024-04-13 22:01:08.244','2024-04-13 22:01:08.244'),
+	 ('98544c22-eda6-4299-97f5-31537be50e17','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1713045654/hjzift03xlde0sbdbflm.jpg','dffe7b68-4932-4b0e-b033-04097816ca0d','2024-04-13 22:01:08.244','2024-04-13 22:01:08.244'),
+	 ('68f8e20b-5e2e-41cf-8f0f-e9b29b628536','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1713045655/kodsanv6b9qkgvyv3igb.jpg','dffe7b68-4932-4b0e-b033-04097816ca0d','2024-04-13 22:01:08.244','2024-04-13 22:01:08.244'),
+	 ('7786a7b2-8592-486b-ac74-c93ddfb28d5f','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1713045757/i1ktjlqtnbgkapnxlbh0.jpg','38c6d9a5-b00e-4cee-b12c-ec27cd702746','2024-04-13 22:02:54.824','2024-04-13 22:02:54.824'),
+	 ('45f8f3c9-dc90-4966-b1c2-e88479e2ed4b','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1713045768/qrsesfolnw5bfccqq85e.jpg','38c6d9a5-b00e-4cee-b12c-ec27cd702746','2024-04-13 22:02:54.824','2024-04-13 22:02:54.824'),
+	 ('aebf4c7e-b658-4bf9-a1bc-278009eab13f','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1713045768/edhp6hfdvjzjrbrrldlb.jpg','38c6d9a5-b00e-4cee-b12c-ec27cd702746','2024-04-13 22:02:54.824','2024-04-13 22:02:54.824'),
+	 ('1cf1fb12-6413-42db-851c-2877a92a4040','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1714007557/gfw1vslnb7kmjmvkjze2.png','a86a2bc9-d4ae-4ff2-99cd-53818f14a684','2024-04-25 01:12:57.52','2024-04-25 01:12:57.52'),
+	 ('107405fa-7855-4124-863f-7c8b53d6512d','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1714007567/nnt7iwve9deqkbkd42ak.jpg','a86a2bc9-d4ae-4ff2-99cd-53818f14a684','2024-04-25 01:12:57.52','2024-04-25 01:12:57.52'),
+	 ('871d95da-d50b-4028-ae72-5f1c18de4366','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1714007650/woqbjlgsoej3eo5fn224.webp','e2e94282-db8a-4b28-9f03-c246400eb2bc','2024-04-25 01:14:25.078','2024-04-25 01:14:25.078'),
+	 ('09778cbd-9ad5-4bd3-ba82-bd5e68c88855','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1714007658/d58uebljji2j5pfwuuyc.webp','e2e94282-db8a-4b28-9f03-c246400eb2bc','2024-04-25 01:14:25.078','2024-04-25 01:14:25.078'),
+	 ('6fcf63da-2539-4b65-90b9-bfbbe4046f0a','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1714614267/hae7e46dxbo82w3ww3r2.jpg','f2db2749-3080-486f-bbd9-84f38585d377','2024-05-02 01:44:48.277','2024-05-02 01:44:48.277'),
+	 ('7d9cf5c6-94a9-478b-a5f7-5fa8ce2db3da','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1714614267/rhzryzzcqgp15mxnc07r.jpg','f2db2749-3080-486f-bbd9-84f38585d377','2024-05-02 01:44:48.277','2024-05-02 01:44:48.277'),
+	 ('8d568334-826e-4a60-a25e-c1a257afefbf','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1714614267/yoo7acrqnb01ykfbvqvq.jpg','f2db2749-3080-486f-bbd9-84f38585d377','2024-05-02 01:44:48.277','2024-05-02 01:44:48.277'),
+	 ('695c7cb5-121d-4c92-9dd1-19a0a0886552','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1714754504/qgjxh589n3b8ad3kgonr.png','678e2c85-6713-4a92-b222-779a839e646a','2024-05-03 16:41:54.336','2024-05-03 16:41:54.336'),
+	 ('554fee2c-261a-4a4f-aa1e-3d36de6acd29','https://res.cloudinary.com/dsgm2hnqp/image/upload/v1714754504/uh4i7oqza7wpqgiifud1.jpg','678e2c85-6713-4a92-b222-779a839e646a','2024-05-03 16:41:54.336','2024-05-03 16:41:54.336');
 
 
 INSERT INTO public.products (id,price,stock,state,product_color_id,size_category_id,created_at,updated_at) VALUES
 	 ('98d66337-4f77-4309-b3bb-e9c8e45eb672',36.0,1,'DISPONIBLE','49ada577-e3bf-4395-9548-1a2c7cbe952d','a5e603b2-2f02-47b5-9597-e28a93e26f5c','2024-03-20 02:31:20.15','2024-03-20 02:31:20.15'),
 	 ('b983d60d-e39a-4766-819e-48516f35c666',55.0,1,'DISPONIBLE','48a462be-edc9-42d0-8cc8-abee8c2f8352','2ca7dd12-2a30-48df-aa6c-f4690a4cd7fd','2024-03-20 02:35:07.631','2024-03-20 02:35:07.631'),
-	 ('4532953f-4657-478d-8ae3-483873e1c976',36.0,1,'DISPONIBLE','06ca240c-b9bc-45bc-a3fa-ca20cb97157f','a5e603b2-2f02-47b5-9597-e28a93e26f5c','2024-03-20 02:37:58.739','2024-03-20 02:37:58.739'),
 	 ('0f689eb5-78fc-4cb3-91f0-89440d6491c9',48.0,1,'DISPONIBLE','2cc29d78-919f-404d-a6be-a560271eaa83','f8f108ef-766d-47be-a547-d037fc0d1971','2024-03-20 02:39:57.704','2024-03-20 02:39:57.704'),
 	 ('c217443f-2d19-45ae-967b-dad4437552a6',35.0,1,'DISPONIBLE','7a326dd0-05ec-42ca-98ef-9463d1a23345','36339c31-91d7-44e8-9fa1-10e607b66690','2024-03-20 02:43:40.56','2024-03-20 02:43:40.56'),
 	 ('4ac0ba54-c49e-4e71-b5d8-b770b419f550',36.0,0,'NO_DISPONIBLE','f4bc10e8-a87d-4327-ad7d-1891692b22e1','a5e603b2-2f02-47b5-9597-e28a93e26f5c','2024-03-19 17:27:39.076','2024-03-20 23:37:02.883'),
@@ -488,17 +526,11 @@ INSERT INTO public.products (id,price,stock,state,product_color_id,size_category
 	 ('af90d7df-cd7a-42b8-858f-7526d09fa3e7',36.0,1,'DISPONIBLE','00ab33d6-c446-4a0d-9aca-9ca1ca3a7157','a5e603b2-2f02-47b5-9597-e28a93e26f5c','2024-03-19 17:34:57.66','2024-03-19 17:34:57.66'),
 	 ('a3c93ccb-2563-466f-8b9c-04a93e66d9a2',36.0,1,'DISPONIBLE','7d99a65c-3284-4453-ac72-328e1733ad12','876610f4-e4f9-441c-afe6-1b2d18862b5f','2024-03-19 17:39:51.558','2024-03-19 17:39:51.558'),
 	 ('111062a8-484c-4758-b250-8f7b72714b59',55.0,1,'DISPONIBLE','10285fca-3427-43d0-9a7b-a7ecfb1045d8','bb451a3c-e3e5-4ee8-a9c6-c70fd3c0a8ae','2024-03-20 00:16:03.255','2024-03-20 00:16:03.255'),
-	 ('612839aa-4fa5-48b3-b195-2b80f9f1df8d',50.0,1,'DISPONIBLE','3c94fdac-b08b-4290-9fea-8ea66f0aa42b','2ca7dd12-2a30-48df-aa6c-f4690a4cd7fd','2024-03-20 00:31:12.636','2024-03-20 00:31:12.636'),
 	 ('8f1bdb3f-83a2-40ae-9183-b91ae0c72925',36.0,1,'DISPONIBLE','c38ae434-c78a-4658-ae38-10f5b9e39df8','876610f4-e4f9-441c-afe6-1b2d18862b5f','2024-03-20 00:34:21.98','2024-03-20 00:34:21.98'),
 	 ('7ec8e8d4-1f9c-4f01-a39c-34398a213208',36.0,1,'DISPONIBLE','0d47cd16-ebd5-408a-b69b-bb06df351736','a5e603b2-2f02-47b5-9597-e28a93e26f5c','2024-03-20 00:37:05.891','2024-03-20 00:37:05.891'),
 	 ('783f0cba-2fe5-48e5-8186-f4864e507ef8',36.0,1,'DISPONIBLE','d8f5885d-a137-4587-8e29-2d6b0f4ef144','876610f4-e4f9-441c-afe6-1b2d18862b5f','2024-03-20 02:14:02.164','2024-03-20 02:14:02.164'),
-	 ('006a6a6f-b2ca-4340-afd6-0a5fdefb78a9',50.0,1,'DISPONIBLE','44df7acb-c22c-4c11-80b1-509c6cac16bb','2ca7dd12-2a30-48df-aa6c-f4690a4cd7fd','2024-03-20 02:15:33.09','2024-03-20 02:15:33.09'),
-	 ('517fd6e6-a963-4fb9-a8b7-f2c81342ff79',55.0,1,'DISPONIBLE','8782d4b8-eb6f-4e3e-9d7f-373e838e1ee7','f8f108ef-766d-47be-a547-d037fc0d1971','2024-03-20 02:17:04.633','2024-03-20 02:17:04.633'),
 	 ('3aca6544-a7a9-4b9c-b7e3-7d9839d2a436',36.0,1,'DISPONIBLE','e29b3188-2203-4ead-8fa4-41466bf756d4','a5e603b2-2f02-47b5-9597-e28a93e26f5c','2024-03-20 02:30:43.632','2024-03-20 02:30:43.632'),
 	 ('ab4286c1-7717-423d-9cd4-01a8d43b66f7',105.0,1,'DISPONIBLE','53f00ad7-5762-40e5-aacf-aba549bb7faa','9b19980a-8a36-4219-98c0-232bd780c7f8','2024-03-20 23:44:53.994','2024-03-20 23:44:53.994'),
-	 ('7b6ab0f5-67e4-466a-8161-cf726e3428f5',105.0,1,'DISPONIBLE','f2ebfc93-9f5c-4724-83d1-f79f9b2e1c81','b7cd7280-6b79-441a-a240-7971f8ab6e62','2024-03-20 23:49:25.796','2024-03-20 23:49:25.796'),
-	 ('939e26b8-1a27-4541-bfe1-91ac2be56fe6',105.0,1,'DISPONIBLE','f2ebfc93-9f5c-4724-83d1-f79f9b2e1c81','f31f0c0c-fa38-45aa-8e2e-b2dcc29411b6','2024-03-20 23:49:46.76','2024-03-20 23:49:46.76'),
-	 ('cd6cfa55-3ad1-487c-9f6b-1de240aa5892',105.0,1,'DISPONIBLE','f2ebfc93-9f5c-4724-83d1-f79f9b2e1c81','72b7a8a7-2f6a-4018-9c8d-915d54bc8fa8','2024-03-20 23:49:58.718','2024-03-20 23:49:58.718'),
 	 ('6e62ff5c-64f3-407e-8368-e9c492074ad3',36.0,1,'DISPONIBLE','99830922-fcf5-4b61-ab46-0e9dda24f6e3','876610f4-e4f9-441c-afe6-1b2d18862b5f','2024-03-20 23:54:18.43','2024-03-20 23:54:18.43'),
 	 ('49916dbb-881c-47ee-81f4-7412a7655171',36.0,0,'NO_DISPONIBLE','b285ec90-0506-47e6-b7c3-24a842e187d6','d88811b1-227f-4d20-b71a-d62dd7a740aa','2024-03-19 17:04:13.415','2024-03-21 18:59:03.4'),
 	 ('148a5eea-d678-4176-956f-0fc749b7125d',36.0,1,'DISPONIBLE','b555b05f-7a5b-41a9-be66-210e82686cd3','876610f4-e4f9-441c-afe6-1b2d18862b5f','2024-03-21 00:04:05.804','2024-03-21 00:04:05.804'),
@@ -506,24 +538,29 @@ INSERT INTO public.products (id,price,stock,state,product_color_id,size_category
 	 ('65f3eedb-52ca-4e25-b3f8-0a26547a8768',36.0,1,'DISPONIBLE','7f1022e3-fcfe-492f-a493-d2f46c0d711a','876610f4-e4f9-441c-afe6-1b2d18862b5f','2024-03-21 00:09:02.26','2024-03-21 00:09:02.26'),
 	 ('696279f9-c198-4f15-9318-d921961b6a8e',36.0,1,'DISPONIBLE','dcf92f99-cb2e-4065-85e1-b392773abe9a','876610f4-e4f9-441c-afe6-1b2d18862b5f','2024-03-21 00:44:11.148','2024-03-21 00:44:11.148'),
 	 ('1c771ec5-2d2b-4d55-b100-1a8b66a164cb',36.0,1,'DISPONIBLE','642a8397-76e0-4be7-9318-d65b4b1f168c','876610f4-e4f9-441c-afe6-1b2d18862b5f','2024-03-21 00:45:20.38','2024-03-21 00:45:20.38'),
-	 ('81253ccd-2e42-4c26-83b7-32d3775eaeed',36.0,1,'DISPONIBLE','a52098a7-b430-41b3-b598-abf15ed2499c','a5e603b2-2f02-47b5-9597-e28a93e26f5c','2024-03-21 00:50:42.935','2024-03-21 00:50:42.935'),
 	 ('f0379930-0891-47e0-b34b-a1a8311903f4',36.0,1,'DISPONIBLE','ed6dd2ce-1856-4eb6-9944-884606b9663b','876610f4-e4f9-441c-afe6-1b2d18862b5f','2024-03-21 00:57:08.277','2024-03-21 00:57:08.277'),
-	 ('7eb7d659-7aa5-4a84-a6ac-372927770bed',36.0,1,'DISPONIBLE','99ea22bd-4d1f-4960-847a-1b60862839a2','a5e603b2-2f02-47b5-9597-e28a93e26f5c','2024-03-21 01:06:32.68','2024-03-21 01:06:32.68'),
-	 ('26f84b26-7630-497e-abe9-ccc050435545',36.0,1,'DISPONIBLE','3374d9ce-58d8-4743-b493-2cd8cb97397c','a5e603b2-2f02-47b5-9597-e28a93e26f5c','2024-03-21 01:09:37.087','2024-03-21 01:09:37.087'),
 	 ('e1a8d329-2dd7-4280-855e-028c989c62d1',36.0,1,'DISPONIBLE','c416cf2e-d84f-4073-ba02-695388babfd6','a5e603b2-2f02-47b5-9597-e28a93e26f5c','2024-03-21 01:15:05.094','2024-03-21 01:15:05.094'),
 	 ('3c1d4837-1d4f-44c8-89f5-0f1312f2b8c0',36.0,0,'NO_DISPONIBLE','803e77f9-08b7-4a28-85ae-c7d784c1f994','876610f4-e4f9-441c-afe6-1b2d18862b5f','2024-03-21 01:22:47.556','2024-03-21 01:23:18.571'),
 	 ('3df752b2-45f4-41f7-8417-a3dbebb5c5e3',36.0,1,'DISPONIBLE','9d964095-7859-4f11-8555-747ad560c4aa','876610f4-e4f9-441c-afe6-1b2d18862b5f','2024-03-21 01:24:01.618','2024-03-21 01:24:01.618'),
 	 ('10e990b4-ed50-4da6-bd58-c4cfbf608a7d',36.0,1,'DISPONIBLE','edd265fd-8ac5-41e8-94b6-3fddc24175d7','876610f4-e4f9-441c-afe6-1b2d18862b5f','2024-03-21 01:27:57.917','2024-03-21 01:27:57.917'),
+	 ('81253ccd-2e42-4c26-83b7-32d3775eaeed',36.0,0,'NO_DISPONIBLE','a52098a7-b430-41b3-b598-abf15ed2499c','a5e603b2-2f02-47b5-9597-e28a93e26f5c','2024-03-21 00:50:42.935','2024-04-11 16:57:33.775'),
 	 ('086456b8-33f8-4f04-b499-a9ea6c94241f',20.0,1,'DISPONIBLE','3d36c638-af1e-4f4d-9a1f-ac0d478fe834',NULL,'2024-03-24 16:32:59.039','2024-03-24 16:32:59.039'),
 	 ('c3d6f42e-ae93-46ca-8bc9-aacdc5b0534a',20.0,1,'DISPONIBLE','17a29bc6-1db6-4bb1-81ff-20bbc5a6b25c',NULL,'2024-03-24 16:42:05.859','2024-03-24 16:42:05.859'),
 	 ('6ed79ed6-e8d2-4418-bd53-d3264d9b20ed',36.0,0,'NO_DISPONIBLE','716d9922-dbf0-4f3d-aac7-233565bc8b22','876610f4-e4f9-441c-afe6-1b2d18862b5f','2024-03-19 17:41:30.817','2024-03-29 16:33:32.737'),
-	 ('3d0e3bb9-cb6d-4f23-b586-64724455cc8b',30.0,1,'DISPONIBLE','3de0a380-539d-4d1f-be3c-3e37cd54af3a','a5e603b2-2f02-47b5-9597-e28a93e26f5c','2024-03-21 01:51:18.436','2024-03-21 01:51:18.436'),
+	 ('7eb7d659-7aa5-4a84-a6ac-372927770bed',36.0,0,'NO_DISPONIBLE','99ea22bd-4d1f-4960-847a-1b60862839a2','a5e603b2-2f02-47b5-9597-e28a93e26f5c','2024-03-21 01:06:32.68','2024-04-11 16:57:59.146'),
+	 ('7b6ab0f5-67e4-466a-8161-cf726e3428f5',105.0,1,'DISPONIBLE','f2ebfc93-9f5c-4724-83d1-f79f9b2e1c81','b7cd7280-6b79-441a-a240-7971f8ab6e62','2024-03-20 23:49:25.796','2024-04-13 18:04:59.497'),
+	 ('939e26b8-1a27-4541-bfe1-91ac2be56fe6',105.0,0,'NO_DISPONIBLE','f2ebfc93-9f5c-4724-83d1-f79f9b2e1c81','f31f0c0c-fa38-45aa-8e2e-b2dcc29411b6','2024-03-20 23:49:46.76','2024-04-13 18:05:36.224'),
+	 ('cd6cfa55-3ad1-487c-9f6b-1de240aa5892',105.0,0,'NO_DISPONIBLE','f2ebfc93-9f5c-4724-83d1-f79f9b2e1c81','72b7a8a7-2f6a-4018-9c8d-915d54bc8fa8','2024-03-20 23:49:58.718','2024-04-13 18:06:28.972'),
+	 ('4532953f-4657-478d-8ae3-483873e1c976',36.0,0,'NO_DISPONIBLE','06ca240c-b9bc-45bc-a3fa-ca20cb97157f','a5e603b2-2f02-47b5-9597-e28a93e26f5c','2024-03-20 02:37:58.739','2024-04-13 18:08:04.883'),
+	 ('517fd6e6-a963-4fb9-a8b7-f2c81342ff79',55.0,0,'NO_DISPONIBLE','8782d4b8-eb6f-4e3e-9d7f-373e838e1ee7','f8f108ef-766d-47be-a547-d037fc0d1971','2024-03-20 02:17:04.633','2024-04-13 21:40:13.708'),
+	 ('612839aa-4fa5-48b3-b195-2b80f9f1df8d',50.0,0,'NO_DISPONIBLE','3c94fdac-b08b-4290-9fea-8ea66f0aa42b','2ca7dd12-2a30-48df-aa6c-f4690a4cd7fd','2024-03-20 00:31:12.636','2024-04-30 03:13:08.264'),
+	 ('006a6a6f-b2ca-4340-afd6-0a5fdefb78a9',50.0,0,'NO_DISPONIBLE','44df7acb-c22c-4c11-80b1-509c6cac16bb','2ca7dd12-2a30-48df-aa6c-f4690a4cd7fd','2024-03-20 02:15:33.09','2024-04-30 03:13:34.104'),
+	 ('26f84b26-7630-497e-abe9-ccc050435545',36.0,0,'NO_DISPONIBLE','3374d9ce-58d8-4743-b493-2cd8cb97397c','a5e603b2-2f02-47b5-9597-e28a93e26f5c','2024-03-21 01:09:37.087','2024-05-02 17:21:03.239'),
 	 ('4d91e033-b08a-421e-be71-ba2930661a53',36.0,1,'DISPONIBLE','0540e73f-c298-402e-8d7e-b076cf9a8d21','876610f4-e4f9-441c-afe6-1b2d18862b5f','2024-03-21 02:19:00.013','2024-03-21 02:19:00.013'),
 	 ('c2453bf8-c8da-4620-a6d7-b6841ec2a017',25.0,1,'DISPONIBLE','4eb60228-6919-4471-81eb-1a24f776c1da','a5e603b2-2f02-47b5-9597-e28a93e26f5c','2024-03-21 02:28:06.057','2024-03-21 02:28:06.057'),
 	 ('8a9214da-d325-4cc5-bd4b-f019968ee585',28.0,2,'DISPONIBLE','31d98165-16a9-409f-90e2-4348fd1e92b7','a5e603b2-2f02-47b5-9597-e28a93e26f5c','2024-03-21 02:31:01.015','2024-03-21 02:31:01.015'),
 	 ('b95d41b7-2437-44fa-94e6-28659c3fe26d',30.0,1,'DISPONIBLE','9c075050-ae46-47a9-a130-8f233a3aff8e','a5e603b2-2f02-47b5-9597-e28a93e26f5c','2024-03-21 02:32:47.308','2024-03-21 02:32:47.308'),
-	 ('7b60d575-eb76-43fe-9712-e4f3f824d4ef',50.0,1,'DISPONIBLE','7b6e341b-ffaa-4b61-ba96-f0b07f2d8ab5','f8f108ef-766d-47be-a547-d037fc0d1971','2024-03-21 14:14:40.148','2024-03-21 14:14:40.148');
-INSERT INTO public.products (id,price,stock,state,product_color_id,size_category_id,created_at,updated_at) VALUES
+	 ('7b60d575-eb76-43fe-9712-e4f3f824d4ef',50.0,1,'DISPONIBLE','7b6e341b-ffaa-4b61-ba96-f0b07f2d8ab5','f8f108ef-766d-47be-a547-d037fc0d1971','2024-03-21 14:14:40.148','2024-03-21 14:14:40.148'),
 	 ('d55dc34e-1193-4af1-a71b-8c03db6d10f7',30.0,1,'DISPONIBLE','8a094b2a-0e8b-4629-b21a-b2c4bae22b57','36339c31-91d7-44e8-9fa1-10e607b66690','2024-03-21 14:25:17.364','2024-03-21 14:25:17.364'),
 	 ('7ae03c00-0f53-466c-8cd4-dcf829b5c19a',30.0,1,'DISPONIBLE','3dbb1903-820d-430f-aeb1-c9a71817dc27','36339c31-91d7-44e8-9fa1-10e607b66690','2024-03-21 14:35:11.998','2024-03-21 14:35:11.998'),
 	 ('a6080833-571b-449a-a05b-d6304778d794',30.0,1,'DISPONIBLE','60766948-7b55-4550-a1d4-9bdea5299d29','36339c31-91d7-44e8-9fa1-10e607b66690','2024-03-21 14:37:16.737','2024-03-21 14:37:16.737'),
@@ -536,7 +573,6 @@ INSERT INTO public.products (id,price,stock,state,product_color_id,size_category
 	 ('639578b1-2c43-48d9-8aa2-56646b4155ff',45.0,3,'DISPONIBLE','b263772b-e8ae-46cf-8218-f12e638a47de','f2129254-8ea8-4dbb-97ad-2fb2593c19a0','2024-03-21 15:05:52.184','2024-03-21 15:05:52.184'),
 	 ('9bb4be67-a761-4417-98e6-9319899054da',60.0,1,'DISPONIBLE','538e42ae-8fe7-4c65-8c6d-efc9d1620a6a','2ca7dd12-2a30-48df-aa6c-f4690a4cd7fd','2024-03-21 15:08:00.505','2024-03-21 15:08:00.505'),
 	 ('90fdb7ef-1d00-4554-bd72-666a291768dc',60.0,1,'DISPONIBLE','88f0f586-66c6-4dd8-92bf-7da7a32a3d89','f8f108ef-766d-47be-a547-d037fc0d1971','2024-03-21 15:10:26.741','2024-03-21 15:10:26.741'),
-	 ('f7554868-2d00-42bc-a144-80e91dc6a4a1',45.0,1,'DISPONIBLE','4465aa7f-065c-4dbf-91c5-cfb1298c08de','2ca7dd12-2a30-48df-aa6c-f4690a4cd7fd','2024-03-21 15:14:09.923','2024-03-21 15:14:09.923'),
 	 ('8f56bc82-d04f-4626-8894-1f40b889381f',45.0,1,'DISPONIBLE','1f19879d-9d71-46ab-8cb6-15df08a049b0','2ca7dd12-2a30-48df-aa6c-f4690a4cd7fd','2024-03-21 15:15:34.722','2024-03-21 15:15:34.722'),
 	 ('de548d4c-780a-4719-984c-27f27a4f8511',25.0,1,'DISPONIBLE','0383cac0-3cb6-4a21-97bf-01c80053ac6c','2ca7dd12-2a30-48df-aa6c-f4690a4cd7fd','2024-03-21 15:18:43.071','2024-03-21 15:18:43.071'),
 	 ('616b7208-2a88-4b05-8b7e-4347cbf73ed9',40.0,1,'DISPONIBLE','647866bf-fb82-444f-8300-c2fa9913f305','f2129254-8ea8-4dbb-97ad-2fb2593c19a0','2024-03-21 15:22:03.607','2024-03-21 15:22:03.607'),
@@ -563,22 +599,27 @@ INSERT INTO public.products (id,price,stock,state,product_color_id,size_category
 	 ('7f760918-e7f2-467b-ab2f-0f88be94534b',30.0,0,'NO_DISPONIBLE','de8f3370-9f33-489b-b431-7d9d1d8a1a6a','a5e603b2-2f02-47b5-9597-e28a93e26f5c','2024-03-21 02:13:03.346','2024-03-26 22:40:42.151'),
 	 ('c2375cc8-7aba-423c-b981-07f0be1ff3f4',18.0,1,'DISPONIBLE','91fdf371-8982-445e-bec3-da1298974d0c',NULL,'2024-03-24 16:23:56.926','2024-03-24 16:23:56.926'),
 	 ('22324c79-4909-4006-88ce-ba23cf75e63a',50.0,1,'DISPONIBLE','e556c431-db10-41b5-b476-dbf2d248c1e1',NULL,'2024-03-24 16:00:46.741','2024-03-24 16:00:46.741'),
+	 ('3d0e3bb9-cb6d-4f23-b586-64724455cc8b',30.0,0,'NO_DISPONIBLE','3de0a380-539d-4d1f-be3c-3e37cd54af3a','a5e603b2-2f02-47b5-9597-e28a93e26f5c','2024-03-21 01:51:18.436','2024-04-11 16:56:52.24'),
 	 ('39a9abb2-76c4-4497-b6c7-3226f0f9e04a',36.0,0,'NO_DISPONIBLE','41907d28-d7b7-47fa-b349-d45372e6ae7d','a5e603b2-2f02-47b5-9597-e28a93e26f5c','2024-03-21 02:00:02.293','2024-03-29 16:27:44.386'),
+	 ('f7554868-2d00-42bc-a144-80e91dc6a4a1',45.0,0,'NO_DISPONIBLE','4465aa7f-065c-4dbf-91c5-cfb1298c08de','2ca7dd12-2a30-48df-aa6c-f4690a4cd7fd','2024-03-21 15:14:09.923','2024-04-13 21:38:53.097'),
 	 ('d615f606-a86c-44b1-8659-2fbad197425b',20.0,1,'DISPONIBLE','96188b2c-2dfd-4613-b00f-2939cd94d959',NULL,'2024-03-24 16:44:14.309','2024-03-24 16:44:14.309'),
 	 ('884d16b4-adcc-43ca-929d-03436c0e032f',65.0,1,'DISPONIBLE','b408cf4e-1086-465b-b810-a0c753398fb2','f31f0c0c-fa38-45aa-8e2e-b2dcc29411b6','2024-03-24 16:51:53.993','2024-03-24 16:51:53.993'),
 	 ('e70fc51e-a178-432c-bc4c-f389fb27d9f5',80.0,1,'DISPONIBLE','ed38e9af-1537-47b0-aa8d-c5526f96a83d','9b19980a-8a36-4219-98c0-232bd780c7f8','2024-03-24 16:54:03.31','2024-03-24 16:54:03.31'),
 	 ('784caed5-45dc-4db0-816f-b75327e85d50',80.0,1,'DISPONIBLE','b3cf151e-b597-43c6-90e5-500b74011421','9b19980a-8a36-4219-98c0-232bd780c7f8','2024-03-24 16:55:58.042','2024-03-24 16:55:58.042'),
-	 ('b56e27f4-abe2-44b5-ac17-67e491ac0b74',85.0,1,'DISPONIBLE','9b918752-87f8-4596-b8fa-4a9e4c2b6090','f31f0c0c-fa38-45aa-8e2e-b2dcc29411b6','2024-03-24 16:59:11.276','2024-03-24 16:59:11.276'),
 	 ('f599e61b-8e03-47ba-8b6d-014c6bcf9f92',100.0,1,'DISPONIBLE','ad36f373-4bb2-4775-9975-f81529aeb24d','f31f0c0c-fa38-45aa-8e2e-b2dcc29411b6','2024-03-24 17:04:35.448','2024-03-24 17:04:35.448'),
 	 ('0c0a23e3-5474-486a-8fa4-6c573ffe795d',100.0,1,'DISPONIBLE','ad36f373-4bb2-4775-9975-f81529aeb24d','5c6d47c7-e40c-4b8e-a3ec-58c075da9e32','2024-03-24 17:05:18.585','2024-03-24 17:05:18.585'),
 	 ('3c8bccd1-e78a-4639-a4a5-957781bcc9af',60.0,1,'DISPONIBLE','59486403-5d51-4600-98aa-5d20ae059963','5c6d47c7-e40c-4b8e-a3ec-58c075da9e32','2024-03-24 17:11:55.668','2024-03-24 17:11:55.668'),
 	 ('e4f35d3e-e216-4c1c-8661-fa7691f2eba9',65.0,1,'DISPONIBLE','8364f6ea-6f54-48ce-a43c-a60f6bb9d763',NULL,'2024-03-24 17:26:25.296','2024-03-24 17:26:25.296'),
-	 ('b899a20b-0af6-4955-bad6-6c055c6a1201',125.0,0,'NO_DISPONIBLE','aa9c1eaf-c6ea-42f0-b1a9-3dec7feb5aa1',NULL,'2024-03-24 15:15:42.596','2024-03-26 01:28:13.771');
-INSERT INTO public.products (id,price,stock,state,product_color_id,size_category_id,created_at,updated_at) VALUES
-	 ('d68593d5-6919-4d71-b62e-c7a43577ed6e',36.0,0,'NO_DISPONIBLE','b9c40f9c-7026-487e-9466-e3f8535d2e69','a5e603b2-2f02-47b5-9597-e28a93e26f5c','2024-03-20 02:05:02.512','2024-03-29 16:28:11.734');
-
-
-
-
-
-
+	 ('b899a20b-0af6-4955-bad6-6c055c6a1201',125.0,0,'NO_DISPONIBLE','aa9c1eaf-c6ea-42f0-b1a9-3dec7feb5aa1',NULL,'2024-03-24 15:15:42.596','2024-03-26 01:28:13.771'),
+	 ('d68593d5-6919-4d71-b62e-c7a43577ed6e',36.0,0,'NO_DISPONIBLE','b9c40f9c-7026-487e-9466-e3f8535d2e69','a5e603b2-2f02-47b5-9597-e28a93e26f5c','2024-03-20 02:05:02.512','2024-03-29 16:28:11.734'),
+	 ('3dc64b09-b06b-495c-96a0-ab7a5f6ba60a',36.0,2,'DISPONIBLE','0b515981-78b9-4e10-9e51-1407a2ccba63','876610f4-e4f9-441c-afe6-1b2d18862b5f','2024-04-13 18:16:46.387','2024-04-13 18:16:46.387'),
+	 ('63a338be-faf1-496e-9655-a1fa5ef38ef8',36.0,1,'DISPONIBLE','d9e2b64f-f9d2-44fa-b660-befb41ad2419','d88811b1-227f-4d20-b71a-d62dd7a740aa','2024-04-13 18:19:28.978','2024-04-13 18:19:28.978'),
+	 ('437f99d8-166b-422a-a9a2-4ab8a76447c7',110.0,1,'DISPONIBLE','94cfcec0-0e87-4c82-bd10-e0be59fbd7fe',NULL,'2024-04-13 18:26:35.594','2024-04-13 18:26:35.594'),
+	 ('e8f1a5b0-1200-4073-a4be-e29365cd002f',95.0,1,'DISPONIBLE','cdbe3a59-051c-4696-97df-864485d328a9',NULL,'2024-04-13 18:29:48.353','2024-04-13 18:29:48.353'),
+	 ('7b940f7b-9865-4074-809a-c0890633f42e',100.0,1,'DISPONIBLE','dffe7b68-4932-4b0e-b033-04097816ca0d','b7cd7280-6b79-441a-a240-7971f8ab6e62','2024-04-13 22:01:08.833','2024-04-13 22:01:08.833'),
+	 ('f6d6a41d-302e-4426-b414-293529353f0d',100.0,1,'DISPONIBLE','38c6d9a5-b00e-4cee-b12c-ec27cd702746','b7cd7280-6b79-441a-a240-7971f8ab6e62','2024-04-13 22:02:55.397','2024-04-13 22:02:55.397'),
+	 ('b56e27f4-abe2-44b5-ac17-67e491ac0b74',85.0,0,'NO_DISPONIBLE','9b918752-87f8-4596-b8fa-4a9e4c2b6090','f31f0c0c-fa38-45aa-8e2e-b2dcc29411b6','2024-03-24 16:59:11.276','2024-04-13 22:03:36.691'),
+	 ('457d4079-d447-44aa-9718-5bd49a7d3ccb',36.0,1,'DISPONIBLE','a86a2bc9-d4ae-4ff2-99cd-53818f14a684','876610f4-e4f9-441c-afe6-1b2d18862b5f','2024-04-25 01:12:58.142','2024-04-25 01:12:58.142'),
+	 ('8e7fd868-4ff7-4f18-a6f0-dbbc5bfae1fc',100.0,1,'DISPONIBLE','f2db2749-3080-486f-bbd9-84f38585d377',NULL,'2024-05-02 01:44:48.938','2024-05-02 01:44:48.938'),
+	 ('d9a0a082-410b-47b1-8a4e-ad5a7b94b6a5',36.0,2,'DISPONIBLE','e2e94282-db8a-4b28-9f03-c246400eb2bc','a5e603b2-2f02-47b5-9597-e28a93e26f5c','2024-04-25 01:14:25.682','2024-05-03 16:43:23.863'),
+	 ('bc2b9b50-7a3f-413e-9f1d-9ae8471f8390',36.0,1,'DISPONIBLE','678e2c85-6713-4a92-b222-779a839e646a','a5e603b2-2f02-47b5-9597-e28a93e26f5c','2024-05-03 16:41:54.915','2024-05-03 16:43:38.23');
