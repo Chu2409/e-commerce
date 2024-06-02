@@ -290,8 +290,10 @@ export const FullProductForm: React.FC<FullProductFormProps> = ({
         if (!productColorFormSubmit) return
 
         const productColorData = productColorForm.getValues()
+
         const productColor = await createProductColor({
-          ...productColorData,
+          images: productColorData.images,
+          colorId: productColorData.colorId || null,
           productMasterId: initialProductMaster?.id!,
         })
 
