@@ -85,6 +85,9 @@ export const getProductsByCategory = async (
           },
         },
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
     })
 
     return productsMasters
