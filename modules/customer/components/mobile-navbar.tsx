@@ -136,7 +136,7 @@ export const CustomerMobileNavbar = ({
         </div>
 
         <div className='flex justify-end'>
-          <Cart />
+          <Cart onClick={onClose} />
         </div>
       </div>
     </div>
