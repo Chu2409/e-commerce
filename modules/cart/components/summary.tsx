@@ -4,13 +4,11 @@ import { useCart } from '../store/cart'
 import { formatMoney } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
 
 const phone = process.env.NEXT_PUBLIC_PHONE_NUMBER!
 
 const Summary = () => {
   const { data: session } = useSession()
-  const router = useRouter()
 
   const items = useCart((state) => state.productItems)
 
@@ -19,14 +17,15 @@ const Summary = () => {
   }, 0)
 
   const handleClick = () => {
-    if (!session) {
-      router.push('/auth/login?redirect=/cart/')
-      return
+    let url
+
+    if (session) {
+      url = `https://api.whatsapp.com/send/?phone=${phone}&text=Hola, soy ${session.user.name} y he registrado mi carrito de compras en la tienda. ¿Podrías ayudarme con mi pedido?`
+    } else {
+      url = `https://api.whatsapp.com/send/?phone=${phone}&text=Hola, me puedes ayudar con los siguientes productos: ${items.map((item) => `${item.product.productColor.productMaster.name} - ${item.product.sizeCategory?.size.value || ''} - ${item.product.productColor.color?.name || ''} x ${item.quantity}`).join(', ')}`
     }
 
-    window.open(
-      `https://api.whatsapp.com/send/?phone=${phone}&text=Hola, soy ${session.user.name} y he registrado mi carrito de compras en la tienda. ¿Podrías ayudarme con mi pedido?`,
-    )
+    window.open(url)
   }
 
   return (
@@ -42,7 +41,7 @@ const Summary = () => {
       </div>
 
       <Button
-        className='w-full mt-6'
+        className='w-full mt-6 py-6 relative'
         disabled={items.length === 0}
         onClick={handleClick}
       >

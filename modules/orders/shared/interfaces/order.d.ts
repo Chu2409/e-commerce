@@ -1,3 +1,4 @@
+import { IFullSize } from '@/modules/sizes/shared/interfaces/size'
 import {
   Brand,
   Color,
@@ -8,7 +9,6 @@ import {
   ProductColor,
   ProductMaster,
 } from '@prisma/client'
-import { IFullSize } from '../../sizes/interfaces/size'
 
 interface IFullProductMasterOrder extends ProductMaster {
   brand: Brand

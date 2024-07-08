@@ -12,7 +12,9 @@ import { useCart } from '@/modules/cart/store/cart'
 import { useSession } from 'next-auth/react'
 import { addProductToCart } from '@/modules/cart/actions/add-product-to-cart'
 import toast from 'react-hot-toast'
+import Img from 'next/image'
 
+const phone = process.env.NEXT_PUBLIC_PHONE_NUMBER!
 interface ProductInfoProps {
   productMaster: IFullProductMaster
 }
@@ -91,6 +93,12 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ productMaster }) => {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  const handleClickOn = () => {
+    window.open(
+      `https://api.whatsapp.com/send/?phone=${phone}&text=Hola, me puedes ayudar con el siguiente producto: ${productMaster.name} en talla ${mainProduct.sizeCategory?.size.value} y color ${mainProductColor.color?.name}`,
+    )
   }
 
   return (
@@ -218,6 +226,15 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ productMaster }) => {
           )}
 
           <div className='mt-6 flex items-center gap-x-3 self-end '>
+            <Button
+              variant='default'
+              disabled={isLoading}
+              onClick={handleClickOn}
+              className='flex items-center gap-x-2 bg-green-400 text-black hover:bg-green-500 font-semibold'
+            >
+              Comprar
+              <Img src='/whatsapp.svg' alt='whatsapp' width={20} height={20} />
+            </Button>
             <Button
               disabled={isLoading || session?.user?.role === 'ADMIN'}
               onClick={handleClick}
