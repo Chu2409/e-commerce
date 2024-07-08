@@ -1,3 +1,4 @@
+import { IFullSize } from '@/modules/sizes/shared/interfaces/size'
 import {
   Brand,
   Category,
@@ -6,7 +7,6 @@ import {
   ProductColor,
   ProductMaster,
 } from '@prisma/client'
-import { IFullSize } from '../../sizes/interfaces/size'
 
 export interface IFullProduct extends Product {
   sizeCategory: Omit<IFullSize, 'category'> | null

@@ -175,7 +175,7 @@ export const ProductInfo: React.FC<ProductInfoProps> = ({ productMaster }) => {
                         size?.id === mainProduct.sizeCategory?.sizeId,
                     },
                   )}
-                  onClick={() => handleSizeChange(size.id)}
+                  onClick={() => handleSizeChange(size!.id)}
                 >
                   {size?.value}
                 </div>

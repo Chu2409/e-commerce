@@ -88,9 +88,9 @@ export const GroupProductCard: React.FC<GroupProductCardProps> = ({
                       size?.id === mainProduct.sizeCategory?.sizeId,
                   },
                 )}
-                onClick={() => handleSizeChange(size?.id)}
+                onClick={() => handleSizeChange(size!.id)}
               >
-                {size?.value}
+                {size!.value}
               </div>
             ))}
           </div>

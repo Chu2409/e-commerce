@@ -21,7 +21,7 @@ interface IFullProductColorOrder extends ProductColor {
 }
 
 export interface IFullProductOrder extends Product {
-  sizeCategory: IFullSize | null
+  sizeCategory: Omit<IFullSize, 'category'> | null
   productColor: IFullProductColorOrder
 }
 
